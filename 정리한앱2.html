@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="light" lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+  <title>Editorial Final - Advanced</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#b6004f",
+            "on-primary": "#ffffff",
+            "surface": "#fff4f6",
+            "on-surface": "#4a2135",
+            "on-surface-variant": "#7d4d63",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#ffecf2",
+            "surface-container-high": "#ffd8e7",
+            "surface-container-highest": "#ffd0e3",
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f3f4f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .nav-item.active .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .page { display: none; flex-direction: column; height: 100%; position: relative; }
+    .page.active { display: flex; }
+    .insta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .insta-grid div { aspect-ratio: 1 / 1; overflow: hidden; background-color: #eee; }
+    .insta-grid img { width: 100%; height: 100%; object-fit: cover; }
+    .mode-btn.active { background-color: #b6004f; color: white; }
+  </style>
+</head>
+<body class="py-0 sm:py-8">
+
+  <div id="app-shell" class="relative w-full max-w-[400px] h-[100dvh] sm:h-[850px] bg-surface overflow-hidden sm:shadow-2xl sm:rounded-[2.5rem] border border-rose-100 flex flex-col">
+    
+    <section id="page-home" class="page active">
+      <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex justify-between items-center border-b border-rose-100 z-10">
+        <div class="flex items-center gap-2">
+          <div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm font-black text-[10px]">E</div>
+          <h1 class="text-lg font-black tracking-tighter text-zinc-900">Editorial</h1>
+        </div>
+        <div class="flex items-center gap-1">
+          <div class="flex bg-rose-50 p-1 rounded-full mr-1">
+            <button onclick="toggleFeedMode('personal')" id="btn-personal" class="mode-btn active px-2.5 py-1 rounded-full text-[9px] font-bold transition-all">개인</button>
+            <button onclick="toggleFeedMode('company')" id="btn-company" class="mode-btn px-2.5 py-1 rounded-full text-[9px] font-bold text-on-surface-variant transition-all">기업</button>
+          </div>
+          <button class="p-2 text-primary"><span class="material-symbols-outlined">search</span></button>
+          <button class="p-2 text-primary"><span class="material-symbols-outlined">notifications</span></button>
+        </div>
+      </header>
+      
+      <main id="feed-container" class="flex-1 overflow-y-auto p-4 space-y-6 hide-scrollbar pb-24">
+        </main>
+    </section>
+
+    <section id="page-add" class="page">
+      <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex items-center border-b border-rose-100 z-10">
+        <button onclick="showPage('home')" class="text-primary mr-4"><span class="material-symbols-outlined">close</span></button>
+        <h1 class="font-bold text-primary tracking-tight">새 게시물 작성</h1>
+      </header>
+      <main class="flex-1 p-5 overflow-y-auto hide-scrollbar space-y-5 pb-24">
+        <div class="aspect-video w-full rounded-[1.5rem] bg-surface-container-low border-2 border-dashed border-primary/20 flex flex-col items-center justify-center text-primary/40 relative overflow-hidden">
+          <img class="absolute inset-0 w-full h-full object-cover opacity-20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg8"/>
+          <span class="material-symbols-outlined text-3xl mb-1 relative z-10">add_a_photo</span>
+          <p class="text-[10px] font-bold uppercase tracking-wider relative z-10">미디어 추가</p>
+        </div>
+        
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-rose-50">
+          <textarea class="w-full border-none focus:ring-0 text-sm min-h-[120px] p-0 placeholder:text-on-surface-variant/40" placeholder="내용을 작성하세요"></textarea>
+        </div>
+
+        <div class="space-y-3">
+          <div class="bg-white p-4 rounded-xl flex items-center justify-between shadow-sm border border-rose-50">
+            <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">category</span><span class="text-xs font-bold text-on-surface">카테고리 선택</span></div>
+            <select class="border-none bg-transparent text-[11px] font-bold text-primary focus:ring-0">
+              <option>패션/뷰티</option><option>라이프스타일</option><option>IT/테크</option><option>음식/여행</option>
+            </select>
+          </div>
+          <div class="bg-white p-4 rounded-xl flex items-center gap-3 shadow-sm border border-rose-50">
+            <span class="material-symbols-outlined text-primary">tag</span>
+            <input type="text" class="flex-1 border-none focus:ring-0 text-xs p-0 font-medium" placeholder="태그 작성 (#데일리룩 #카페)"/>
+          </div>
+          <div class="bg-white p-4 rounded-xl flex items-center justify-between shadow-sm border border-rose-50">
+            <div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">location_on</span><span class="text-xs font-bold text-on-surface">위치 추가</span></div>
+            <span class="material-symbols-outlined text-on-surface-variant/30">chevron_right</span>
+          </div>
+        </div>
+
+        <button class="w-full py-4 bg-primary text-white font-bold rounded-2xl shadow-lg mt-4 active:scale-[0.98]">게시하기</button>
+      </main>
+    </section>
+
+    <section id="page-chat" class="page">
+      <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 border-b border-rose-100 flex justify-between items-center">
+        <h1 class="font-bold text-primary tracking-tight text-lg">메시지</h1>
+        <button class="p-2 text-primary"><span class="material-symbols-outlined">edit_square</span></button>
+      </header>
+      <main class="flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar pb-24">
+        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm relative overflow-hidden border border-rose-100">
+          <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary"></div>
+          <img class="w-14 h-14 rounded-2xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC62YVbfaWu-9ISRAs_GcbRWyVVAi8J4z6qd41DN0yU4ZJlYkZHS2EbtNHjl2uHxaq-8M4cxX9wC6rabhxY13KyhpVKrhP5axPRd9RzLtwXAh9lejpYq9Llgp9mT2ZNmWudIrNocfEaJJhpwC2AkkYgElIu3WwumuOWLhIOtPsMPPHqKd--0A1xvN7v1tJdWxFQz4324td8OUWltu9DDP0NLfBzZbvez1DfYglrz4baqKOQCG6ASmGnIpcH6aUkKyxND71faXM"/>
+          <div class="flex-1 min-w-0">
+            <div class="flex justify-between items-baseline mb-0.5"><h4 class="font-bold text-on-surface text-sm">아우라 뷰티</h4><span class="text-[9px] font-bold text-primary">New</span></div>
+            <p class="text-xs text-on-surface font-semibold truncate">미팅 일정 확인 가능하실까요?</p>
+          </div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm opacity-70">
+          <img class="w-14 h-14 rounded-2xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYZv-PKXefmCrABsbAnZJBwKbWAx8RhHjfFc7Tu9roaitP7ffFZFbJW_h343c66KMmoFa4cfYUHxwGRBs7qRBXC--ncJ8HvHgbrwV0wgDYyF0vS3D0n6vD7ZDZygOiECdk0b82qWrYfi193LdZf9RzEyCyCIm6p81iejP70e7axDooK8j7gBk9raph0wtbZ-7HexMqIiYHLnEnen2HZT5mIa4X0w2f5n9w5wLt1p2mDkS0QpvGQ7qRJAmudnpnSGB-lAdTAVE0"/>
+          <div class="flex-1 min-w-0"><h4 class="font-bold text-sm">삼성전자 마케팅</h4><p class="text-xs truncate">협업 제안서 전달드립니다.</p></div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm opacity-70">
+          <img class="w-14 h-14 rounded-2xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYZv-PKXefmCrABsbAnZJBwKbWAx8RhHjfFc7Tu9roaitP7ffFZFbJW_h343c66KMmoFa4cfYUHxwGRBs7qRBXC--ncJ8HvHgbrwV0wgDYyF0vS3D0n6vD7ZDZygOiECdk0b82qWrYfi193LdZf9RzEyCyCIm6p81iejP70e7axDooK8j7gBk9raph0wtbZ-7HexMqIiYHLnEnen2HZT5mIa4X0w2f5n9w5wLt1p2mDkS0QpvGQ7qRJAmudnpnSGB-lAdTAVE1"/>
+          <div class="flex-1 min-w-0"><h4 class="font-bold text-sm">무신사</h4><p class="text-xs truncate">프로젝트 선정 축하드립니다!</p></div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm opacity-70">
+          <img class="w-14 h-14 rounded-2xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYZv-PKXefmCrABsbAnZJBwKbWAx8RhHjfFc7Tu9roaitP7ffFZFbJW_h343c66KMmoFa4cfYUHxwGRBs7qRBXC--ncJ8HvHgbrwV0wgDYyF0vS3D0n6vD7ZDZygOiECdk0b82qWrYfi193LdZf9RzEyCyCIm6p81iejP70e7axDooK8j7gBk9raph0wtbZ-7HexMqIiYHLnEnen2HZT5mIa4X0w2f5n9w5wLt1p2mDkS0QpvGQ7qRJAmudnpnSGB-lAdTAVE2"/>
+          <div class="flex-1 min-w-0"><h4 class="font-bold text-sm">나이키 코리아</h4><p class="text-xs truncate">배송이 시작되었습니다.</p></div>
+        </div>
+      </main>
+    </section>
+
+    <section id="page-profile" class="page">
+      <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex justify-between items-center border-b border-rose-100 z-10">
+        <span class="font-black text-on-surface tracking-tight">nayoung_visual</span>
+        <button class="p-2 text-primary"><span class="material-symbols-outlined">menu</span></button>
+      </header>
+      <main class="flex-1 overflow-y-auto hide-scrollbar pb-24 bg-white">
+        <div class="px-6 pt-6 pb-4">
+          <div class="flex items-center justify-between mb-6">
+            <img class="w-20 h-20 rounded-full object-cover p-1 border-2 border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANj8Wf4Y5PLp90KTNxY-ueYrsSu-3JgeBsxzcCKj5smkFj0f44bsU3nv4xmJB-eSRBzmzTQuZ0_MRK7p2ureu96OwBkXHgRoiSQBZMfASQj_VLcSSCeec5uv7H-Ne_kUoMMahX2fxxvpG1EFdqGxOhRzv6isXGPBX0CKVeW8oN2XuktHIXDGF3n5gMi6iOi2RMe2D_1nt-y-pPsA2pNvEP_bL3nVQzYGx2ZDNrPrRj554d_5Ac4nt-7KjkCUnXAorzVSR7QjM"/>
+            <div class="flex gap-4 pr-2">
+              <div class="text-center"><p class="text-sm font-black">152</p><p class="text-[9px] text-on-surface-variant font-bold">리뷰</p></div>
+              <div class="text-center"><p class="text-sm font-black">4.9</p><p class="text-[9px] text-on-surface-variant font-bold">별점</p></div>
+              <div class="text-center"><p class="text-sm font-black">14.2%</p><p class="text-[9px] text-on-surface-variant font-bold">활동지수</p></div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <h2 class="text-sm font-bold text-on-surface">김나영 | Visual Artist</h2>
+            <p class="text-[11px] text-on-surface-variant mt-1 leading-relaxed">Daily Visual Archive 🌿</p>
+          </div>
+          <div class="flex gap-2 mb-4">
+             <span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase tracking-tighter">Fashion / Beauty</span>
+             <span class="px-3 py-1 bg-zinc-100 text-zinc-500 text-[10px] font-black rounded-full uppercase tracking-tighter">Digital Art</span>
+          </div>
+          <button class="w-full py-2 bg-surface-container-low text-on-surface text-[11px] font-bold rounded-lg mb-4">프로필 편집</button>
+        </div>
+        <div class="insta-grid border-t border-rose-50">
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys"/></div>
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzjbrQ4__m-iioQ2Ph5jfHuAKGQCkFN259AwI_FbyDyRrC2nyBHJZCUC1O7WC-BNBVFMJyi5ixAFfUi20PdyGM-xEfOo_tUmd45smVkeTqef9VMxvfOaBCbajeGgFCddqcqpcoRp1o_s6diMWiMblrq7rCp35G_Y1YBeaDf6avEI0sDYN2ZcIRTGB6AZj-nddB2GlRdQC0WUoYJrD5nALVbX5o9GllaVwfNr99NQEBIGwuvZKwoFCXv0aXXTOlQmIrRmo8ZRs"/></div>
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqmq-QKKrjhpL2o5RymCgUqjLOe84O-LeJ949IteXEWGMoxim7BhmYVCI-TKF10RYEqvmp8ysSD_CnjFiWAQICwrcTsV4n198Uex3rga7PyYSJJd3FfjM2WEhWG2AfvQ-jF2DOkewcRKrsCcTyrnxsbhG-5Mt4uwfqOii4YlvnYn8bK6PxXz69nAOI1761bEQ3J3cXWfnVK6p_2SJmqpeeclmCOLUHNDfVoBW1_Zm3Vdj1V5fKdjvJ0A4ObGBWp6kxGvfAJc4"/></div>
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg4"/></div>
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg5"/></div>
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg6"/></div>
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg7"/></div>
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg8"/></div>
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg9"/></div>
+        </div>
+      </main>
+    </section>
+
+    <nav class="absolute bottom-0 left-0 right-0 h-20 flex justify-around items-center px-6 pb-2 bg-white/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(182,0,79,0.1)] z-50">
+      <button onclick="showPage('home')" id="nav-home" class="nav-item active flex flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined text-[24px]">home</span><span class="text-[9px] font-bold">홈</span>
+      </button>
+      <button onclick="showPage('add')" id="nav-add" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+        <span class="material-symbols-outlined text-[24px]">add_circle</span><span class="text-[9px] font-bold">만들기</span>
+      </button>
+      <button onclick="showPage('chat')" id="nav-chat" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+        <span class="material-symbols-outlined text-[24px]">send</span><span class="text-[9px] font-bold">메시지</span>
+      </button>
+      <button onclick="showPage('profile')" id="nav-profile" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+        <span class="material-symbols-outlined text-[24px]">person</span><span class="text-[9px] font-bold">프로필</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    const allProfiles = [
+      { type: 'personal', name: "김지수", handle: "@jisoo_style", img: "1", followers: "842", activity: "12.4%", reviews: 128, rating: "4.9" },
+      { type: 'personal', name: "이서윤", handle: "@seoyun_vibes", img: "10", followers: "1,205", activity: "8.7%", reviews: 85, rating: "4.7" },
+      { type: 'company', name: "에이비씨 브랜드", handle: "@abc_official", img: "13", category: "의류/패션", response: "1시간 이내", reviews: 310, rating: "5.0" },
+      { type: 'personal', name: "박소희", handle: "@sohee_beauty", img: "2", followers: "3,420", activity: "15.2%", reviews: 210, rating: "5.0" },
+      { type: 'company', name: "퓨처 디자인", handle: "@future_studio", img: "14", category: "디자인/IT", response: "4시간 이내", reviews: 42, rating: "4.5" },
+      { type: 'personal', name: "한지민", handle: "@jimin_look", img: "4", followers: "2,150", activity: "18.5%", reviews: 156, rating: "4.8" },
+      { type: 'company', name: "글로벌 뷰티", handle: "@global_beauty_kr", img: "15", category: "뷰티/코스메틱", response: "2시간 이내", reviews: 77, rating: "4.9" }
+    ];
+
+    function toggleFeedMode(mode) {
+      document.querySelectorAll('.mode-btn').forEach(b => {
+        b.classList.remove('active', 'bg-primary', 'text-white');
+        b.classList.add('text-on-surface-variant');
+      });
+      const activeBtn = document.getElementById('btn-' + mode);
+      activeBtn.classList.add('active', 'bg-primary', 'text-white');
+      activeBtn.classList.remove('text-on-surface-variant');
+      renderFeed(mode);
+    }
+
+    function renderFeed(filter) {
+      const container = document.getElementById('feed-container');
+      const filtered = allProfiles.filter(p => p.type === filter);
+      container.innerHTML = filtered.map(p => `
+        <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-rose-50">
+          <img class="w-full h-80 object-cover" src="http://googleusercontent.com/profile/picture/${p.img}"/>
+          <div class="p-6">
+            <div class="flex justify-between items-center mb-2">
+              <div>
+                <h2 class="text-xl font-extrabold text-on-surface">${p.name}</h2>
+                <p class="text-xs text-on-surface-variant font-medium">${p.handle}</p>
+              </div>
+              <div class="flex items-center gap-1 bg-rose-50 px-2 py-1 rounded-lg">
+                <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1">star</span>
+                <span class="text-xs font-bold text-primary">${p.rating}</span>
+                <span class="text-[10px] text-on-surface-variant">(${p.reviews})</span>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 mb-4 mt-4">
+              ${p.type === 'personal' ? `
+                <div class="bg-surface-container-low p-3 rounded-2xl text-center">
+                  <span class="block text-[8px] font-bold text-on-surface-variant uppercase mb-1">팔로워 수</span>
+                  <span class="text-md font-black text-on-surface">${p.followers}</span>
+                </div>
+                <div class="bg-surface-container-low p-3 rounded-2xl text-center">
+                  <span class="block text-[8px] font-bold text-on-surface-variant uppercase mb-1">활동지수</span>
+                  <span class="text-md font-black text-primary">${p.activity}</span>
+                </div>
+              ` : `
+                <div class="bg-surface-container-low p-3 rounded-2xl text-center">
+                  <span class="block text-[8px] font-bold text-on-surface-variant uppercase mb-1">카테고리</span>
+                  <span class="text-md font-black text-on-surface">${p.category}</span>
+                </div>
+                <div class="bg-surface-container-low p-3 rounded-2xl text-center">
+                  <span class="block text-[8px] font-bold text-on-surface-variant uppercase mb-1">응답 속도</span>
+                  <span class="text-md font-black text-primary">${p.response}</span>
+                </div>
+              `}
+            </div>
+            <button class="w-full py-3.5 bg-primary text-white text-sm font-bold rounded-xl active:scale-95 transition-transform shadow-md">상세 정보 보기</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + pageId).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(nav => {
+        nav.classList.remove('text-primary', 'active', 'text-zinc-400');
+        nav.classList.add('text-zinc-400');
+      });
+      const activeNav = document.getElementById('nav-' + pageId);
+      activeNav.classList.add('text-primary', 'active');
+      activeNav.classList.remove('text-zinc-400');
+    }
+
+    renderFeed('personal');
+  </script>
+</body>
+</html>
