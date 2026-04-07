@@ -45,6 +45,7 @@
 
   <div id="app-shell" class="relative w-full max-w-[400px] h-[100dvh] sm:h-[850px] bg-surface overflow-hidden sm:shadow-2xl sm:rounded-[2.5rem] border border-rose-100 flex flex-col">
     
+    <!-- HOME PAGE -->
     <section id="page-home" class="page active">
       <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex justify-between items-center border-b border-rose-100 z-10">
         <div class="flex items-center gap-2">
@@ -62,7 +63,18 @@
       </header>
       
       <main id="feed-container" class="flex-1 overflow-y-auto p-4 space-y-6 hide-scrollbar pb-24">
-        </main>
+      </main>
+    </section>
+
+    <!-- DETAIL PAGE (Persona View) -->
+    <section id="page-detail" class="page bg-white">
+      <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex items-center border-b border-rose-100 z-10">
+        <button onclick="showPage('home')" class="text-primary mr-4 transition-transform active:scale-90"><span class="material-symbols-outlined">arrow_back_ios</span></button>
+        <h1 class="font-bold text-primary tracking-tight">페르소나 상세 정보</h1>
+      </header>
+      <main id="detail-content" class="flex-1 overflow-y-auto hide-scrollbar pb-24">
+        <!-- Content injected by JS -->
+      </main>
     </section>
 
     <section id="page-add" class="page">
@@ -116,18 +128,7 @@
             <p class="text-xs text-on-surface font-semibold truncate">미팅 일정 확인 가능하실까요?</p>
           </div>
         </div>
-        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm opacity-70">
-          <img class="w-14 h-14 rounded-2xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYZv-PKXefmCrABsbAnZJBwKbWAx8RhHjfFc7Tu9roaitP7ffFZFbJW_h343c66KMmoFa4cfYUHxwGRBs7qRBXC--ncJ8HvHgbrwV0wgDYyF0vS3D0n6vD7ZDZygOiECdk0b82qWrYfi193LdZf9RzEyCyCIm6p81iejP70e7axDooK8j7gBk9raph0wtbZ-7HexMqIiYHLnEnen2HZT5mIa4X0w2f5n9w5wLt1p2mDkS0QpvGQ7qRJAmudnpnSGB-lAdTAVE0"/>
-          <div class="flex-1 min-w-0"><h4 class="font-bold text-sm">삼성전자 마케팅</h4><p class="text-xs truncate">협업 제안서 전달드립니다.</p></div>
-        </div>
-        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm opacity-70">
-          <img class="w-14 h-14 rounded-2xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYZv-PKXefmCrABsbAnZJBwKbWAx8RhHjfFc7Tu9roaitP7ffFZFbJW_h343c66KMmoFa4cfYUHxwGRBs7qRBXC--ncJ8HvHgbrwV0wgDYyF0vS3D0n6vD7ZDZygOiECdk0b82qWrYfi193LdZf9RzEyCyCIm6p81iejP70e7axDooK8j7gBk9raph0wtbZ-7HexMqIiYHLnEnen2HZT5mIa4X0w2f5n9w5wLt1p2mDkS0QpvGQ7qRJAmudnpnSGB-lAdTAVE1"/>
-          <div class="flex-1 min-w-0"><h4 class="font-bold text-sm">무신사</h4><p class="text-xs truncate">프로젝트 선정 축하드립니다!</p></div>
-        </div>
-        <div class="bg-white p-4 rounded-2xl flex items-center gap-4 shadow-sm opacity-70">
-          <img class="w-14 h-14 rounded-2xl object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYZv-PKXefmCrABsbAnZJBwKbWAx8RhHjfFc7Tu9roaitP7ffFZFbJW_h343c66KMmoFa4cfYUHxwGRBs7qRBXC--ncJ8HvHgbrwV0wgDYyF0vS3D0n6vD7ZDZygOiECdk0b82qWrYfi193LdZf9RzEyCyCIm6p81iejP70e7axDooK8j7gBk9raph0wtbZ-7HexMqIiYHLnEnen2HZT5mIa4X0w2f5n9w5wLt1p2mDkS0QpvGQ7qRJAmudnpnSGB-lAdTAVE2"/>
-          <div class="flex-1 min-w-0"><h4 class="font-bold text-sm">나이키 코리아</h4><p class="text-xs truncate">배송이 시작되었습니다.</p></div>
-        </div>
+        <!-- ... other chat items ... -->
       </main>
     </section>
 
@@ -137,36 +138,7 @@
         <button class="p-2 text-primary"><span class="material-symbols-outlined">menu</span></button>
       </header>
       <main class="flex-1 overflow-y-auto hide-scrollbar pb-24 bg-white">
-        <div class="px-6 pt-6 pb-4">
-          <div class="flex items-center justify-between mb-6">
-            <img class="w-20 h-20 rounded-full object-cover p-1 border-2 border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANj8Wf4Y5PLp90KTNxY-ueYrsSu-3JgeBsxzcCKj5smkFj0f44bsU3nv4xmJB-eSRBzmzTQuZ0_MRK7p2ureu96OwBkXHgRoiSQBZMfASQj_VLcSSCeec5uv7H-Ne_kUoMMahX2fxxvpG1EFdqGxOhRzv6isXGPBX0CKVeW8oN2XuktHIXDGF3n5gMi6iOi2RMe2D_1nt-y-pPsA2pNvEP_bL3nVQzYGx2ZDNrPrRj554d_5Ac4nt-7KjkCUnXAorzVSR7QjM"/>
-            <div class="flex gap-4 pr-2">
-              <div class="text-center"><p class="text-sm font-black">152</p><p class="text-[9px] text-on-surface-variant font-bold">리뷰</p></div>
-              <div class="text-center"><p class="text-sm font-black">4.9</p><p class="text-[9px] text-on-surface-variant font-bold">별점</p></div>
-              <div class="text-center"><p class="text-sm font-black">14.2%</p><p class="text-[9px] text-on-surface-variant font-bold">활동지수</p></div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <h2 class="text-sm font-bold text-on-surface">김나영 | Visual Artist</h2>
-            <p class="text-[11px] text-on-surface-variant mt-1 leading-relaxed">Daily Visual Archive 🌿</p>
-          </div>
-          <div class="flex gap-2 mb-4">
-             <span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase tracking-tighter">Fashion / Beauty</span>
-             <span class="px-3 py-1 bg-zinc-100 text-zinc-500 text-[10px] font-black rounded-full uppercase tracking-tighter">Digital Art</span>
-          </div>
-          <button class="w-full py-2 bg-surface-container-low text-on-surface text-[11px] font-bold rounded-lg mb-4">프로필 편집</button>
-        </div>
-        <div class="insta-grid border-t border-rose-50">
-          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys"/></div>
-          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzjbrQ4__m-iioQ2Ph5jfHuAKGQCkFN259AwI_FbyDyRrC2nyBHJZCUC1O7WC-BNBVFMJyi5ixAFfUi20PdyGM-xEfOo_tUmd45smVkeTqef9VMxvfOaBCbajeGgFCddqcqpcoRp1o_s6diMWiMblrq7rCp35G_Y1YBeaDf6avEI0sDYN2ZcIRTGB6AZj-nddB2GlRdQC0WUoYJrD5nALVbX5o9GllaVwfNr99NQEBIGwuvZKwoFCXv0aXXTOlQmIrRmo8ZRs"/></div>
-          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqmq-QKKrjhpL2o5RymCgUqjLOe84O-LeJ949IteXEWGMoxim7BhmYVCI-TKF10RYEqvmp8ysSD_CnjFiWAQICwrcTsV4n198Uex3rga7PyYSJJd3FfjM2WEhWG2AfvQ-jF2DOkewcRKrsCcTyrnxsbhG-5Mt4uwfqOii4YlvnYn8bK6PxXz69nAOI1761bEQ3J3cXWfnVK6p_2SJmqpeeclmCOLUHNDfVoBW1_Zm3Vdj1V5fKdjvJ0A4ObGBWp6kxGvfAJc4"/></div>
-          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg4"/></div>
-          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg5"/></div>
-          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg6"/></div>
-          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg7"/></div>
-          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg8"/></div>
-          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg9"/></div>
-        </div>
+        <!-- ... profile main content ... -->
       </main>
     </section>
 
@@ -188,13 +160,36 @@
 
   <script>
     const allProfiles = [
-      { type: 'personal', name: "김지수", handle: "@jisoo_style", img: "1", followers: "842", activity: "12.4%", reviews: 128, rating: "4.9" },
-      { type: 'personal', name: "이서윤", handle: "@seoyun_vibes", img: "10", followers: "1,205", activity: "8.7%", reviews: 85, rating: "4.7" },
-      { type: 'company', name: "에이비씨 브랜드", handle: "@abc_official", img: "13", category: "의류/패션", response: "1시간 이내", reviews: 310, rating: "5.0" },
-      { type: 'personal', name: "박소희", handle: "@sohee_beauty", img: "2", followers: "3,420", activity: "15.2%", reviews: 210, rating: "5.0" },
-      { type: 'company', name: "퓨처 디자인", handle: "@future_studio", img: "14", category: "디자인/IT", response: "4시간 이내", reviews: 42, rating: "4.5" },
-      { type: 'personal', name: "한지민", handle: "@jimin_look", img: "4", followers: "2,150", activity: "18.5%", reviews: 156, rating: "4.8" },
-      { type: 'company', name: "글로벌 뷰티", handle: "@global_beauty_kr", img: "15", category: "뷰티/코스메틱", response: "2시간 이내", reviews: 77, rating: "4.9" }
+      { 
+        id: 1, type: 'personal', name: "김지수", handle: "@jisoo_style", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys", followers: "842", activity: "12.4%", reviews: 128, rating: "4.9",
+        persona: {
+          age: "24세 / 프리랜서 모델",
+          personality: "트렌디함, 미니멀리즘 추구, 꼼꼼한 리뷰 성향",
+          interests: ["오가닉 뷰티", "건축 디자인", "비건 레시피"],
+          brands: ["자크뮈스", "AESOP", "무인양품"],
+          goal: "자연스러운 라이프스타일을 공유하며 건강한 영향력 전달"
+        }
+      },
+      { 
+        id: 2, type: 'personal', name: "박소희", handle: "@sohee_beauty", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDzjbrQ4__m-iioQ2Ph5jfHuAKGQCkFN259AwI_FbyDyRrC2nyBHJZCUC1O7WC-BNBVFMJyi5ixAFfUi20PdyGM-xEfOo_tUmd45smVkeTqef9VMxvfOaBCbajeGgFCddqcqpcoRp1o_s6diMWiMblrq7rCp35G_Y1YBeaDf6avEI0sDYN2ZcIRTGB6AZj-nddB2GlRdQC0WUoYJrD5nALVbX5o9GllaVwfNr99NQEBIGwuvZKwoFCXv0aXXTOlQmIrRmo8ZRs", followers: "3,420", activity: "15.2%", reviews: 210, rating: "5.0",
+        persona: {
+          age: "27세 / 메이크업 아티스트",
+          personality: "활발함, 소통 중심, 전문적인 정보 제공",
+          interests: ["색조 메이크업", "피부 홈케어", "브이로그"],
+          brands: ["헤라", "입생로랑 뷰티", "탬버린즈"],
+          goal: "구독자들에게 실용적인 뷰티 팁과 트렌드를 가장 빠르게 전달"
+        }
+      },
+      { 
+        id: 3, type: 'company', name: "에이비씨 브랜드", handle: "@abc_official", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg4", category: "의류/패션", response: "1시간 이내", reviews: 310, rating: "5.0",
+        persona: {
+          age: "설립 5년차 브랜드",
+          personality: "합리적인 가격, 스트릿 감성, 환경 보호 실천",
+          interests: ["지속 가능한 패션", "MZ세대 소통", "팝업 스토어"],
+          brands: ["파타고니아", "프라이탁"],
+          goal: "일상 속에서 편안하게 즐길 수 있는 프리미엄 베이직 웨어 보급"
+        }
+      }
     ];
 
     function toggleFeedMode(mode) {
@@ -213,7 +208,7 @@
       const filtered = allProfiles.filter(p => p.type === filter);
       container.innerHTML = filtered.map(p => `
         <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-rose-50">
-          <img class="w-full h-80 object-cover" src="http://googleusercontent.com/profile/picture/${p.img}"/>
+          <img class="w-full h-80 object-cover" src="${p.img}"/>
           <div class="p-6">
             <div class="flex justify-between items-center mb-2">
               <div>
@@ -247,22 +242,87 @@
                 </div>
               `}
             </div>
-            <button class="w-full py-3.5 bg-primary text-white text-sm font-bold rounded-xl active:scale-95 transition-transform shadow-md">상세 정보 보기</button>
+            <button onclick="openPersonaDetail(${p.id})" class="w-full py-3.5 bg-primary text-white text-sm font-bold rounded-xl active:scale-95 transition-transform shadow-md">상세 정보 보기</button>
           </div>
         </article>
       `).join('');
     }
 
+    function openPersonaDetail(id) {
+      const p = allProfiles.find(item => item.id === id);
+      if (!p) return;
+
+      const detailContent = document.getElementById('detail-content');
+      detailContent.innerHTML = `
+        <div class="px-6 py-8">
+          <div class="flex items-center gap-5 mb-10">
+            <img class="w-24 h-24 rounded-3xl object-cover shadow-lg border-2 border-primary/10" src="${p.img}"/>
+            <div>
+              <h2 class="text-2xl font-black text-on-surface">${p.name}</h2>
+              <p class="text-sm font-bold text-primary mb-1">${p.handle}</p>
+              <div class="flex gap-1">
+                ${new Array(5).fill(0).map((_, i) => `<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' ${i < Math.floor(p.rating) ? 1 : 0}">star</span>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div class="bg-surface-container-low p-5 rounded-[2rem] border border-rose-100">
+              <h3 class="text-[10px] font-black text-primary uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">badge</span> 인적 사항
+              </h3>
+              <p class="text-sm font-bold text-on-surface leading-relaxed">${p.persona.age}</p>
+              <p class="text-xs text-on-surface-variant mt-2">${p.persona.personality}</p>
+            </div>
+
+            <div class="bg-white p-5 rounded-[2rem] border border-rose-100 shadow-sm">
+              <h3 class="text-[10px] font-black text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">favorite</span> 관심사 및 취향
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                ${p.persona.interests.map(tag => `<span class="px-3 py-1.5 bg-rose-50 text-primary text-[10px] font-bold rounded-full">#${tag}</span>`).join('')}
+              </div>
+              <div class="mt-5 pt-5 border-t border-rose-50">
+                <h4 class="text-[9px] font-bold text-on-surface-variant mb-2">선호 브랜드</h4>
+                <p class="text-xs font-black text-on-surface">${p.persona.brands.join(', ')}</p>
+              </div>
+            </div>
+
+            <div class="bg-primary p-6 rounded-[2.5rem] text-white shadow-xl">
+              <h3 class="text-[10px] font-black text-white/70 uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">flag</span> 활동 목표
+              </h3>
+              <p class="text-sm font-medium leading-relaxed">"${p.persona.goal}"</p>
+            </div>
+          </div>
+          
+          <div class="mt-10 grid grid-cols-2 gap-4">
+             <button class="py-4 bg-surface-container-high text-primary font-bold text-xs rounded-2xl">협업 제안하기</button>
+             <button class="py-4 bg-zinc-900 text-white font-bold text-xs rounded-2xl">포트폴리오 받기</button>
+          </div>
+        </div>
+      `;
+      showPage('detail');
+    }
+
     function showPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + pageId).classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(nav => {
-        nav.classList.remove('text-primary', 'active', 'text-zinc-400');
-        nav.classList.add('text-zinc-400');
-      });
-      const activeNav = document.getElementById('nav-' + pageId);
-      activeNav.classList.add('text-primary', 'active');
-      activeNav.classList.remove('text-zinc-400');
+      const targetPage = document.getElementById('page-' + pageId);
+      if (targetPage) targetPage.classList.add('active');
+
+      // Update Nav - Only for main pages
+      const mainPages = ['home', 'add', 'chat', 'profile'];
+      if (mainPages.includes(pageId)) {
+        document.querySelectorAll('.nav-item').forEach(nav => {
+          nav.classList.remove('text-primary', 'active', 'text-zinc-400');
+          nav.classList.add('text-zinc-400');
+        });
+        const activeNav = document.getElementById('nav-' + pageId);
+        if (activeNav) {
+          activeNav.classList.add('text-primary', 'active');
+          activeNav.classList.remove('text-zinc-400');
+        }
+      }
     }
 
     renderFeed('personal');
