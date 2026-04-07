@@ -128,7 +128,6 @@
             <p class="text-xs text-on-surface font-semibold truncate">미팅 일정 확인 가능하실까요?</p>
           </div>
         </div>
-        <!-- ... other chat items ... -->
       </main>
     </section>
 
@@ -138,7 +137,64 @@
         <button class="p-2 text-primary"><span class="material-symbols-outlined">menu</span></button>
       </header>
       <main class="flex-1 overflow-y-auto hide-scrollbar pb-24 bg-white">
-        <!-- ... profile main content ... -->
+        <!-- Profile Info -->
+        <div class="p-5">
+          <div class="flex items-center justify-between mb-6">
+            <div class="relative">
+              <div class="w-20 h-20 rounded-full p-0.5 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600">
+                <img class="w-full h-full rounded-full object-cover border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC62YVbfaWu-9ISRAs_GcbRWyVVAi8J4z6qd41DN0yU4ZJlYkZHS2EbtNHjl2uHxaq-8M4cxX9wC6rabhxY13KyhpVKrhP5axPRd9RzLtwXAh9lejpYq9Llgp9mT2ZNmWudIrNocfEaJJhpwC2AkkYgElIu3WwumuOWLhIOtPsMPPHqKd--0A1xvN7v1tJdWxFQz4324td8OUWltu9DDP0NLfBzZbvez1DfYglrz4baqKOQCG6ASmGnIpcH6aUkKyxND71faXM"/>
+              </div>
+              <button class="absolute bottom-0 right-0 bg-primary text-white rounded-full p-1 border-2 border-white">
+                <span class="material-symbols-outlined text-[12px] leading-none">add</span>
+              </button>
+            </div>
+            <div class="flex gap-8 pr-4">
+              <div class="text-center"><p class="font-black text-sm text-on-surface">128</p><p class="text-[10px] text-on-surface-variant font-medium">게시물</p></div>
+              <div class="text-center"><p class="font-black text-sm text-on-surface">2.4k</p><p class="text-[10px] text-on-surface-variant font-medium">팔로워</p></div>
+              <div class="text-center"><p class="font-black text-sm text-on-surface">350</p><p class="text-[10px] text-on-surface-variant font-medium">팔로잉</p></div>
+            </div>
+          </div>
+          
+          <div class="mb-6">
+            <h2 class="font-bold text-sm text-on-surface mb-0.5">김나영 | Visual Director</h2>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              ✨ 라이프스타일 & 공간 큐레이션<br/>
+              ✉️ Business: nayoung@visual.com<br/>
+              📍 Seoul, Korea
+            </p>
+          </div>
+
+          <div class="flex gap-2 mb-8">
+            <button class="flex-1 py-2 bg-surface-container-low text-on-surface font-bold text-[11px] rounded-lg border border-rose-50">프로필 편집</button>
+            <button class="flex-1 py-2 bg-surface-container-low text-on-surface font-bold text-[11px] rounded-lg border border-rose-50">프로필 공유</button>
+          </div>
+
+          <!-- Highlights -->
+          <div class="flex gap-4 overflow-x-auto hide-scrollbar mb-8">
+            <div class="flex flex-col items-center gap-1 shrink-0">
+              <div class="w-14 h-14 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center"><span class="material-symbols-outlined text-primary">add</span></div>
+              <span class="text-[10px] font-bold text-on-surface-variant">신규</span>
+            </div>
+            <div class="flex flex-col items-center gap-1 shrink-0">
+              <div class="w-14 h-14 rounded-full p-0.5 border border-rose-100 bg-white"><img class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys"/></div>
+              <span class="text-[10px] font-bold text-on-surface-variant">Daily</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Feed Tabs -->
+        <div class="flex border-t border-rose-50">
+          <button class="flex-1 py-3 text-primary border-b-2 border-primary"><span class="material-symbols-outlined">grid_view</span></button>
+          <button class="flex-1 py-3 text-on-surface-variant/30"><span class="material-symbols-outlined">movie</span></button>
+          <button class="flex-1 py-3 text-on-surface-variant/30"><span class="material-symbols-outlined">person_pin</span></button>
+        </div>
+
+        <!-- Feed Grid -->
+        <div class="insta-grid">
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys"/></div>
+          <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzjbrQ4__m-iioQ2Ph5jfHuAKGQCkFN259AwI_FbyDyRrC2nyBHJZCUC1O7WC-BNBVFMJyi5ixAFfUi20PdyGM-xEfOo_tUmd45smVkeTqef9VMxvfOaBCbajeGgFCddqcqpcoRp1o_s6diMWiMblrq7rCp35G_Y1YBeaDf6avEI0sDYN2ZcIRTGB6AZj-nddB2GlRdQC0WUoYJrD5nALVbX5o9GllaVwfNr99NQEBIGwuvZKwoFCXv0aXXTOlQmIrRmo8ZRs"/></div>
+          <div class="bg-surface-container-low flex items-center justify-center"><span class="material-symbols-outlined text-primary/20">image</span></div>
+        </div>
       </main>
     </section>
 
@@ -181,13 +237,63 @@
         }
       },
       { 
-        id: 3, type: 'company', name: "에이비씨 브랜드", handle: "@abc_official", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg4", category: "의류/패션", response: "1시간 이내", reviews: 310, rating: "5.0",
+        id: 3, type: 'personal', name: "이민준", handle: "@minjun_trek", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCqD4hU5g9Hk0l1Jm2n3p4q5r6s7t8u9v0w1x2y3z4a5b6c7d8e9f0g1h2i3j4k5l6m7n8o9p0q", followers: "520", activity: "18.1%", reviews: 45, rating: "4.8",
+        persona: {
+          age: "31세 / IT 엔지니어",
+          personality: "분석적, 아웃도어 매니아, 정직한 비판형",
+          interests: ["등산", "캠핑 기어", "커피 추출"],
+          brands: ["파타고니아", "아크테릭스", "블루보틀"],
+          goal: "기술과 자연이 조화되는 일상을 기록하고 신뢰할 수 있는 장비 리뷰 제공"
+        }
+      },
+      { 
+        id: 4, type: 'company', name: "아우라 뷰티", handle: "@aura_skin_lab", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC62YVbfaWu-9ISRAs_GcbRWyVVAi8J4z6qd41DN0yU4ZJlYkZHS2EbtNHjl2uHxaq-8M4cxX9wC6rabhxY13KyhpVKrhP5axPRd9RzLtwXAh9lejpYq9Llgp9mT2ZNmWudIrNocfEaJJhpwC2AkkYgElIu3WwumuOWLhIOtPsMPPHqKd--0A1xvN7v1tJdWxFQz4324td8OUWltu9DDP0NLfBzZbvez1DfYglrz4baqKOQCG6ASmGnIpcH6aUkKyxND71faXM", category: "뷰티/코스메틱", response: "30분 이내", reviews: 520, rating: "4.9",
+        persona: {
+          age: "설립 3년차 스타트업",
+          personality: "과학적 근거 중심, 미니멀 패키징, 정직함",
+          interests: ["클린 뷰티", "비건 포뮬러", "피부 장벽 연구"],
+          brands: ["이솝", "폴라초이스"],
+          goal: "복잡한 단계 없이 근본적인 피부 고민을 해결하는 고효능 스킨케어 제안"
+        }
+      },
+      { 
+        id: 5, type: 'company', name: "에이비씨 브랜드", handle: "@abc_official", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg4", category: "의류/패션", response: "1시간 이내", reviews: 310, rating: "5.0",
         persona: {
           age: "설립 5년차 브랜드",
           personality: "합리적인 가격, 스트릿 감성, 환경 보호 실천",
           interests: ["지속 가능한 패션", "MZ세대 소통", "팝업 스토어"],
           brands: ["파타고니아", "프라이탁"],
           goal: "일상 속에서 편안하게 즐길 수 있는 프리미엄 베이직 웨어 보급"
+        }
+      },
+      { 
+        id: 6, type: 'personal', name: "정다은", handle: "@daeun_daily", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCz3Y5W6E7R8T9Y0U1I2O3P4A5S6D7F8G9H0J1K2L3Z4X5C6V7B8N9M0Q1W2E3R4T5Y6U7I8O9P", followers: "1,250", activity: "9.8%", reviews: 82, rating: "4.7",
+        persona: {
+          age: "22세 / 대학생(산업디자인)",
+          personality: "밝음, 호기심 많음, 비주얼 중심 기록",
+          interests: ["전시회 관람", "다이어리 꾸미기", "베이킹"],
+          brands: ["오브젝트", "프라이탁", "모나미"],
+          goal: "평범한 대학생의 영감 넘치는 일상을 공유하며 함께 성장하는 커뮤니티 형성"
+        }
+      },
+      { 
+        id: 7, type: 'personal', name: "최현우", handle: "@hwoo_workout", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD9I8O7P6Q5W4E3R2T1Y0U9I8O7P6A5S4D3F2G1H0J1K2L3Z4X5C6V7B8N9M0Q1W2E3R4T", followers: "5,800", activity: "21.5%", reviews: 156, rating: "4.9",
+        persona: {
+          age: "29세 / 헬스 트레이너",
+          personality: "열정적, 규율 중심, 동기부여 전문가",
+          interests: ["웨이트 트레이닝", "식단 관리", "바디 프로필"],
+          brands: ["나이키", "언더아머", "마이프로틴"],
+          goal: "누구나 건강한 몸을 가질 수 있다는 자신감을 심어주는 운동 콘텐츠 제작"
+        }
+      },
+      { 
+        id: 8, type: 'company', name: "루나 리빙", handle: "@luna_living_home", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC1V2B3N4M5Q6W7E8R9T0Y1U2I3O4P5A6S7D8F9G0H1J2K3L4Z5X6C7V8B9N0M1Q2W3", category: "리빙/인테리어", response: "15분 이내", reviews: 890, rating: "4.8",
+        persona: {
+          age: "설립 10년차 중견 브랜드",
+          personality: "편안함, 따뜻함, 실용적인 디자인",
+          interests: ["홈 스타일링", "친환경 가구", "스마트 홈"],
+          brands: ["무인양품", "이케아"],
+          goal: "집이라는 공간을 세상에서 가장 편안한 안식처로 만드는 토탈 솔루션 제공"
         }
       }
     ];
@@ -269,7 +375,7 @@
           <div class="space-y-6">
             <div class="bg-surface-container-low p-5 rounded-[2rem] border border-rose-100">
               <h3 class="text-[10px] font-black text-primary uppercase tracking-widest mb-3 flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">badge</span> 인적 사항
+                <span class="material-symbols-outlined text-sm">badge</span> ${p.type === 'personal' ? '인적 사항' : '기업 개요'}
               </h3>
               <p class="text-sm font-bold text-on-surface leading-relaxed">${p.persona.age}</p>
               <p class="text-xs text-on-surface-variant mt-2">${p.persona.personality}</p>
@@ -277,28 +383,28 @@
 
             <div class="bg-white p-5 rounded-[2rem] border border-rose-100 shadow-sm">
               <h3 class="text-[10px] font-black text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">favorite</span> 관심사 및 취향
+                <span class="material-symbols-outlined text-sm">favorite</span> ${p.type === 'personal' ? '관심사 및 취향' : '핵심 가치 및 분야'}
               </h3>
               <div class="flex flex-wrap gap-2">
                 ${p.persona.interests.map(tag => `<span class="px-3 py-1.5 bg-rose-50 text-primary text-[10px] font-bold rounded-full">#${tag}</span>`).join('')}
               </div>
               <div class="mt-5 pt-5 border-t border-rose-50">
-                <h4 class="text-[9px] font-bold text-on-surface-variant mb-2">선호 브랜드</h4>
+                <h4 class="text-[9px] font-bold text-on-surface-variant mb-2">${p.type === 'personal' ? '선호 브랜드' : '벤치마킹 브랜드'}</h4>
                 <p class="text-xs font-black text-on-surface">${p.persona.brands.join(', ')}</p>
               </div>
             </div>
 
             <div class="bg-primary p-6 rounded-[2.5rem] text-white shadow-xl">
               <h3 class="text-[10px] font-black text-white/70 uppercase tracking-widest mb-3 flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">flag</span> 활동 목표
+                <span class="material-symbols-outlined text-sm">flag</span> ${p.type === 'personal' ? '활동 목표' : '브랜드 비전'}
               </h3>
               <p class="text-sm font-medium leading-relaxed">"${p.persona.goal}"</p>
             </div>
           </div>
           
           <div class="mt-10 grid grid-cols-2 gap-4">
-             <button class="py-4 bg-surface-container-high text-primary font-bold text-xs rounded-2xl">협업 제안하기</button>
-             <button class="py-4 bg-zinc-900 text-white font-bold text-xs rounded-2xl">포트폴리오 받기</button>
+              <button class="py-4 bg-surface-container-high text-primary font-bold text-xs rounded-2xl">${p.type === 'personal' ? '협업 제안하기' : '제품 협찬 지원'}</button>
+              <button class="py-4 bg-zinc-900 text-white font-bold text-xs rounded-2xl">${p.type === 'personal' ? '포트폴리오 받기' : '브랜드 가이드'}</button>
           </div>
         </div>
       `;
@@ -310,7 +416,6 @@
       const targetPage = document.getElementById('page-' + pageId);
       if (targetPage) targetPage.classList.add('active');
 
-      // Update Nav - Only for main pages
       const mainPages = ['home', 'add', 'chat', 'profile'];
       if (mainPages.includes(pageId)) {
         document.querySelectorAll('.nav-item').forEach(nav => {
