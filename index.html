@@ -39,10 +39,18 @@
     .insta-grid div { aspect-ratio: 1 / 1; overflow: hidden; background-color: #eee; }
     .insta-grid img { width: 100%; height: 100%; object-fit: cover; }
     .mode-btn.active { background-color: #b6004f; color: white; }
+    
+    /* 애니메이션 및 모달 스타일 */
+    #review-modal, #portfolio-modal, #chat-page { display: none; }
+    #review-modal.active, #portfolio-modal.active, #chat-page.active { display: flex; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .animate-slide-up { animation: slideUp 0.3s ease-out; }
   </style>
 </head>
 <body class="py-0 sm:py-8">
   <div id="app-shell" class="relative w-full max-w-[400px] h-[100dvh] sm:h-[850px] bg-surface overflow-hidden sm:shadow-2xl sm:rounded-[2.5rem] border border-rose-100 flex flex-col">
+    
+    <!-- 메인 피드 페이지 -->
     <section id="page-home" class="page active">
       <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex justify-between items-center border-b border-rose-100 z-10">
         <div class="flex items-center gap-2">
@@ -61,6 +69,7 @@
       <main id="feed-container" class="flex-1 overflow-y-auto p-4 space-y-6 hide-scrollbar pb-24"></main>
     </section>
 
+    <!-- 상세 정보 페이지 -->
     <section id="page-detail" class="page bg-white absolute inset-0 z-[60]">
       <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex items-center border-b border-rose-100">
         <button onclick="closeDetail()" class="text-primary mr-4"><span class="material-symbols-outlined">arrow_back_ios</span></button>
@@ -69,17 +78,77 @@
       <main id="detail-content" class="flex-1 overflow-y-auto hide-scrollbar pb-24"></main>
     </section>
 
+    <!-- 리뷰 상세 모달 -->
+    <section id="review-modal" class="absolute inset-0 bg-black/40 z-[70] items-end justify-center">
+      <div class="w-full bg-white rounded-t-[2.5rem] h-[80%] flex flex-col overflow-hidden animate-slide-up">
+        <header class="p-6 border-b border-rose-50 flex justify-between items-center">
+          <div>
+            <h2 class="text-lg font-black text-on-surface">리뷰 상세</h2>
+            <p id="review-total-count" class="text-xs text-on-surface-variant font-bold">총 0개의 리뷰</p>
+          </div>
+          <button onclick="closeReviewModal()" class="w-10 h-10 bg-rose-50 rounded-full flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </header>
+        <div class="px-6 py-4 flex gap-2">
+          <button onclick="sortReviews('latest')" id="sort-latest" class="px-4 py-1.5 rounded-full text-[10px] font-bold bg-primary text-white">최신순</button>
+          <button onclick="sortReviews('rating')" id="sort-rating" class="px-4 py-1.5 rounded-full text-[10px] font-bold bg-rose-50 text-on-surface-variant">별점순</button>
+        </div>
+        <div id="review-list" class="flex-1 overflow-y-auto px-6 space-y-4 pb-10 hide-scrollbar"></div>
+      </div>
+    </section>
+
+    <!-- 포트폴리오 모달 -->
+    <section id="portfolio-modal" class="absolute inset-0 bg-black/40 z-[70] items-end justify-center">
+      <div class="w-full bg-white rounded-t-[2.5rem] h-[85%] flex flex-col overflow-hidden animate-slide-up">
+        <header class="p-6 border-b border-rose-50 flex justify-between items-center">
+          <h2 class="text-lg font-black text-on-surface">포트폴리오</h2>
+          <button onclick="closePortfolioModal()" class="w-10 h-10 bg-rose-50 rounded-full flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </header>
+        <div id="portfolio-grid" class="flex-1 overflow-y-auto insta-grid hide-scrollbar bg-zinc-50">
+          <!-- 포트폴리오 이미지들이 렌더링됨 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 1:1 채팅 페이지 -->
+    <section id="chat-page" class="page bg-[#fff4f6] absolute inset-0 z-[80]">
+      <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 border-b border-rose-100 flex items-center">
+        <button onclick="closeChat()" class="text-primary mr-4"><span class="material-symbols-outlined">arrow_back_ios</span></button>
+        <div class="flex items-center gap-3">
+            <img id="chat-target-img" class="w-8 h-8 rounded-full object-cover" src=""/>
+            <h1 id="chat-target-name" class="font-bold text-zinc-800 tracking-tight">대상 이름</h1>
+        </div>
+      </header>
+      <main class="flex-1 overflow-y-auto p-4 space-y-4 pb-24 hide-scrollbar">
+        <div class="flex justify-center"><span class="bg-rose-100/50 text-rose-400 text-[10px] px-3 py-1 rounded-full font-bold">대화가 시작되었습니다</span></div>
+        <div class="flex flex-col gap-2 max-w-[80%]">
+            <div class="bg-white p-3 rounded-2xl rounded-tl-none text-xs font-medium text-zinc-700 shadow-sm border border-rose-50">안녕하세요! 프로필 보고 연락드렸습니다. 협업 관련해서 문의 드려도 될까요?</div>
+            <span class="text-[9px] text-zinc-400 font-bold ml-1">오전 10:24</span>
+        </div>
+      </main>
+      <div class="absolute bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-md border-t border-rose-100">
+        <div class="flex items-center gap-2 bg-rose-50 rounded-full px-4 py-2 border border-rose-100">
+            <input type="text" placeholder="메시지를 입력하세요..." class="flex-1 bg-transparent border-none focus:ring-0 text-xs text-on-surface placeholder-rose-300 font-medium"/>
+            <button class="text-primary"><span class="material-symbols-outlined">send</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 하단 내비게이션 -->
     <nav class="absolute bottom-0 left-0 right-0 h-20 flex justify-around items-center px-6 pb-2 bg-white/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(182,0,79,0.1)] z-50">
-      <a href="home.html" id="nav-home" class="nav-item active flex flex-col items-center gap-1 text-primary">
+      <a href="javascript:void(0)" onclick="location.reload()" id="nav-home" class="nav-item active flex flex-col items-center gap-1 text-primary">
         <span class="material-symbols-outlined text-[24px]">home</span><span class="text-[9px] font-bold">홈</span>
       </a>
-      <a href="create.html" id="nav-add" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+      <a href="javascript:void(0)" id="nav-add" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
         <span class="material-symbols-outlined text-[24px]">add_circle</span><span class="text-[9px] font-bold">만들기</span>
       </a>
-      <a href="message.html" id="nav-chat" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+      <a href="javascript:void(0)" id="nav-chat" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
         <span class="material-symbols-outlined text-[24px]">send</span><span class="text-[9px] font-bold">메시지</span>
       </a>
-      <a href="profile.html" id="nav-profile" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+      <a href="javascript:void(0)" id="nav-profile" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
         <span class="material-symbols-outlined text-[24px]">person</span><span class="text-[9px] font-bold">프로필</span>
       </a>
     </nav>
@@ -87,12 +156,20 @@
 
   <script>
     const allProfiles = [
-      { id: 1, type: 'personal', name: "김지수", handle: "@jisoo_style", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys", followers: "842", activity: "12.4%", reviews: 128, rating: "4.9", reviewSummary: "사진 퀄리티가 매우 높고 소통이 원활합니다. 브랜드 아이덴티티를 잘 파악하여 결과물을 제작해주셨어요.", recentPosts: ["https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys", "https://lh3.googleusercontent.com/aida-public/AB6AXuDzjbrQ4__m-iioQ2Ph5jfHuAKGQCkFN259AwI_FbyDyRrC2nyBHJZCUC1O7WC-BNBVFMJyi5ixAFfUi20PdyGM-xEfOo_tUmd45smVkeTqef9VMxvfOaBCbajeGgFCddqcqpcoRp1o_s6diMWiMblrq7rCp35G_Y1YBeaDf6avEI0sDYN2ZcIRTGB6AZj-nddB2GlRdQC0WUoYJrD5nALVbX5o9GllaVwfNr99NQEBIGwuvZKwoFCXv0aXXTOlQmIrRmo8ZRs", "https://lh3.googleusercontent.com/aida-public/AB6AXuC62YVbfaWu-9ISRAs_GcbRWyVVAi8J4z6qd41DN0yU4ZJlYkZHS2EbtNHjl2uHxaq-8M4cxX9wC6rabhxY13KyhpVKrhP5axPRd9RzLtwXAh9lejpYq9Llgp9mT2ZNmWudIrNocfEaJJhpwC2AkkYgElIu3WwumuOWLhIOtPsMPPHqKd--0A1xvN7v1tJdWxFQz4324td8OUWltu9DDP0NLfBzZbvez1DfYglrz4baqKOQCG6ASmGnIpcH6aUkKyxND71faXM"], persona: { age: "24세 / 프리랜서 모델", personality: "트렌디함, 미니멀리즘 추구, 꼼꼼한 리뷰 성향", interests: ["오가닉 뷰티", "건축 디자인", "비건 레시피"], brands: ["자크뮈스", "AESOP", "무인양품"], goal: "자연스러운 라이프스타일을 공유하며 건강한 영향력 전달" } },
-      { id: 2, type: 'personal', name: "박소희", handle: "@sohee_beauty", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDzjbrQ4__m-iioQ2Ph5jfHuAKGQCkFN259AwI_FbyDyRrC2nyBHJZCUC1O7WC-BNBVFMJyi5ixAFfUi20PdyGM-xEfOo_tUmd45smVkeTqef9VMxvfOaBCbajeGgFCddqcqpcoRp1o_s6diMWiMblrq7rCp35G_Y1YBeaDf6avEI0sDYN2ZcIRTGB6AZj-nddB2GlRdQC0WUoYJrD5nALVbX5o9GllaVwfNr99NQEBIGwuvZKwoFCXv0aXXTOlQmIrRmo8ZRs", followers: "3,420", activity: "15.2%", reviews: 210, rating: "5.0", reviewSummary: "메이크업 팁 설명이 아주 상세합니다. 팔로워들과의 소통 능력이 뛰어나 홍보 효과가 매우 컸습니다.", recentPosts: ["https://lh3.googleusercontent.com/aida-public/AB6AXuDzjbrQ4__m-iioQ2Ph5jfHuAKGQCkFN259AwI_FbyDyRrC2nyBHJZCUC1O7WC-BNBVFMJyi5ixAFfUi20PdyGM-xEfOo_tUmd45smVkeTqef9VMxvfOaBCbajeGgFCddqcqpcoRp1o_s6diMWiMblrq7rCp35G_Y1YBeaDf6avEI0sDYN2ZcIRTGB6AZj-nddB2GlRdQC0WUoYJrD5nALVbX5o9GllaVwfNr99NQEBIGwuvZKwoFCXv0aXXTOlQmIrRmo8ZRs", "https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys", "https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg8"], persona: { age: "27세 / 메이크업 아티스트", personality: "활발함, 소통 중심, 전문적인 정보 제공", interests: ["색조 메이크업", "피부 홈케어", "브이로그"], brands: ["헤라", "입생로랑 뷰티", "탬버린즈"], goal: "구독자들에게 실용적인 뷰티 팁과 트렌드를 가장 빠르게 전달" } },
-      { id: 3, type: 'personal', name: "이민준", handle: "@minjun_trek", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCqD4hU5g9Hk0l1Jm2n3p4q5r6s7t8u9v0w1x2y3z4a5b6c7d8e9f0g1h2i3j4k5l6m7n8o9p0q", followers: "520", activity: "18.1%", reviews: 45, rating: "4.8", reviewSummary: "장비에 대한 솔직하고 깊이 있는 리뷰가 인상적입니다. 아웃도어 타겟팅이 아주 확실한 분입니다.", recentPosts: ["https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg8", "https://lh3.googleusercontent.com/aida-public/AB6AXuDzjbrQ4__m-iioQ2Ph5jfHuAKGQCkFN259AwI_FbyDyRrC2nyBHJZCUC1O7WC-BNBVFMJyi5ixAFfUi20PdyGM-xEfOo_tUmd45smVkeTqef9VMxvfOaBCbajeGgFCddqcqpcoRp1o_s6diMWiMblrq7rCp35G_Y1YBeaDf6avEI0sDYN2ZcIRTGB6AZj-nddB2GlRdQC0WUoYJrD5nALVbX5o9GllaVwfNr99NQEBIGwuvZKwoFCXv0aXXTOlQmIrRmo8ZRs", "https://lh3.googleusercontent.com/aida-public/AB6AXuC62YVbfaWu-9ISRAs_GcbRWyVVAi8J4z6qd41DN0yU4ZJlYkZHS2EbtNHjl2uHxaq-8M4cxX9wC6rabhxY13KyhpVKrhP5axPRd9RzLtwXAh9lejpYq9Llgp9mT2ZNmWudIrNocfEaJJhpwC2AkkYgElIu3WwumuOWLhIOtPsMPPHqKd--0A1xvN7v1tJdWxFQz4324td8OUWltu9DDP0NLfBzZbvez1DfYglrz4baqKOQCG6ASmGnIpcH6aUkKyxND71faXM"], persona: { age: "31세 / IT 엔지니어", personality: "분석적, 아웃도어 매니아, 정직한 비판형", interests: ["등산", "캠핑 기어", "커피 추출"], brands: ["파타고니아", "아크테릭스", "블루보틀"], goal: "기술과 자연이 조화되는 일상을 기록하고 신뢰할 수 있는 장비 리뷰 제공" } },
-      { id: 4, type: 'company', name: "아우라 뷰티", handle: "@aura_skin_lab", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuC62YVbfaWu-9ISRAs_GcbRWyVVAi8J4z6qd41DN0yU4ZJlYkZHS2EbtNHjl2uHxaq-8M4cxX9wC6rabhxY13KyhpVKrhP5axPRd9RzLtwXAh9lejpYq9Llgp9mT2ZNmWudIrNocfEaJJhpwC2AkkYgElIu3WwumuOWLhIOtPsMPPHqKd--0A1xvN7v1tJdWxFQz4324td8OUWltu9DDP0NLfBzZbvez1DfYglrz4baqKOQCG6ASmGnIpcH6aUkKyxND71faXM", category: "뷰티/코스메틱", response: "30분 이내", reviews: 520, rating: "4.9", reviewSummary: "협업 제안이 명확하고 가이드라인이 잘 정돈되어 있습니다. 크리에이터의 창의성을 존중해주는 훌륭한 브랜드입니다.", recentPosts: ["https://lh3.googleusercontent.com/aida-public/AB6AXuC62YVbfaWu-9ISRAs_GcbRWyVVAi8J4z6qd41DN0yU4ZJlYkZHS2EbtNHjl2uHxaq-8M4cxX9wC6rabhxY13KyhpVKrhP5axPRd9RzLtwXAh9lejpYq9Llgp9mT2ZNmWudIrNocfEaJJhpwC2AkkYgElIu3WwumuOWLhIOtPsMPPHqKd--0A1xvN7v1tJdWxFQz4324td8OUWltu9DDP0NLfBzZbvez1DfYglrz4baqKOQCG6ASmGnIpcH6aUkKyxND71faXM", "https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg8"], persona: { age: "설립 3년차 스타트업", personality: "과학적 근거 중심, 미니멀 패키징, 정직함", interests: ["클린 뷰티", "비건 포뮬러", "피부 장벽 연구"], brands: ["이솝", "폴라초이스"], goal: "복잡한 단계 없이 근본적인 피부 고민을 해결하는 고효능 스킨케어 제안" } },
-      { id: 5, type: 'company', name: "에이비씨 브랜드", handle: "@abc_official", img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg8", category: "의류/패션", response: "1시간 이내", reviews: 310, rating: "5.0", reviewSummary: "진행 과정이 매우 매끄럽고 정산이 정확합니다. 트렌디한 제품군이 많아 협업하기 즐겁습니다.", recentPosts: ["https://lh3.googleusercontent.com/aida-public/AB6AXuAzlEn1C-lfvqZJI5xVBjXEPckkFMi7AzHYagIfXcJSvX9yP_yiqK3Lm7O8zFtSKTIAcouT5XHTl2zLAYzysh5vT3NXJE7wD9CE0qzP7iyJfW-9_3on8CzSfGGaR44sQfeneyfmLfO-3P2y5wqW501vNWgDL9zFy15PoRciSY3f_v5OELjA1wOEa8sEl8SG7kNn9K1SQwO4hyJjxlZkiHruSF3tYHsuGIp5skpCTIhHUFASdvqtszBXCsahKCOWbxEPbyi9qLg8", "https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys"], persona: { age: "설립 5년차 브랜드", personality: "합리적인 가격, 스트릿 감성, 환경 보호 실천", interests: ["지속 가능한 패션", "MZ세대 소통", "팝업 스토어"], brands: ["파타고니아", "프라이탁"], goal: "일상 속에서 편안하게 즐길 수 있는 프리미엄 베이직 웨어 보급" } }
+      { id: 1, type: 'personal', name: "김지수", handle: "@jisoo_style", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&h=600&fit=crop", followers: "842", activity: "12.4%", reviews: 128, rating: "4.9", reviewSummary: "사진 퀄리티가 매우 높고 소통이 원활합니다. 브랜드 아이덴티티를 잘 파악하여 결과물을 제작해주셨어요.", persona: { age: "24세 / 프리랜서 모델", personality: "트렌디함, 미니멀리즘 추구, 꼼꼼한 리뷰 성향", interests: ["오가닉 뷰티", "건축 디자인", "비건 레시피"], goal: "자연스러운 라이프스타일을 공유하며 건강한 영향력 전달" }, portfolio: ["https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=400", "https://images.unsplash.com/photo-1529139513402-748473019270?q=80&w=400", "https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=400", "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=400", "https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?q=80&w=400", "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=400"] },
+      { id: 2, type: 'personal', name: "박소희", handle: "@sohee_beauty", img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400&h=600&fit=crop", followers: "3,420", activity: "15.2%", reviews: 210, rating: "5.0", reviewSummary: "메이크업 팁 설명이 아주 상세합니다. 팔로워들과의 소통 능력이 뛰어나 홍보 효과가 매우 컸습니다.", persona: { age: "27세 / 메이크업 아티스트", personality: "활발함, 소통 중심, 전문적인 정보 제공", interests: ["색조 메이크업", "피부 홈케어", "브이로그"], goal: "구독자들에게 실용적인 뷰티 팁과 트렌드를 가장 빠르게 전달" }, portfolio: ["https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=400", "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=400", "https://images.unsplash.com/photo-1596462502278-27bfad450516?q=80&w=400", "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?q=80&w=400", "https://images.unsplash.com/photo-1526045478516-99145907023c?q=80&w=400", "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?q=80&w=400"] },
+      { id: 3, type: 'personal', name: "이민준", handle: "@minjun_trek", img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&h=600&fit=crop", followers: "520", activity: "18.1%", reviews: 45, rating: "4.8", reviewSummary: "장비에 대한 솔직하고 깊이 있는 리뷰가 인상적입니다. 아웃도어 타겟팅이 아주 확실한 분입니다.", persona: { age: "31세 / IT 엔지니어", personality: "분석적, 아웃도어 매니아, 정직한 비판형", interests: ["등산", "캠핑 기어", "커피 추출"], goal: "기술과 자연이 조화되는 일상을 기록하고 신뢰할 수 있는 장비 리뷰 제공" }, portfolio: ["https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=400", "https://images.unsplash.com/photo-1533512165012-789a7407001c?q=80&w=400", "https://images.unsplash.com/photo-1501555088652-021faa106b9b?q=80&w=400", "https://images.unsplash.com/photo-1533632323232-dfc9197dc21f?q=80&w=400"] },
+      { id: 6, type: 'personal', name: "정은우", handle: "@eunwoo_eats", img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=400&h=600&fit=crop", followers: "12.5k", activity: "9.8%", reviews: 342, rating: "4.7", reviewSummary: "음식 사진이 먹음직스럽고 맛 표현이 구체적입니다. 로컬 맛집 홍보에 큰 도움이 되었습니다.", persona: { age: "29세 / 푸드 칼럼니스트", personality: "미식가, 감성적인 문체", interests: ["파인다이닝", "전통주"], goal: "전국의 숨은 맛집을 발견하고 그 가치를 전달" }, portfolio: ["https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=400", "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=400", "https://images.unsplash.com/photo-1567620905732-2d1ec7bb7445?q=80&w=400"] },
+      { id: 7, type: 'personal', name: "최하늘", handle: "@sky_yoga", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&h=600&fit=crop", followers: "2,180", activity: "14.1%", reviews: 88, rating: "4.9", reviewSummary: "요가 동작 시연이 완벽하고 웰니스 브랜드 이미지와 잘 맞습니다. 작업 속도가 굉장히 빠릅니다.", persona: { age: "26세 / 요가 강사", personality: "차분함, 긍정적 에너지", interests: ["명상", "애슬레저룩"], goal: "요가를 통한 마음의 평화를 전파" }, portfolio: ["https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=400", "https://images.unsplash.com/photo-1510894347713-fc3ad6cb0322?q=80&w=400"] },
+      { id: 4, type: 'company', name: "아우라 뷰티", handle: "@aura_skin_lab", img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&h=400&fit=crop", category: "뷰티/코스메틱", response: "30분 이내", reviews: 520, rating: "4.9", reviewSummary: "협업 제안이 명확하고 가이드라인이 잘 정돈되어 있습니다. 크리에이터의 창의성을 존중해주는 훌륭한 브랜드입니다.", persona: { age: "설립 3년차 스타트업", personality: "과학적 근거 중심", interests: ["클린 뷰티", "비건 포뮬러"], goal: "근본적인 피부 고민을 해결" }, portfolio: ["https://images.unsplash.com/photo-1570172619380-41617b84758e?q=80&w=400", "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=400"] },
+      { id: 5, type: 'company', name: "에이비씨 브랜드", handle: "@abc_official", img: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=400&h=400&fit=crop", category: "의류/패션", response: "1시간 이내", reviews: 310, rating: "5.0", reviewSummary: "진행 과정이 매우 매끄럽고 정산이 정확합니다. 트렌디한 제품군이 많아 협업하기 즐겁습니다.", persona: { age: "설립 5년차 브랜드", personality: "합리적인 가격", interests: ["지속 가능한 패션"], goal: "프리미엄 베이직 웨어 보급" }, portfolio: ["https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=400", "https://images.unsplash.com/photo-1542060775-169b32495d24?q=80&w=400"] },
+      { id: 8, type: 'company', name: "루나 리빙", handle: "@luna_living_home", img: "https://images.unsplash.com/photo-1513519247388-19345150d5c7?q=80&w=400&h=400&fit=crop", category: "홈/인테리어", response: "2시간 이내", reviews: 145, rating: "4.6", reviewSummary: "감각적인 소품이 많아 연출하기 좋습니다. 피드백이 정중하고 전문적입니다.", persona: { age: "설립 2년차 라이프스타일 샵", personality: "포근함", interests: ["셀프 인테리어"], goal: "공간의 분위기를 바꾸는 소품 제안" }, portfolio: ["https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=400", "https://images.unsplash.com/photo-1484101403033-57105d2b77ca?q=80&w=400"] },
+      { id: 9, type: 'company', name: "테크노바", handle: "@technova_kr", img: "https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=400&h=400&fit=crop", category: "IT/가전", response: "15분 이내", reviews: 890, rating: "4.8", reviewSummary: "최신 기기 협찬이 활발하며 가이드라인이 매우 전문적입니다. 리뷰어의 기술적 견해를 경청합니다.", persona: { age: "설립 10년차 중견기업", personality: "혁신적", interests: ["스마트 가젯"], goal: "혁신적인 경험 제공" }, portfolio: ["https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=400", "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400"] },
+      { id: 10, type: 'company', name: "그린 바이브", handle: "@green_vibe_fnb", img: "https://images.unsplash.com/photo-1542223175-75bc9dd570ED?q=80&w=400&h=400&fit=crop", category: "F&B/카페", response: "40분 이내", reviews: 267, rating: "4.9", reviewSummary: "브랜드 이미지가 건강하고 밝습니다. 서포터즈 관리가 체계적이라 소통이 편안합니다.", persona: { age: "설립 4년차 헬시푸드 브랜드", personality: "건강함", interests: ["샐러드 다이어트"], goal: "보디 해피니스 푸드 선도" }, portfolio: ["https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=400", "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400"] }
     ];
+
+    let currentDetailProfileId = null;
+    let currentReviews = [];
 
     function toggleFeedMode(mode) {
       document.querySelectorAll('.mode-btn').forEach(b => {
@@ -151,6 +228,7 @@
     }
 
     function openPersonaDetail(id) {
+      currentDetailProfileId = id;
       const p = allProfiles.find(item => item.id === id);
       if (!p) return;
       const detailContent = document.getElementById('detail-content');
@@ -161,8 +239,11 @@
             <div>
               <h2 class="text-2xl font-black text-on-surface">${p.name}</h2>
               <p class="text-sm font-bold text-primary mb-1">${p.handle}</p>
-              <div class="flex gap-1">
-                ${new Array(5).fill(0).map((_, i) => `<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' ${i < Math.floor(p.rating) ? 1 : 0}">star</span>`).join('')}
+              <div class="flex items-center gap-1.5">
+                <div class="flex gap-0.5">
+                  ${new Array(5).fill(0).map((_, i) => `<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' ${i < Math.floor(p.rating) ? 1 : 0}">star</span>`).join('')}
+                </div>
+                <span class="text-[10px] font-bold text-on-surface-variant mt-0.5">(${p.reviews})</span>
               </div>
             </div>
           </div>
@@ -177,12 +258,115 @@
               <div class="flex flex-wrap gap-2">${p.persona.interests.map(tag => `<span class="px-3 py-1.5 bg-rose-50 text-primary text-[10px] font-bold rounded-full">#${tag}</span>`).join('')}</div>
             </div>
             <div class="bg-white p-5 rounded-[2rem] border border-rose-100 shadow-sm">
-              <h3 class="text-[10px] font-black text-primary uppercase tracking-widest flex items-center gap-2 mb-4"><span class="material-symbols-outlined text-sm">chat_bubble</span> 리뷰 요약</h3>
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-[10px] font-black text-primary uppercase tracking-widest flex items-center gap-2"><span class="material-symbols-outlined text-sm">chat_bubble</span> 리뷰 요약</h3>
+                <button onclick="openReviewModal()" class="px-3 py-1 bg-rose-50 rounded-full text-[9px] font-bold text-primary active:scale-90 transition-all">자세히 보기</button>
+              </div>
               <p class="text-xs text-on-surface leading-relaxed font-medium italic">"${p.reviewSummary}"</p>
+            </div>
+            
+            <!-- 추가된 버튼 섹션 -->
+            <div class="flex gap-3 pt-2">
+              <button onclick="openPortfolioModal()" class="flex-1 bg-zinc-900 text-white py-4 rounded-2xl text-[11px] font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg">
+                <span class="material-symbols-outlined text-sm">grid_view</span> 포트폴리오 보기
+              </button>
+              <button onclick="openChat()" class="flex-1 bg-primary text-white py-4 rounded-2xl text-[11px] font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg">
+                <span class="material-symbols-outlined text-sm">send</span> 메시지 보내기
+              </button>
             </div>
           </div>
         </div>`;
       document.getElementById('page-detail').classList.add('active');
+    }
+
+    function openPortfolioModal() {
+      const p = allProfiles.find(item => item.id === currentDetailProfileId);
+      if (!p) return;
+      const grid = document.getElementById('portfolio-grid');
+      // 포트폴리오 사진이 부족할 경우 대비해 반복 렌더링 (최소 12개 보여주기)
+      let imagesHtml = '';
+      const displayPhotos = [...p.portfolio, ...p.portfolio, ...p.portfolio].slice(0, 12);
+      imagesHtml = displayPhotos.map(url => `<div><img src="${url}" loading="lazy"/></div>`).join('');
+      grid.innerHTML = imagesHtml;
+      document.getElementById('portfolio-modal').classList.add('active');
+    }
+
+    function closePortfolioModal() {
+      document.getElementById('portfolio-modal').classList.remove('active');
+    }
+
+    function openChat() {
+      const p = allProfiles.find(item => item.id === currentDetailProfileId);
+      if (!p) return;
+      document.getElementById('chat-target-img').src = p.img;
+      document.getElementById('chat-target-name').innerText = p.name;
+      document.getElementById('chat-page').classList.add('active');
+    }
+
+    function closeChat() {
+      document.getElementById('chat-page').classList.remove('active');
+    }
+
+    function generateMockReviews(count, baseRating) {
+      const names = ["이지현", "마크", "사라", "최민석", "김아름", "박건우"];
+      const comments = ["정말 만족스러운 협업이었습니다!", "결과물 퀄리티가 기대 이상이에요.", "소통이 원활하고 친절하셨어요."];
+      const reviews = [];
+      for(let i=0; i<count; i++) {
+        reviews.push({
+          id: i,
+          user: names[Math.floor(Math.random() * names.length)],
+          rating: (Math.random() * 2 + (parseFloat(baseRating) - 1)).toFixed(1),
+          date: new Date(Date.now() - Math.floor(Math.random() * 1000000000)).toLocaleDateString(),
+          text: comments[Math.floor(Math.random() * comments.length)]
+        });
+      }
+      return reviews;
+    }
+
+    function openReviewModal() {
+      const p = allProfiles.find(item => item.id === currentDetailProfileId);
+      if (!p) return;
+      currentReviews = generateMockReviews(Math.min(p.reviews, 15), p.rating);
+      document.getElementById('review-total-count').innerText = `총 ${p.reviews}개의 리뷰 중 최근 내역`;
+      sortReviews('latest');
+      document.getElementById('review-modal').classList.add('active');
+    }
+
+    function sortReviews(type) {
+      const latestBtn = document.getElementById('sort-latest');
+      const ratingBtn = document.getElementById('sort-rating');
+      if (type === 'latest') {
+        currentReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+        latestBtn.className = "px-4 py-1.5 rounded-full text-[10px] font-bold bg-primary text-white";
+        ratingBtn.className = "px-4 py-1.5 rounded-full text-[10px] font-bold bg-rose-50 text-on-surface-variant";
+      } else {
+        currentReviews.sort((a, b) => b.rating - a.rating);
+        ratingBtn.className = "px-4 py-1.5 rounded-full text-[10px] font-bold bg-primary text-white";
+        latestBtn.className = "px-4 py-1.5 rounded-full text-[10px] font-bold bg-rose-50 text-on-surface-variant";
+      }
+      renderReviews();
+    }
+
+    function renderReviews() {
+      const container = document.getElementById('review-list');
+      container.innerHTML = currentReviews.map(r => `
+        <div class="bg-surface-container-low/50 p-4 rounded-2xl border border-rose-50">
+          <div class="flex justify-between items-start mb-2">
+            <div>
+              <span class="text-xs font-black text-on-surface">${r.user}</span>
+              <div class="flex mt-0.5">
+                ${new Array(5).fill(0).map((_, i) => `<span class="material-symbols-outlined text-[10px] text-primary" style="font-variation-settings: 'FILL' ${i < Math.floor(r.rating) ? 1 : 0}">star</span>`).join('')}
+              </div>
+            </div>
+            <span class="text-[9px] font-bold text-on-surface-variant">${r.date}</span>
+          </div>
+          <p class="text-[11px] text-on-surface leading-normal">${r.text}</p>
+        </div>
+      `).join('');
+    }
+
+    function closeReviewModal() {
+      document.getElementById('review-modal').classList.remove('active');
     }
 
     function closeDetail() {
