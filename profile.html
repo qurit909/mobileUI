@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html class="light" lang="ko">
+<head>
+  <meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f3f4f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .nav-item.active .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
+    .insta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .insta-grid div { aspect-ratio: 1 / 1; overflow: hidden; background-color: #eee; }
+    .insta-grid img { width: 100%; height: 100%; object-fit: cover; }
+  </style>
+</head>
+<body class="py-0 sm:py-8">
+  <div id="app-shell" class="relative w-full max-w-[400px] h-[100dvh] sm:h-[850px] bg-white overflow-hidden sm:shadow-2xl sm:rounded-[2.5rem] border border-rose-100 flex flex-col">
+    <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex justify-between items-center border-b border-rose-100 z-10">
+      <span class="font-black text-zinc-800 tracking-tight">nayoung_visual</span>
+      <button class="p-2 text-[#b6004f]"><span class="material-symbols-outlined">menu</span></button>
+    </header>
+    <main class="flex-1 overflow-y-auto hide-scrollbar pb-24">
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-6">
+          <div class="relative">
+            <div class="w-20 h-20 rounded-full p-0.5 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600">
+              <img class="w-full h-full rounded-full object-cover border-2 border-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC62YVbfaWu-9ISRAs_GcbRWyVVAi8J4z6qd41DN0yU4ZJlYkZHS2EbtNHjl2uHxaq-8M4cxX9wC6rabhxY13KyhpVKrhP5axPRd9RzLtwXAh9lejpYq9Llgp9mT2ZNmWudIrNocfEaJJhpwC2AkkYgElIu3WwumuOWLhIOtPsMPPHqKd--0A1xvN7v1tJdWxFQz4324td8OUWltu9DDP0NLfBzZbvez1DfYglrz4baqKOQCG6ASmGnIpcH6aUkKyxND71faXM"/>
+            </div>
+          </div>
+          <div class="flex gap-8 pr-4">
+            <div class="text-center"><p class="font-black text-sm">128</p><p class="text-[10px] text-zinc-500">게시물</p></div>
+            <div class="text-center"><p class="font-black text-sm">2.4k</p><p class="text-[10px] text-zinc-500">팔로워</p></div>
+            <div class="text-center"><p class="font-black text-sm">350</p><p class="text-[10px] text-zinc-500">팔로잉</p></div>
+          </div>
+        </div>
+        <div class="mb-6">
+          <h2 class="font-bold text-sm text-zinc-800">김나영 | Visual Director</h2>
+          <p class="text-xs text-zinc-500 leading-relaxed">✨ 라이프스타일 & 공간 큐레이션<br/>📍 Seoul, Korea</p>
+        </div>
+        <div class="flex gap-2 mb-8">
+          <button class="flex-1 py-2 bg-[#ffecf2] text-zinc-800 font-bold text-[11px] rounded-lg">프로필 편집</button>
+          <button class="flex-1 py-2 bg-[#ffecf2] text-zinc-800 font-bold text-[11px] rounded-lg">프로필 공유</button>
+        </div>
+      </div>
+      <div class="insta-grid">
+        <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwIdBUjQl61jG-6M-ootCvWMx2XHheqfwEZTDu1555Ek-wGM_kgX0_eiJnT9S_u4UnCMHKKXof7yAAeNB9ALfe9v4XJ-0Qv6y9vSgXuOdza_nE0CFWdYu53qqIBFrGD9f-XAw_lxc15eGdP2aVxyGjwowLiVVYCE-Xvb8cRBWNhm3XsK0YFXMkLZVIFQhRe9fgYqka1osKCXzbRpCHhWK2k4VGDQ4r2fxi74tdFSd9rUvNRH5P0txf758yRiBUXHlmyUQYeys"/></div>
+        <div><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzjbrQ4__m-iioQ2Ph5jfHuAKGQCkFN259AwI_FbyDyRrC2nyBHJZCUC1O7WC-BNBVFMJyi5ixAFfUi20PdyGM-xEfOo_tUmd45smVkeTqef9VMxvfOaBCbajeGgFCddqcqpcoRp1o_s6diMWiMblrq7rCp35G_Y1YBeaDf6avEI0sDYN2ZcIRTGB6AZj-nddB2GlRdQC0WUoYJrD5nALVbX5o9GllaVwfNr99NQEBIGwuvZKwoFCXv0aXXTOlQmIrRmo8ZRs"/></div>
+        <div class="bg-[#ffecf2] flex items-center justify-center"><span class="material-symbols-outlined text-[#b6004f]/20">image</span></div>
+      </div>
+    </main>
+    <nav class="absolute bottom-0 left-0 right-0 h-20 flex justify-around items-center px-6 pb-2 bg-white/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(182,0,79,0.1)] z-50">
+      <a href="home.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400"><span class="material-symbols-outlined text-[24px]">home</span><span class="text-[9px] font-bold">홈</span></a>
+      <a href="create.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400"><span class="material-symbols-outlined text-[24px]">add_circle</span><span class="text-[9px] font-bold">만들기</span></a>
+      <a href="message.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400"><span class="material-symbols-outlined text-[24px]">send</span><span class="text-[9px] font-bold">메시지</span></a>
+      <a href="profile.html" class="nav-item active flex flex-col items-center gap-1 text-[#b6004f]"><span class="material-symbols-outlined text-[24px]">person</span><span class="text-[9px] font-bold">프로필</span></a>
+    </nav>
+  </div>
+</body>
+</html>
