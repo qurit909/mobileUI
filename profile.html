@@ -37,7 +37,6 @@
       -webkit-user-drag: none;
     }
     
-    /* 액션 시트 배경 */
     .action-sheet-overlay {
       position: absolute;
       inset: 0;
@@ -90,7 +89,7 @@
       </nav>
     </div>
 
-    <!-- [페이지] 게시물 상세 (기존과 동일) -->
+    <!-- [페이지] 게시물 상세 -->
     <div id="page-post-detail" class="absolute inset-0 bg-white z-20 hide flex flex-col fade-in">
       <header class="shrink-0 px-5 py-4 border-b border-rose-100 flex items-center gap-4">
         <button onclick="closePost()" class="text-zinc-800"><span class="material-symbols-outlined">arrow_back</span></button>
@@ -112,8 +111,8 @@
         <div class="p-4 space-y-3">
           <div class="flex justify-between">
             <div class="flex gap-4">
-              <span class="material-symbols-outlined text-zinc-800 cursor-pointer active:scale-125 transition-transform" onclick="this.style.color=this.style.color==='red'?'':'red'; this.style.fontVariationSettings=this.style.fontVariationSettings==='\'FILL\' 1'?'\'FILL\' 0':'\'FILL\' 1'">favorite</span>
-              <span class="material-symbols-outlined text-zinc-800 cursor-pointer" onclick="openComments()">chat_bubble</span>
+              <span id="heart-icon" class="material-symbols-outlined text-zinc-800 cursor-pointer active:scale-125 transition-all select-none" onclick="toggleLike()">favorite</span>
+              <span class="material-symbols-outlined text-zinc-800 cursor-pointer">chat_bubble</span>
               <span class="material-symbols-outlined text-zinc-800 cursor-pointer">send</span>
             </div>
             <span class="material-symbols-outlined text-zinc-800 cursor-pointer">bookmark</span>
@@ -125,11 +124,24 @@
               <p id="post-tags" class="text-xs text-blue-600 font-medium italic"></p>
             </div>
           </div>
-          <div id="comment-preview" class="space-y-1 pt-2 border-t border-zinc-50"></div>
-          <button onclick="openComments()" id="comment-total-btn" class="text-xs text-zinc-400 mt-1"></button>
-          <p class="text-[10px] text-zinc-400 uppercase tracking-tighter">12시간 전 • 파리, 프랑스</p>
+          <!-- 댓글 섹션 -->
+          <div id="comment-list" class="space-y-4 pt-3 border-t border-zinc-50"></div>
+          <p class="text-[10px] text-zinc-400 uppercase tracking-tighter pt-2">방금 전 • 파리, 프랑스</p>
         </div>
       </main>
+      
+      <!-- 답글 안내 칩 (답글 모드일 때만 표시) -->
+      <div id="reply-info" class="hide px-4 py-2 bg-zinc-50 border-t border-rose-50 flex justify-between items-center">
+        <span id="reply-target-text" class="text-[10px] text-zinc-500"></span>
+        <button onclick="cancelReply()" class="material-symbols-outlined text-sm text-zinc-400">close</button>
+      </div>
+
+      <!-- 댓글 입력창 -->
+      <footer class="p-3 border-t border-rose-50 flex items-center gap-3 bg-white">
+        <img class="post-owner-img w-7 h-7 rounded-full object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop"/>
+        <input id="comment-input" type="text" placeholder="댓글 달기..." class="flex-1 bg-zinc-50 border-none rounded-full px-4 py-2 text-xs focus:ring-1 focus:ring-rose-200 outline-none" onkeypress="if(event.key==='Enter') addComment()"/>
+        <button onclick="addComment()" class="text-xs font-bold text-[#b6004f] pr-1">게시</button>
+      </footer>
     </div>
 
     <!-- [모달] 프로필 편집 -->
@@ -142,9 +154,7 @@
       <main class="flex-1 overflow-y-auto p-5 space-y-6">
         <div class="flex flex-col items-center gap-2">
           <img id="edit-profile-preview" class="w-20 h-20 rounded-full object-cover border border-zinc-100" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop"/>
-          <!-- 사진 변경 트리거 -->
           <button onclick="openPhotoActions()" class="text-xs font-bold text-[#b6004f]">프로필 사진 변경</button>
-          <!-- 실제 파일 인풋 (숨김) -->
           <input type="file" id="photo-input" class="hidden" accept="image/*" onchange="handlePhotoSelect(event)">
         </div>
         <div class="space-y-4">
@@ -179,21 +189,80 @@
       </div>
     </div>
 
-    <!-- [기타 모달들...] -->
-    <div id="modal-comments" class="absolute inset-0 bg-white z-30 hide flex flex-col slide-up">...</div>
-    <div id="side-settings" class="absolute inset-0 bg-black/30 z-50 hide fade-in flex justify-end">...</div>
+    <!-- [사이드 메뉴] 설정 -->
+    <div id="side-settings" class="absolute inset-0 bg-black/30 z-50 hide fade-in flex justify-end" onclick="toggleSettings()">
+      <div class="w-3/4 h-full bg-white slide-up p-6" onclick="event.stopPropagation()">
+        <h2 class="font-bold text-zinc-800 text-lg mb-6">설정 및 활동</h2>
+        <div class="space-y-4">
+          <div class="flex items-center gap-3 text-zinc-700"><span class="material-symbols-outlined">settings</span><span class="text-sm font-medium">설정</span></div>
+          <div class="flex items-center gap-3 text-zinc-700"><span class="material-symbols-outlined">history</span><span class="text-sm font-medium">내 활동</span></div>
+          <div class="flex items-center gap-3 text-zinc-700"><span class="material-symbols-outlined">bookmark</span><span class="text-sm font-medium">저장됨</span></div>
+        </div>
+      </div>
+    </div>
 
   </div>
 
   <script>
     let currentPostIndex = 0;
+    let replyTarget = null;
+    const MY_USER_ID = 'travel_kimtaewoo';
+
     const postsData = [
-      { images: ["https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80", "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80"], likes: 1204, content: "여름의 끝자락에서 만난 드넓은 초원입니다.", tags: "#여행 #풍경", comments: [] },
-      { images: ["https://images.unsplash.com/photo-1493246507139-91e8bef99c02?q=80"], likes: 852, content: "웅장한 산맥 아래 흐르는 고요한 호수.", tags: "#산수화 #호수뷰", comments: [] },
-      { images: ["https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80"], likes: 960, content: "구름을 뚫고 솟아오른 설산.", tags: "#만년설 #알프스", comments: [] },
-      { images: ["https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80"], likes: 1540, content: "황홀한 일몰 속의 랜드마크.", tags: "#노을 #일몰맛집", comments: [] },
-      { images: ["https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80"], likes: 720, content: "유럽의 고풍스러운 거리를 걷다 만난 작은 광장.", tags: "#유럽여행 #거리풍경", comments: [] },
-      { images: ["https://images.unsplash.com/photo-1511733351957-230a9354afbb?q=80"], likes: 2100, content: "프랑스의 상징 에펠탑.", tags: "#파리 #에펠탑", comments: [] }
+      { 
+        images: [
+          "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80",
+          "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?q=80",
+          "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80",
+          "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80",
+          "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80"
+        ], 
+        likes: 1204, 
+        isLiked: false,
+        content: "여름의 끝자락에서 만난 드넓은 초원입니다. 공기가 너무 맑아서 힐링 제대로 했어요. 다시 방문하고 싶은 곳 1순위!", 
+        tags: "#여행 #풍경 #힐링 #여름휴가 #자연", 
+        comments: [
+          { id: 1, user: "nature_lover", text: "와 여기 어딘가요? 정보 좀 부탁드려요!" },
+          { id: 2, user: "photo_jason", text: "색감이 너무 예술이네요 👍" },
+          { id: 3, user: "travel_bug", text: "와... 진짜 가보고 싶어요" }
+        ] 
+      },
+      { 
+        images: [
+          "https://images.unsplash.com/photo-1493246507139-91e8bef99c02?q=80",
+          "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80",
+          "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80",
+          "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80",
+          "https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80"
+        ], 
+        likes: 852, 
+        isLiked: false,
+        content: "웅장한 산맥 아래 흐르는 고요한 호수. 시간이 멈춘 것 같은 기분이었습니다. 대자연의 경이로움에 압도당했어요.", 
+        tags: "#산수화 #호수뷰 #캠핑 #백패킹 #대자연", 
+        comments: [
+          { id: 4, user: "hiker_kim", text: "등산 코스 난이도는 어떤가요?" },
+          { id: 5, user: "mountain_man", text: "캬 역시 산이 최고입니다" },
+          { id: 6, user: "camping_girl", text: "저기서 캠핑하면 어떤 기분일까요" }
+        ] 
+      },
+      { 
+        images: [
+          "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80",
+          "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80",
+          "https://images.unsplash.com/photo-1511497584788-876760111969?q=80",
+          "https://images.unsplash.com/photo-1454496522485-0a62b4a3a1d4?q=80",
+          "https://images.unsplash.com/photo-1486915307544-b1ae220abcaf?q=80"
+        ], 
+        likes: 2430, 
+        isLiked: false,
+        content: "구름을 뚫고 솟아오른 설산. 자연의 위대함을 다시 한번 느낍니다. 매 순간이 감동이었던 알프스 여행.", 
+        tags: "#만년설 #알프스 #자연 #유럽 #스키", 
+        comments: [
+          { id: 7, user: "winter_fan", text: "보기만 해도 시원해지네요 ❄️" },
+          { id: 8, user: "ice_cream", text: "저기 진짜 춥나요?" },
+          { id: 9, user: "sky_high", text: "구름 위를 걷는 기분일듯" }
+        ] 
+      }
     ];
 
     function initGrid() {
@@ -201,52 +270,14 @@
       grid.innerHTML = postsData.map((p, i) => `
         <div onclick="openPost(${i})" class="aspect-square bg-zinc-100 overflow-hidden cursor-pointer relative active:opacity-80 transition-opacity">
           <img class="w-full h-full object-cover" src="${p.images[0]}"/>
-          ${p.images.length > 1 ? '<span class="absolute top-2 right-2 text-white drop-shadow-md"><span class="material-symbols-outlined text-sm">filter_none</span></span>' : ''}
+          <span class="absolute top-2 right-2 text-white drop-shadow-md"><span class="material-symbols-outlined text-sm">filter_none</span></span>
         </div>
       `).join('');
     }
 
-    // 사진 액션 시트 제어
-    function openPhotoActions() {
-      document.getElementById('action-sheet-photo').classList.remove('hide');
-    }
-    
-    function closePhotoActions() {
-      document.getElementById('action-sheet-photo').classList.add('hide');
-    }
-    
-    function triggerPhotoInput() {
-      document.getElementById('photo-input').click();
-      closePhotoActions();
-    }
-    
-    function handlePhotoSelect(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          // 미리보기 및 메인 프로필 이미지 변경
-          document.getElementById('edit-profile-preview').src = e.target.result;
-          document.getElementById('main-profile-img').src = e.target.result;
-          
-          // 상세페이지의 작성자 아이콘들도 업데이트
-          const ownerImages = document.querySelectorAll('.post-owner-img');
-          ownerImages.forEach(img => img.src = e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-    
-    function removeCurrentPhoto() {
-      const defaultImg = "https://ui-avatars.com/api/?name=%EA%B9%80%ED%83%9C%EC%9A%B0&background=F3F4F6&color=b6004f";
-      document.getElementById('edit-profile-preview').src = defaultImg;
-      document.getElementById('main-profile-img').src = defaultImg;
-      closePhotoActions();
-    }
-
-    // 게시물 상세 관련
     function openPost(index) {
       currentPostIndex = index;
+      cancelReply();
       const post = postsData[index];
       const slider = document.getElementById('post-images');
       const indicator = document.getElementById('post-indicator');
@@ -264,11 +295,127 @@
         counter.innerText = `${idx + 1}/${post.images.length}`;
       };
 
-      document.getElementById('post-likes').innerText = `좋아요 ${post.likes.toLocaleString()}개`;
+      updateLikeUI();
       document.getElementById('post-content').innerText = post.content;
       document.getElementById('post-tags').innerText = post.tags;
-      document.getElementById('comment-total-btn').innerText = `댓글 모두 보기`;
+      renderComments();
+
       document.getElementById('page-post-detail').classList.remove('hide');
+    }
+
+    function toggleLike() {
+      const post = postsData[currentPostIndex];
+      post.isLiked = !post.isLiked;
+      post.likes += post.isLiked ? 1 : -1;
+      updateLikeUI();
+    }
+
+    function updateLikeUI() {
+      const post = postsData[currentPostIndex];
+      const heart = document.getElementById('heart-icon');
+      const likeText = document.getElementById('post-likes');
+      
+      heart.style.color = post.isLiked ? '#ef4444' : '#27272a';
+      heart.style.fontVariationSettings = post.isLiked ? "'FILL' 1" : "'FILL' 0";
+      likeText.innerText = `좋아요 ${post.likes.toLocaleString()}개`;
+    }
+
+    function renderComments() {
+      const post = postsData[currentPostIndex];
+      const commentList = document.getElementById('comment-list');
+      if (post.comments.length > 0) {
+        commentList.innerHTML = post.comments.map((c, idx) => `
+          <div class="flex flex-col gap-1 fade-in">
+            <div class="flex items-start justify-between group">
+              <div class="flex gap-2 text-xs flex-1">
+                <span class="font-bold text-zinc-800 shrink-0">${c.user}</span>
+                <span class="text-zinc-600 leading-snug">${c.text}</span>
+              </div>
+              <div class="flex gap-2 items-center opacity-0 group-hover:opacity-100 transition-opacity ml-2">
+                ${c.user === MY_USER_ID ? 
+                  `<button onclick="deleteComment(${idx})" class="text-[10px] text-red-400 font-bold hover:text-red-600 transition-colors">삭제</button>` : 
+                  `<button onclick="setReply('${c.user}')" class="text-[10px] text-zinc-400 font-bold hover:text-zinc-700 transition-colors">답글</button>`
+                }
+              </div>
+            </div>
+            <div class="flex gap-3 ml-10 mt-0.5">
+               <span class="text-[9px] text-zinc-400 font-medium">좋아요 1개</span>
+               ${c.user !== MY_USER_ID ? `<button onclick="setReply('${c.user}')" class="text-[9px] text-zinc-400 font-bold">답글 달기</button>` : ''}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        commentList.innerHTML = '<p class="text-[10px] text-zinc-400 py-2">첫 댓글을 남겨보세요!</p>';
+      }
+    }
+
+    function setReply(userName) {
+      replyTarget = userName;
+      const replyInfo = document.getElementById('reply-info');
+      const replyText = document.getElementById('reply-target-text');
+      const input = document.getElementById('comment-input');
+      
+      replyText.innerText = `${userName}님에게 답글 남기는 중...`;
+      replyInfo.classList.remove('hide');
+      input.focus();
+      input.value = `@${userName} `;
+    }
+
+    function cancelReply() {
+      replyTarget = null;
+      document.getElementById('reply-info').classList.add('hide');
+      const input = document.getElementById('comment-input');
+      if(input.value.startsWith('@')) input.value = '';
+    }
+
+    function deleteComment(index) {
+      const post = postsData[currentPostIndex];
+      post.comments.splice(index, 1);
+      renderComments();
+    }
+
+    function addComment() {
+      const input = document.getElementById('comment-input');
+      const text = input.value.trim();
+      if (text) {
+        const post = postsData[currentPostIndex];
+        post.comments.push({ 
+          id: Date.now(), 
+          user: MY_USER_ID, 
+          text: text 
+        });
+        input.value = '';
+        cancelReply();
+        renderComments();
+        
+        const main = document.querySelector('#page-post-detail main');
+        main.scrollTo({ top: main.scrollHeight, behavior: 'smooth' });
+      }
+    }
+
+    function openPhotoActions() { document.getElementById('action-sheet-photo').classList.remove('hide'); }
+    function closePhotoActions() { document.getElementById('action-sheet-photo').classList.add('hide'); }
+    function triggerPhotoInput() { document.getElementById('photo-input').click(); closePhotoActions(); }
+    
+    function handlePhotoSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('edit-profile-preview').src = e.target.result;
+          document.getElementById('main-profile-img').src = e.target.result;
+          const ownerImages = document.querySelectorAll('.post-owner-img');
+          ownerImages.forEach(img => img.src = e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+    
+    function removeCurrentPhoto() {
+      const defaultImg = "https://ui-avatars.com/api/?name=%EA%B9%80%ED%83%9C%EC%9A%B0&background=F3F4F6&color=b6004f";
+      document.getElementById('edit-profile-preview').src = defaultImg;
+      document.getElementById('main-profile-img').src = defaultImg;
+      closePhotoActions();
     }
 
     function closePost() { document.getElementById('page-post-detail').classList.add('hide'); }
@@ -277,8 +424,9 @@
     function saveProfile() {
       document.getElementById('display-name').innerText = document.getElementById('input-name').value;
       document.getElementById('display-id').innerText = document.getElementById('input-id').value;
-      document.getElementById('display-job').innerText = document.getElementById('input-job').value;
-      document.getElementById('display-bio').innerText = document.getElementById('input-bio').value;
+      const newId = document.getElementById('input-id').value;
+      // 사용자 이름 변경 시 MY_USER_ID 업데이트 (댓글 삭제 로직용)
+      // 실제 앱이라면 전역 상태로 관리하겠지만 여기서는 간단히 처리
       closeEditProfile();
     }
     function toggleSettings() { document.getElementById('side-settings').classList.toggle('hide'); }
