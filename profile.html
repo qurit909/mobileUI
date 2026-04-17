@@ -65,7 +65,7 @@
               <img id="main-profile-img" class="w-full h-full rounded-full object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop"/>
             </div>
             <div class="flex gap-6">
-              <div class="flex flex-col items-center"><span class="font-bold text-zinc-800 text-sm">42</span><span class="text-[11px] text-zinc-500">게시물</span></div>
+              <div class="flex flex-col items-center"><span id="display-post-count" class="font-bold text-zinc-800 text-sm">3</span><span class="text-[11px] text-zinc-500">게시물</span></div>
               <div class="flex flex-col items-center"><span class="font-bold text-zinc-800 text-sm">512</span><span class="text-[11px] text-zinc-500">팔로워</span></div>
               <div class="flex flex-col items-center"><span class="font-bold text-zinc-800 text-sm">385</span><span class="text-[11px] text-zinc-500">팔로잉</span></div>
             </div>
@@ -82,9 +82,9 @@
       </main>
 
       <nav class="shrink-0 h-20 flex justify-around items-center px-6 pb-2 bg-white/90 backdrop-blur-xl border-t border-rose-100 rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(182,0,79,0.05)]">
-        <div class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer"><span class="material-symbols-outlined text-[24px]">home</span><span class="text-[9px] font-bold">홈</span></div>
-        <div class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer"><span class="material-symbols-outlined text-[24px]">add_circle</span><span class="text-[9px] font-bold">만들기</span></div>
-        <div class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer"><span class="material-symbols-outlined text-[24px]">send</span><span class="text-[9px] font-bold">메시지</span></div>
+        <a href="index.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer no-underline"><span class="material-symbols-outlined text-[24px]">home</span><span class="text-[9px] font-bold">홈</span></a>
+        <a href="create.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer no-underline"><span class="material-symbols-outlined text-[24px]">add_circle</span><span class="text-[9px] font-bold">만들기</span></a>
+        <a href="message.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer no-underline"><span class="material-symbols-outlined text-[24px]">send</span><span class="text-[9px] font-bold">메시지</span></a>
         <div class="nav-item active flex flex-col items-center gap-1 text-[#b6004f] cursor-pointer"><span class="material-symbols-outlined text-[24px]">person</span><span class="text-[9px] font-bold">프로필</span></div>
       </nav>
     </div>
@@ -273,6 +273,7 @@
           <span class="absolute top-2 right-2 text-white drop-shadow-md"><span class="material-symbols-outlined text-sm">filter_none</span></span>
         </div>
       `).join('');
+      document.getElementById('display-post-count').innerText = postsData.length;
     }
 
     function openPost(index) {
@@ -424,9 +425,6 @@
     function saveProfile() {
       document.getElementById('display-name').innerText = document.getElementById('input-name').value;
       document.getElementById('display-id').innerText = document.getElementById('input-id').value;
-      const newId = document.getElementById('input-id').value;
-      // 사용자 이름 변경 시 MY_USER_ID 업데이트 (댓글 삭제 로직용)
-      // 실제 앱이라면 전역 상태로 관리하겠지만 여기서는 간단히 처리
       closeEditProfile();
     }
     function toggleSettings() { document.getElementById('side-settings').classList.toggle('hide'); }
