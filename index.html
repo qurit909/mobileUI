@@ -103,7 +103,12 @@
             <span class="material-symbols-outlined">close</span>
           </button>
         </header>
-        <div id="review-list" class="flex-1 overflow-y-auto px-6 space-y-4 py-6 hide-scrollbar text-center text-zinc-400">리뷰 데이터를 불러오는 중입니다...</div>
+        <div id="review-list" class="flex-1 overflow-y-auto px-6 space-y-4 py-6 hide-scrollbar">
+           <!-- Review items rendered here -->
+        </div>
+        <div class="p-4 border-t border-rose-50">
+           <button id="load-more-reviews" onclick="loadMoreReviews()" class="w-full py-3 text-[10px] font-bold text-primary bg-rose-50 rounded-xl hover:bg-rose-100 transition-colors">이전 리뷰 더보기</button>
+        </div>
       </div>
     </section>
 
@@ -136,15 +141,15 @@
       <button onclick="showHome()" class="nav-item active flex flex-col items-center gap-1 text-primary">
         <span class="material-symbols-outlined">home</span><span class="text-[9px] font-bold">홈</span>
       </button>
-      <button class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+      <a href="create.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
         <span class="material-symbols-outlined">add_circle</span><span class="text-[9px] font-bold">추가</span>
-      </button>
-      <button class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+      </a>
+      <a href="message.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
         <span class="material-symbols-outlined">forum</span><span class="text-[9px] font-bold">메시지</span>
-      </button>
-      <button class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+      </a>
+      <a href="profile.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
         <span class="material-symbols-outlined">account_circle</span><span class="text-[9px] font-bold">프로필</span>
-      </button>
+      </a>
     </nav>
   </div>
 
@@ -175,25 +180,31 @@
       for(let i=1; i<=count; i++) {
         const id = type === 'personal' ? i : i + 100;
         
-        // Name Logic
-        const name = type === 'personal' 
-            ? lastNames[Math.floor(Math.random()*lastNames.length)] + firstNames[Math.floor(Math.random()*firstNames.length)]
-            : companyNames[Math.floor(Math.random()*companyNames.length)] + " " + companySuffix[Math.floor(Math.random()*companySuffix.length)];
-        
-        // Category Logic
-        const cat = type === 'personal' 
-            ? personalCats[Math.floor(Math.random()*personalCats.length)]
-            : companyCats[Math.floor(Math.random()*companyCats.length)];
+        let name, cat;
+        if (type === 'personal' && i === 1) {
+            name = "김지수";
+            cat = "패션 디렉터";
+        } else if (type === 'company' && i === 1) {
+            name = "벨벳 스튜디오";
+            cat = "코스메틱";
+        } else {
+            name = type === 'personal' 
+                ? lastNames[Math.floor(Math.random()*lastNames.length)] + firstNames[Math.floor(Math.random()*firstNames.length)]
+                : companyNames[Math.floor(Math.random()*companyNames.length)] + " " + companySuffix[Math.floor(Math.random()*companySuffix.length)];
+            
+            cat = type === 'personal' 
+                ? personalCats[Math.floor(Math.random()*personalCats.length)]
+                : companyCats[Math.floor(Math.random()*companyCats.length)];
+        }
 
-        // Indicators for Company (Updated: Average price under 1M)
         let primaryMetric, secondaryMetric;
         if (type === 'personal') {
-            primaryMetric = { label: "팔로워", value: (i === 1 ? "1.5K" : (100 + Math.floor(Math.random()*850)).toLocaleString()) };
-            secondaryMetric = { label: "활동지수", value: (Math.random()*12 + 1).toFixed(1) + "%" };
+            primaryMetric = { label: "팔로워", value: (i === 1 ? "20.5K" : (100 + Math.floor(Math.random()*850)).toLocaleString()) };
+            secondaryMetric = { label: "활동지수", value: (i === 1 ? "15.2%" : (Math.random()*12 + 1).toFixed(1) + "%") };
         } else {
             primaryMetric = { label: "진행 캠페인", value: (Math.floor(Math.random()*150) + 20) + "건" };
-            // Updated range to 5-95 to keep it under 1M won (Unit is 'man')
-            secondaryMetric = { label: "평균 단가", value: (Math.floor(Math.random()*90)+5) + "만" };
+            // 기업 평균 단가를 하향 조정 (기존 5~95만 -> 3~25만 범위)
+            secondaryMetric = { label: "평균 단가", value: (Math.floor(Math.random()*22)+3) + "만" };
         }
 
         list.push({
@@ -207,8 +218,6 @@
           rating: (Math.random()*0.8 + 4.2).toFixed(1),
           reviewSummary: reviewSummaries[Math.floor(Math.random()*reviewSummaries.length)],
           persona: type === 'personal' ? { 
-            age: (Math.floor(Math.random()*15)+20)+"세", 
-            personality: ["창의적인", "성실한", "대담한", "차분한"][Math.floor(Math.random()*4)], 
             interests: ["트렌드", "카페투어", "건강", "패션"], 
             goal: "팔로워와의 진정성 있는 소통" 
           } : null,
@@ -250,48 +259,91 @@
       const container = document.getElementById('feed-container');
       const filtered = allProfiles.filter(p => p.type === filter && (p.name.includes(query) || p.category.includes(query)));
       
+      let adHtml = '';
+      if (filter === 'personal') {
+        const adTarget = companyProfiles[0]; 
+        adHtml = `
+          <div class="bg-gradient-to-br from-rose-500 to-primary rounded-[2rem] p-5 shadow-lg mb-6 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-3"><span class="bg-white/20 text-white text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Sponsored</span></div>
+            <div class="relative z-10">
+              <h4 class="text-white font-black text-lg mb-1 leading-tight">신규 브랜드 입점!<br/>협업 파트너 모집 중</h4>
+              <p class="text-rose-100 text-[10px] font-medium mb-4">지금 '${adTarget.name}'와 첫 캠페인을 시작해보세요.</p>
+              <button onclick="openDetail(${adTarget.id})" class="bg-white text-primary px-4 py-2 rounded-xl text-[10px] font-black shadow-sm group-hover:scale-105 transition-transform">신청하기</button>
+            </div>
+            <div class="absolute -bottom-4 -right-4 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
+          </div>
+        `;
+      } else {
+        const adTarget = personalProfiles[0];
+        adHtml = `
+          <div class="bg-white rounded-[2rem] border-2 border-primary/20 p-5 shadow-sm mb-6 relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-3"><span class="bg-primary/10 text-primary text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Ad</span></div>
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-2xl overflow-hidden shadow-inner">
+                <img src="${adTarget.img}" class="w-full h-full object-cover"/>
+              </div>
+              <div class="flex-1">
+                <h4 class="text-on-surface font-black text-sm mb-0.5">이달의 라이징 크리에이터</h4>
+                <p class="text-on-surface-variant text-[10px] font-medium mb-2">#${adTarget.name.substring(1)} #${adTarget.category.split(' ')[0]} #팔로워_${adTarget.primaryMetric.value}</p>
+                <div class="flex gap-2">
+                  <button onclick="openDetail(${adTarget.id})" class="text-[9px] font-bold text-primary underline underline-offset-2">포트폴리오 보기</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
       if(filtered.length === 0) {
-        container.innerHTML = `<div class="py-20 text-center text-rose-300 font-bold">결과를 찾을 수 없습니다.</div>`;
+        container.innerHTML = adHtml + `<div class="py-20 text-center text-rose-300 font-bold">결과를 찾을 수 없습니다.</div>`;
         return;
       }
 
-      container.innerHTML = filtered.map(p => `
-        <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-rose-50 hover:border-rose-200 transition-colors">
-          <img class="w-full h-80 object-cover" src="${p.img}" loading="lazy"/>
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-              <div class="flex-1">
-                <div class="flex items-center gap-2 mb-1">
-                  <h2 class="text-xl font-bold text-on-surface truncate">${p.name}</h2>
-                  <span class="shrink-0 bg-rose-100 text-primary text-[9px] px-2 py-0.5 rounded-full font-bold">${p.category}</span>
+      container.innerHTML = adHtml + filtered.map(p => {
+        const isPersonal = p.type === 'personal';
+        const unitLabel = isPersonal ? '' : '원';
+        
+        return `
+          <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-rose-50 hover:border-rose-200 transition-colors">
+            <img class="w-full h-80 object-cover" src="${p.img}" loading="lazy"/>
+            <div class="p-6">
+              <div class="flex justify-between items-start mb-4">
+                <div class="flex-1">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h2 class="text-xl font-bold text-on-surface truncate">${p.name}</h2>
+                    <span class="shrink-0 bg-rose-100 text-primary text-[9px] px-2 py-0.5 rounded-full font-bold">${p.category}</span>
+                  </div>
+                  <p class="text-xs text-on-surface-variant font-medium">${p.handle}</p>
                 </div>
-                <p class="text-xs text-on-surface-variant font-medium">${p.handle}</p>
+                <div class="flex items-center gap-1 bg-rose-50 px-2 py-1 rounded-lg text-primary font-bold text-xs">
+                  <span class="material-symbols-outlined text-sm">star</span>${p.rating}
+                </div>
               </div>
-              <div class="flex items-center gap-1 bg-rose-50 px-2 py-1 rounded-lg text-primary font-bold text-xs">
-                <span class="material-symbols-outlined text-sm">star</span>${p.rating}
+              
+              <div class="grid grid-cols-2 gap-3 mb-5 text-center">
+                <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100/50">
+                  <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">${p.primaryMetric.label}</p>
+                  <p class="text-sm font-black text-on-surface">${p.primaryMetric.value}</p>
+                </div>
+                <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100/50">
+                  <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">${p.secondaryMetric.label}</p>
+                  <p class="text-sm font-black text-primary">${p.secondaryMetric.value}${unitLabel}</p>
+                </div>
               </div>
+              <button onclick="openDetail(${p.id})" class="w-full py-4 bg-primary text-white text-sm font-bold rounded-2xl active:scale-95 transition-transform shadow-md">상세 프로필 보기</button>
             </div>
-            
-            <div class="grid grid-cols-2 gap-3 mb-5 text-center">
-              <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100/50">
-                <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">${p.primaryMetric.label}</p>
-                <p class="text-sm font-black text-on-surface">${p.primaryMetric.value}</p>
-              </div>
-              <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100/50">
-                <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">${p.secondaryMetric.label}</p>
-                <p class="text-sm font-black text-primary">${p.secondaryMetric.value}원</p>
-              </div>
-            </div>
-            <button onclick="openDetail(${p.id})" class="w-full py-4 bg-primary text-white text-sm font-bold rounded-2xl active:scale-95 transition-transform shadow-md">상세 프로필 보기</button>
-          </div>
-        </article>
-      `).join('');
+          </article>
+        `;
+      }).join('');
     }
 
     function openDetail(id) {
       currentDetailId = id;
       const p = allProfiles.find(x => x.id === id);
+      if (!p) return;
+      
       const isCo = p.type === 'company';
+      const unitLabel = isCo ? '원' : '';
       
       document.getElementById('detail-content').innerHTML = `
         <div class="px-6 py-8">
@@ -307,10 +359,13 @@
             </div>
           </div>
 
-          <div class="bg-surface-container-low p-5 rounded-[1.5rem] border border-rose-100 mb-6">
-             <h3 class="text-[10px] font-black text-primary uppercase mb-2 flex items-center gap-1">
-               <span class="material-symbols-outlined text-sm">chat_bubble</span> 리뷰 요약
-             </h3>
+          <div onclick="openReviewModal()" class="bg-surface-container-low p-5 rounded-[1.5rem] border border-rose-100 mb-6 cursor-pointer active:scale-[0.98] transition-all group">
+             <div class="flex justify-between items-center mb-2">
+                <h3 class="text-[10px] font-black text-primary uppercase flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">chat_bubble</span> 리뷰 요약
+                </h3>
+                <span class="material-symbols-outlined text-primary text-sm group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+             </div>
              <p class="text-xs text-on-surface font-medium italic leading-relaxed">"${p.reviewSummary}"</p>
           </div>
 
@@ -319,7 +374,7 @@
             ${isCo ? `
               <div class="space-y-3">
                 <div class="flex justify-between text-xs border-b border-rose-50 pb-2">
-                  <span class="font-bold text-zinc-500">평균 캠페인 단가</span><span class="font-black text-primary">${p.secondaryMetric.value}원</span>
+                  <span class="font-bold text-zinc-500">평균 캠페인 단가</span><span class="font-black text-primary">${p.secondaryMetric.value}${unitLabel}</span>
                 </div>
                 <div class="flex justify-between text-xs border-b border-rose-50 pb-2">
                   <span class="font-bold text-zinc-500">주요 타겟</span><span class="font-bold">${p.adInfo.target}</span>
@@ -333,15 +388,15 @@
               </div>
             ` : `
               <div class="space-y-2 text-xs">
-                <p><span class="font-bold text-zinc-500 w-16 inline-block">나이</span> <span class="text-on-surface">${p.persona.age}</span></p>
-                <p><span class="font-bold text-zinc-500 w-16 inline-block">성격</span> <span class="text-on-surface">${p.persona.personality}</span></p>
+                <p><span class="font-bold text-zinc-500 w-16 inline-block">활동지수</span> <span class="text-primary font-black">${p.secondaryMetric.value}</span></p>
                 <p><span class="font-bold text-zinc-500 w-16 inline-block">관심사</span> <span class="text-on-surface">${p.persona.interests.join(', ')}</span></p>
+                <p><span class="font-bold text-zinc-500 w-16 inline-block">목표</span> <span class="text-on-surface">${p.persona.goal}</span></p>
               </div>
             `}
           </div>
 
           <div class="mb-6">
-            <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest">Brand Image Gallery</h3>
+            <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest">Gallery</h3>
             <div class="insta-grid rounded-xl overflow-hidden shadow-sm">
               ${p.portfolio.map(u => `<div><img src="${u}" loading="lazy"/></div>`).join('')}
             </div>
@@ -354,6 +409,83 @@
       document.getElementById('page-detail').classList.add('active');
     }
 
+    // --- Review Modal Handling ---
+    let reviewsCount = 0;
+    
+    function createReviewElement(review) {
+      return `
+        <div class="p-4 bg-rose-50/30 rounded-2xl border border-rose-100 animate-slide-up">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-xs font-black text-on-surface">${review.user}</span>
+            <span class="text-[10px] text-rose-300 font-medium">${review.date}</span>
+          </div>
+          <p class="text-xs text-on-surface-variant font-medium leading-relaxed">${review.text}</p>
+        </div>
+      `;
+    }
+
+    function openReviewModal() {
+      const p = allProfiles.find(x => x.id === currentDetailId);
+      if (!p) return;
+      
+      document.getElementById('review-total-count').innerText = `총 ${p.reviews}개의 리뷰`;
+      const reviewList = document.getElementById('review-list');
+      
+      // Initial reviews
+      const initialReviews = [
+        { user: "User_A", text: "정말 만족스러운 작업이었어요! 강추합니다.", date: "2024.03.15" },
+        { user: "Brand_B", text: "커뮤니케이션이 너무 잘 되어서 편했습니다.", date: "2024.03.10" },
+        { user: "Partner_C", text: "결과물 퀄리티가 예상보다 훨씬 높아요.", date: "2024.03.01" }
+      ];
+      
+      reviewsCount = initialReviews.length;
+      reviewList.innerHTML = initialReviews.map(r => createReviewElement(r)).join('');
+      
+      document.getElementById('load-more-reviews').style.display = "block";
+      document.getElementById('review-modal').classList.add('active');
+    }
+
+    function loadMoreReviews() {
+      const reviewList = document.getElementById('review-list');
+      const btn = document.getElementById('load-more-reviews');
+      
+      // Loading state
+      btn.innerText = "불러오는 중...";
+      btn.disabled = true;
+
+      setTimeout(() => {
+        const moreReviews = [
+          { user: "Client_X", text: "요청사항을 정확히 이해하고 작업해주셨어요.", date: "2024.02.20" },
+          { user: "Manager_Y", text: "마감 기한을 엄수하고 꼼꼼한 피드백이 좋았습니다.", date: "2024.02.15" }
+        ];
+        
+        const fragment = document.createElement('div');
+        fragment.innerHTML = moreReviews.map(r => createReviewElement(r)).join('');
+        while (fragment.firstChild) {
+          reviewList.appendChild(fragment.firstChild);
+        }
+        
+        btn.innerText = "이전 리뷰 더보기";
+        btn.disabled = false;
+        
+        // Scroll to bottom after loading
+        reviewList.parentElement.scrollTop = reviewList.parentElement.scrollHeight;
+        
+        // Hide button if we "loaded all" (mock logic)
+        reviewsCount += moreReviews.length;
+        if(reviewsCount >= 7) {
+            btn.style.display = "none";
+            const finishMsg = document.createElement('div');
+            finishMsg.className = "py-6 text-center text-rose-200 text-[9px] font-bold uppercase tracking-widest";
+            finishMsg.innerText = "End of reviews";
+            reviewList.appendChild(finishMsg);
+        }
+      }, 600);
+    }
+
+    function closeReviewModal() { document.getElementById('review-modal').classList.remove('active'); }
+
+    // --- Chat Logic ---
     function openChat() {
       const p = allProfiles.find(x => x.id === currentDetailId);
       document.getElementById('chat-target-img').src = p.img;
@@ -386,11 +518,8 @@
     function closeDetail() { document.getElementById('page-detail').classList.remove('active'); }
     function closeChat() { document.getElementById('chat-page').classList.remove('active'); }
     function showHome() { closeDetail(); closeChat(); }
-    function toggleChatMenu() { /* More options dropdown */ }
-    function openReviewModal() { document.getElementById('review-modal').classList.add('active'); }
-    function closeReviewModal() { document.getElementById('review-modal').classList.remove('active'); }
+    function toggleChatMenu() { }
 
-    // Initial render
     renderFeed('personal');
   </script>
 </body>
