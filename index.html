@@ -185,23 +185,23 @@
             ? personalCats[Math.floor(Math.random()*personalCats.length)]
             : companyCats[Math.floor(Math.random()*companyCats.length)];
 
-        // Followers Logic
-        let followersVal;
+        // Indicators for Company (Updated: Average price under 1M)
+        let primaryMetric, secondaryMetric;
         if (type === 'personal') {
-            // 개인: 단 한 명만 1000명 이상, 나머지는 100~999
-            if (i === 1) followersVal = (1000 + Math.floor(Math.random()*500)).toLocaleString();
-            else followersVal = (100 + Math.floor(Math.random()*850)).toLocaleString();
+            primaryMetric = { label: "팔로워", value: (i === 1 ? "1.5K" : (100 + Math.floor(Math.random()*850)).toLocaleString()) };
+            secondaryMetric = { label: "활동지수", value: (Math.random()*12 + 1).toFixed(1) + "%" };
         } else {
-            // 기업: 10K~300K 사이 무작위
-            followersVal = (Math.floor(Math.random()*290) + 10) + "K";
+            primaryMetric = { label: "진행 캠페인", value: (Math.floor(Math.random()*150) + 20) + "건" };
+            // Updated range to 5-95 to keep it under 1M won (Unit is 'man')
+            secondaryMetric = { label: "평균 단가", value: (Math.floor(Math.random()*90)+5) + "만" };
         }
 
         list.push({
           id, type, name, category: cat,
           handle: "@" + (type === 'personal' ? "user" : "brand") + "_" + (Math.random().toString(36).substring(7)),
           img: `https://picsum.photos/seed/editorial_${id}/400/600`,
-          followers: followersVal,
-          engagement: (Math.random()*12 + 1).toFixed(1),
+          primaryMetric,
+          secondaryMetric,
           response: Math.floor(Math.random()*40 + 5) + "분 내",
           reviews: Math.floor(Math.random()*60 + 5),
           rating: (Math.random()*0.8 + 4.2).toFixed(1),
@@ -213,7 +213,6 @@
             goal: "팔로워와의 진정성 있는 소통" 
           } : null,
           adInfo: type === 'company' ? { 
-            price: (Math.floor(Math.random()*150)+50) + "만원~", 
             period: (Math.floor(Math.random()*14)+7) + "일 이내", 
             channel: channels[Math.floor(Math.random()*channels.length)], 
             target: targets[Math.floor(Math.random()*targets.length)] 
@@ -275,12 +274,12 @@
             
             <div class="grid grid-cols-2 gap-3 mb-5 text-center">
               <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100/50">
-                <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">팔로워</p>
-                <p class="text-sm font-black text-on-surface">${p.followers}</p>
+                <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">${p.primaryMetric.label}</p>
+                <p class="text-sm font-black text-on-surface">${p.primaryMetric.value}</p>
               </div>
               <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100/50">
-                <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">${p.type === 'personal' ? '활동지수' : '응답속도'}</p>
-                <p class="text-sm font-black text-primary">${p.type === 'personal' ? p.engagement + '%' : p.response}</p>
+                <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">${p.secondaryMetric.label}</p>
+                <p class="text-sm font-black text-primary">${p.secondaryMetric.value}원</p>
               </div>
             </div>
             <button onclick="openDetail(${p.id})" class="w-full py-4 bg-primary text-white text-sm font-bold rounded-2xl active:scale-95 transition-transform shadow-md">상세 프로필 보기</button>
@@ -320,13 +319,16 @@
             ${isCo ? `
               <div class="space-y-3">
                 <div class="flex justify-between text-xs border-b border-rose-50 pb-2">
-                  <span class="font-bold text-zinc-500">예상 단가</span><span class="font-black text-primary">${p.adInfo.price}</span>
+                  <span class="font-bold text-zinc-500">평균 캠페인 단가</span><span class="font-black text-primary">${p.secondaryMetric.value}원</span>
                 </div>
                 <div class="flex justify-between text-xs border-b border-rose-50 pb-2">
-                  <span class="font-bold text-zinc-500">타겟</span><span class="font-bold">${p.adInfo.target}</span>
+                  <span class="font-bold text-zinc-500">주요 타겟</span><span class="font-bold">${p.adInfo.target}</span>
+                </div>
+                <div class="flex justify-between text-xs border-b border-rose-50 pb-2">
+                  <span class="font-bold text-zinc-500">선호 채널</span><span class="font-bold">${p.adInfo.channel}</span>
                 </div>
                 <div class="flex justify-between text-xs">
-                  <span class="font-bold text-zinc-500">채널</span><span class="font-bold">${p.adInfo.channel}</span>
+                  <span class="font-bold text-zinc-500">응답 속도</span><span class="font-bold text-zinc-900">${p.response}</span>
                 </div>
               </div>
             ` : `
@@ -339,7 +341,7 @@
           </div>
 
           <div class="mb-6">
-            <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest">Gallery</h3>
+            <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest">Brand Image Gallery</h3>
             <div class="insta-grid rounded-xl overflow-hidden shadow-sm">
               ${p.portfolio.map(u => `<div><img src="${u}" loading="lazy"/></div>`).join('')}
             </div>
