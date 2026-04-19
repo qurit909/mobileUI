@@ -40,7 +40,7 @@
               <img id="display-profile-img" class="w-full h-full rounded-full object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop"/>
             </div>
             <div class="flex flex-1 justify-around px-2">
-              <div class="flex flex-col items-center cursor-default"><span class="font-extrabold text-zinc-800 text-xl">4</span><span class="text-[12px] font-medium text-zinc-400">게시물</span></div>
+              <div class="flex flex-col items-center cursor-default"><span id="post-count" class="font-extrabold text-zinc-800 text-xl">4</span><span class="text-[12px] font-medium text-zinc-400">게시물</span></div>
               <div onclick="openSubLayer('팔로워')" class="flex flex-col items-center cursor-pointer active:opacity-60 transition-opacity"><span class="font-extrabold text-zinc-800 text-xl">512</span><span class="text-[12px] font-medium text-zinc-400">팔로워</span></div>
               <div onclick="openSubLayer('팔로잉')" class="flex flex-col items-center cursor-pointer active:opacity-60 transition-opacity"><span class="font-extrabold text-zinc-800 text-xl">385</span><span class="text-[12px] font-medium text-zinc-400">팔로잉</span></div>
             </div>
@@ -130,6 +130,15 @@
             </div>
         </header>
         <main id="post-detail-content" class="flex-1 overflow-y-auto no-scrollbar" onclick="closePostMenu()"></main>
+        
+        <!-- 댓글 입력창 -->
+        <div id="comment-input-area" class="shrink-0 border-t border-zinc-100 bg-white px-4 py-3 flex items-center gap-3">
+            <img class="w-8 h-8 rounded-full border border-zinc-100" id="comment-my-profile" src=""/>
+            <div class="flex-1 relative">
+                <input id="comment-input" type="text" placeholder="댓글 달기..." class="w-full bg-zinc-50 border-none rounded-full px-4 py-2 text-sm focus:ring-1 focus:ring-rose-200 pr-12"/>
+                <button onclick="submitComment()" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#b6004f] font-bold text-sm opacity-50 hover:opacity-100 transition-opacity">게시</button>
+            </div>
+        </div>
     </div>
 
     <!-- [서브 레이어] 상세 내용 -->
@@ -180,12 +189,16 @@
         profileImg: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop"
     };
 
-    const postsData = [
-      { id: 1, images: ["https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80"], likes: 1204, content: "여름의 끝자락에서 만난 드넓은 초원입니다.", tags: "#여행 #풍경", comments: [{user: "nature_lover", text: "와 진짜 평화로워 보여요!"}, {user: "hiker_pro", text: "여기 정확한 위치가 어디인가요?"}] },
-      { id: 2, images: ["https://images.unsplash.com/photo-1493246507139-91e8bef99c02?q=80"], likes: 852, content: "웅장한 산맥 아래 흐르는 고요한 호수.", tags: "#호수뷰 #캠핑", comments: [{user: "camper_boy", text: "밤에 별 잘 보일 것 같아요!"}] },
-      { id: 3, images: ["https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80"], likes: 2430, content: "구름을 뚫고 솟아오른 설산.", tags: "#만년설 #알프스", comments: [{user: "snow_queen", text: "사진 퀄리티 대박입니다..."}, {user: "traveler_z", text: "인생 샷이네요"}] },
-      { id: 4, images: ["https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80"], likes: 1540, content: "도심 속 힐링 스팟을 찾았습니다.", tags: "#도심숲 #산책", comments: [{user: "city_walker", text: "서울 근교인가요?"}] }
+    let postsData = [
+      { id: 1, images: ["https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80"], likes: 1204, content: "여름의 끝자락에서 만난 드넓은 초원입니다.", tags: "#여행 #풍경", comments: [{id: 101, user: "nature_lover", text: "와 진짜 평화로워 보여요!", replies: []}, {id: 102, user: "hiker_pro", text: "여기 정확한 위치가 어디인가요?", replies: []}] },
+      { id: 2, images: ["https://images.unsplash.com/photo-1493246507139-91e8bef99c02?q=80"], likes: 852, content: "웅장한 산맥 아래 흐르는 고요한 호수.", tags: "#호수뷰 #캠핑", comments: [{id: 201, user: "camper_boy", text: "밤에 별 잘 보일 것 같아요!", replies: []}] },
+      { id: 3, images: ["https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80"], likes: 2430, content: "구름을 뚫고 솟아오른 설산.", tags: "#만년설 #알프스", comments: [{id: 301, user: "snow_queen", text: "사진 퀄리티 대박입니다...", replies: []}, {id: 302, user: "traveler_z", text: "인생 샷이네요", replies: []}] },
+      { id: 4, images: ["https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80"], likes: 1540, content: "도심 속 힐링 스팟을 찾았습니다.", tags: "#도심숲 #산책", comments: [{id: 401, user: "city_walker", text: "서울 근교인가요?", replies: []}] }
     ];
+
+    let currentPostId = null;
+    let replyTargetId = null; // 대댓글 대상 (comment.id)
+    let editTargetId = null;  // 수정 대상 ({id, isReply, parentId})
 
     function initGrid() {
       const grid = document.getElementById('post-grid');
@@ -194,6 +207,7 @@
           <img class="w-full h-full object-cover" src="${p.images[0]}" alt="Post Image"/>
         </div>
       `).join('');
+      document.getElementById('post-count').innerText = postsData.length;
     }
 
     function showToast(msg) {
@@ -218,15 +232,53 @@
     }
 
     function openPost(id) {
-        const post = postsData.find(p => p.id === id);
+        currentPostId = id;
+        renderPostDetail();
+        document.getElementById('comment-my-profile').src = userData.profileImg;
+        document.getElementById('layer-post-detail').classList.remove('hide');
+        resetCommentInput();
+    }
+
+    function renderPostDetail() {
+        const post = postsData.find(p => p.id === currentPostId);
+        if(!post) return;
+
         const detailContent = document.getElementById('post-detail-content');
         
-        const commentsHtml = post.comments.map(c => `
-            <div class="flex gap-2 mb-2">
-                <span class="font-bold text-xs text-zinc-800">${c.user}</span>
-                <span class="text-xs text-zinc-600">${c.text}</span>
+        const commentsHtml = post.comments.map(c => {
+            const isMyComment = c.user === userData.username;
+            const repliesHtml = (c.replies || []).map(r => {
+                const isMyReply = r.user === userData.username;
+                return `
+                <div class="flex gap-2 mt-2 ml-6 group">
+                    <span class="font-bold text-[11px] text-zinc-800 shrink-0">${r.user}</span>
+                    <span class="text-[11px] text-zinc-600 flex-1">${r.text}</span>
+                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        ${isMyReply ? `
+                            <button onclick="startEditComment(${c.id}, ${r.id})" class="text-[10px] text-zinc-400">수정</button>
+                            <button onclick="deleteComment(${c.id}, ${r.id})" class="text-[10px] text-rose-400">삭제</button>
+                        ` : ''}
+                    </div>
+                </div>`;
+            }).join('');
+
+            return `
+            <div class="mb-4 group">
+                <div class="flex gap-2 items-start">
+                    <span class="font-bold text-xs text-zinc-800 shrink-0">${c.user}</span>
+                    <span class="text-xs text-zinc-600 flex-1 leading-tight">${c.text}</span>
+                    <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="startReply(${c.id}, '${c.user}')" class="text-[10px] text-zinc-400">답글</button>
+                        ${isMyComment ? `
+                            <button onclick="startEditComment(${c.id})" class="text-[10px] text-zinc-400">수정</button>
+                            <button onclick="deleteComment(${c.id})" class="text-[10px] text-rose-400">삭제</button>
+                        ` : ''}
+                    </div>
+                </div>
+                ${repliesHtml}
             </div>
-        `).join('');
+            `;
+        }).join('');
 
         detailContent.innerHTML = `
             <div class="flex items-center p-3 gap-3">
@@ -234,7 +286,7 @@
                 <span class="font-bold text-sm text-zinc-800">${userData.username}</span>
             </div>
             <img class="w-full aspect-square object-cover" src="${post.images[0]}"/>
-            <div class="p-4">
+            <div class="p-4 pb-10">
                 <div class="flex gap-4 mb-2">
                     <span class="material-symbols-outlined text-rose-500" style="font-variation-settings: 'FILL' 1;">favorite</span>
                     <span class="material-symbols-outlined text-zinc-600">chat_bubble</span>
@@ -245,12 +297,101 @@
                     <p class="text-sm text-blue-600 mt-1">${post.tags}</p>
                 </div>
                 <div class="border-t border-zinc-100 pt-3">
-                    <p class="text-[11px] font-bold text-zinc-400 mb-2">댓글 ${post.comments.length}개</p>
+                    <p class="text-[11px] font-bold text-zinc-400 mb-3">댓글 ${post.comments.length}개</p>
                     ${commentsHtml}
                 </div>
             </div>
         `;
-        document.getElementById('layer-post-detail').classList.remove('hide');
+    }
+
+    function startReply(commentId, username) {
+        replyTargetId = commentId;
+        editTargetId = null;
+        const input = document.getElementById('comment-input');
+        input.placeholder = `@${username}님에게 답글 남기기...`;
+        input.focus();
+    }
+
+    function startEditComment(commentId, replyId = null) {
+        const post = postsData.find(p => p.id === currentPostId);
+        let targetText = "";
+        
+        if (replyId) {
+            const parent = post.comments.find(c => c.id === commentId);
+            const reply = parent.replies.find(r => r.id === replyId);
+            targetText = reply.text;
+            editTargetId = { id: replyId, isReply: true, parentId: commentId };
+        } else {
+            const comment = post.comments.find(c => c.id === commentId);
+            targetText = comment.text;
+            editTargetId = { id: commentId, isReply: false };
+        }
+
+        replyTargetId = null;
+        const input = document.getElementById('comment-input');
+        input.value = targetText;
+        input.placeholder = "댓글 수정 중...";
+        input.focus();
+    }
+
+    function deleteComment(commentId, replyId = null) {
+        const post = postsData.find(p => p.id === currentPostId);
+        if (replyId) {
+            const parent = post.comments.find(c => c.id === commentId);
+            parent.replies = parent.replies.filter(r => r.id !== replyId);
+        } else {
+            post.comments = post.comments.filter(c => c.id !== commentId);
+        }
+        renderPostDetail();
+        showToast("댓글이 삭제되었습니다.");
+    }
+
+    function submitComment() {
+        const input = document.getElementById('comment-input');
+        const text = input.value.trim();
+        if (!text) return;
+
+        const post = postsData.find(p => p.id === currentPostId);
+
+        if (editTargetId) {
+            // 수정 모드
+            if (editTargetId.isReply) {
+                const parent = post.comments.find(c => c.id === editTargetId.parentId);
+                const reply = parent.replies.find(r => r.id === editTargetId.id);
+                reply.text = text;
+            } else {
+                const comment = post.comments.find(c => c.id === editTargetId.id);
+                comment.text = text;
+            }
+            showToast("댓글이 수정되었습니다.");
+        } else if (replyTargetId) {
+            // 답글 모드
+            const parent = post.comments.find(c => c.id === replyTargetId);
+            parent.replies.push({
+                id: Date.now(),
+                user: userData.username,
+                text: text
+            });
+        } else {
+            // 새 댓글 모드
+            post.comments.push({
+                id: Date.now(),
+                user: userData.username,
+                text: text,
+                replies: []
+            });
+        }
+
+        resetCommentInput();
+        renderPostDetail();
+    }
+
+    function resetCommentInput() {
+        const input = document.getElementById('comment-input');
+        input.value = "";
+        input.placeholder = "댓글 달기...";
+        replyTargetId = null;
+        editTargetId = null;
     }
 
     function toggleSettings() {
@@ -266,7 +407,10 @@
     function closeLayer(id) {
       document.getElementById(id).classList.add('hide');
       document.getElementById('save-btn').classList.add('hide');
-      if (id === 'layer-post-detail') closePostMenu();
+      if (id === 'layer-post-detail') {
+          closePostMenu();
+          currentPostId = null;
+      }
     }
 
     function openSubLayer(title) {
