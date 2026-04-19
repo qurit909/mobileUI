@@ -52,11 +52,24 @@
         <div id="post-grid" class="grid grid-cols-3 gap-0.5 border-t border-rose-50"></div>
       </main>
 
+      <!-- [내비게이션] 홈 -> 만들기 -> 메시지 -> 프로필 순서로 명확히 배치 -->
       <nav class="shrink-0 h-20 flex justify-around items-center px-6 pb-2 bg-white/90 backdrop-blur-xl border-t border-rose-100 rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(182,0,79,0.05)]">
-        <div class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer"><span class="material-symbols-outlined text-[24px]">home</span><span class="text-[9px] font-bold">홈</span></div>
-        <div class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer"><span class="material-symbols-outlined text-[24px]">explore</span><span class="text-[9px] font-bold">탐색</span></div>
-        <div class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer"><span class="material-symbols-outlined text-[24px]">add_circle</span><span class="text-[9px] font-bold">만들기</span></div>
-        <div class="nav-item active flex flex-col items-center gap-1 text-[#b6004f] cursor-pointer"><span class="material-symbols-outlined text-[24px]">person</span><span class="text-[9px] font-bold">프로필</span></div>
+        <a href="index.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer text-decoration-none">
+          <span class="material-symbols-outlined text-[24px]">home</span>
+          <span class="text-[9px] font-bold">홈</span>
+        </a>
+        <a href="create.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer text-decoration-none">
+          <span class="material-symbols-outlined text-[24px]">add_circle</span>
+          <span class="text-[9px] font-bold">만들기</span>
+        </a>
+        <a href="message.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400 cursor-pointer text-decoration-none">
+          <span class="material-symbols-outlined text-[24px]">chat_bubble</span>
+          <span class="text-[9px] font-bold">메시지</span>
+        </a>
+        <div class="nav-item active flex flex-col items-center gap-1 text-[#b6004f] cursor-pointer">
+          <span class="material-symbols-outlined text-[24px]">person</span>
+          <span class="text-[9px] font-bold">프로필</span>
+        </div>
       </nav>
     </div>
 
@@ -85,50 +98,7 @@
         </main>
     </div>
 
-    <!-- [레이어] 내 활동 -->
-    <div id="layer-activity" class="absolute inset-0 bg-white z-[70] hide flex flex-col slide-in-right">
-        <header class="shrink-0 px-5 py-4 border-b border-rose-100 flex items-center gap-4">
-            <button onclick="closeLayer('layer-activity')" class="text-zinc-800"><span class="material-symbols-outlined">arrow_back</span></button>
-            <h1 class="font-bold text-zinc-800 text-sm">내 활동</h1>
-        </header>
-        <main class="flex-1 overflow-y-auto">
-            <div class="p-4 space-y-4">
-                <button onclick="openSubLayer('좋아요한 게시물')" class="w-full bg-zinc-50 p-4 rounded-2xl flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center text-rose-500"><span class="material-symbols-outlined">favorite</span></div>
-                        <div class="text-left"><p class="text-sm font-bold text-zinc-800">반응</p><p class="text-xs text-zinc-500">좋아요, 댓글 등</p></div>
-                    </div>
-                    <span class="material-symbols-outlined text-zinc-400">chevron_right</span>
-                </button>
-            </div>
-        </main>
-    </div>
-
-    <!-- [레이어] 저장됨 -->
-    <div id="layer-saved" class="absolute inset-0 bg-white z-[70] hide flex flex-col slide-in-right">
-        <header class="shrink-0 px-5 py-4 border-b border-rose-100 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <button onclick="closeLayer('layer-saved')" class="text-zinc-800"><span class="material-symbols-outlined">arrow_back</span></button>
-                <h1 class="font-bold text-zinc-800 text-sm">저장됨</h1>
-            </div>
-            <button class="material-symbols-outlined text-[#b6004f]">add</button>
-        </header>
-        <main class="flex-1 overflow-y-auto p-4">
-            <div class="grid grid-cols-2 gap-4">
-                <div onclick="openSubLayer('모든 게시물')" class="space-y-2 cursor-pointer">
-                    <div class="aspect-square rounded-2xl overflow-hidden bg-zinc-100 grid grid-cols-2 gap-0.5">
-                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=200"/>
-                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=200"/>
-                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=200"/>
-                        <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1493246507139-91e8bef99c02?q=80&w=200"/>
-                    </div>
-                    <p class="text-xs font-bold text-zinc-800 ml-1">모든 게시물</p>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- [서브 레이어] 3단계 상세 -->
+    <!-- [서브 레이어] 상세 내용 -->
     <div id="layer-sub-detail" class="absolute inset-0 bg-white z-[80] hide flex flex-col slide-in-right">
         <header class="shrink-0 px-5 py-4 border-b border-rose-100 flex items-center gap-4 bg-white">
             <button onclick="closeLayer('layer-sub-detail')" class="text-zinc-800"><span class="material-symbols-outlined">arrow_back</span></button>
@@ -137,7 +107,7 @@
         <main id="sub-content" class="flex-1 overflow-y-auto p-5 text-sm text-zinc-600 leading-relaxed no-scrollbar"></main>
     </div>
 
-    <!-- [사이드 바] (정책 안내 통합) -->
+    <!-- [사이드 바] -->
     <div id="side-settings" class="absolute inset-0 bg-black/30 z-50 hide fade-in flex justify-end" onclick="toggleSettings()">
       <div class="w-3/4 h-full bg-white slide-in-right p-6" onclick="event.stopPropagation()">
         <div class="flex justify-between items-center mb-8">
@@ -149,15 +119,7 @@
             <div class="flex items-center gap-4"><span class="material-symbols-outlined text-zinc-700 text-[20px]">settings</span><span class="text-sm font-semibold">설정 및 개인정보</span></div>
             <span class="material-symbols-outlined text-zinc-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
           </button>
-          <button onclick="openLayer('layer-activity')" class="w-full flex items-center justify-between p-4 hover:bg-zinc-50 rounded-2xl group transition-all">
-            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-zinc-700 text-[20px]">history</span><span class="text-sm font-semibold">내 활동</span></div>
-            <span class="material-symbols-outlined text-zinc-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
-          </button>
-          <button onclick="openLayer('layer-saved')" class="w-full flex items-center justify-between p-4 hover:bg-zinc-50 rounded-2xl group transition-all">
-            <div class="flex items-center gap-4"><span class="material-symbols-outlined text-zinc-700 text-[20px]">bookmark</span><span class="text-sm font-semibold">저장됨</span></div>
-            <span class="material-symbols-outlined text-zinc-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
-          </button>
-          <!-- 강조된 정책 안내 버튼 -->
+          <!-- 정책 안내 -->
           <div class="pt-4 mt-4 border-t border-zinc-100">
             <button onclick="openSubLayer('정책 안내')" class="w-full flex items-center justify-between p-4 bg-rose-50/50 hover:bg-rose-50 rounded-2xl group transition-all">
               <div class="flex items-center gap-4 text-rose-600"><span class="material-symbols-outlined text-[20px]">verified_user</span><span class="text-sm font-bold">정책 안내</span></div>
@@ -166,15 +128,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- [페이지] 게시물 상세 -->
-    <div id="page-post-detail" class="absolute inset-0 bg-white z-20 hide flex flex-col fade-in">
-        <header class="shrink-0 px-5 py-4 border-b border-rose-100 flex items-center gap-4">
-          <button onclick="closeLayer('page-post-detail')" class="text-zinc-800"><span class="material-symbols-outlined">arrow_back</span></button>
-          <h1 class="font-bold text-zinc-800 text-sm">게시물</h1>
-        </header>
-        <main id="post-detail-main" class="flex-1 overflow-y-auto no-scrollbar pb-20"></main>
     </div>
 
   </div>
@@ -190,29 +143,10 @@
     function initGrid() {
       const grid = document.getElementById('post-grid');
       grid.innerHTML = postsData.map((p, i) => `
-        <div onclick="openPost(${i})" class="aspect-square bg-zinc-100 overflow-hidden cursor-pointer active:opacity-80 transition-opacity">
+        <div class="aspect-square bg-zinc-100 overflow-hidden cursor-pointer active:opacity-80 transition-opacity">
           <img class="w-full h-full object-cover" src="${p.images[0]}"/>
         </div>
       `).join('');
-    }
-
-    function openPost(index) {
-      const post = postsData[index];
-      const main = document.getElementById('post-detail-main');
-      main.innerHTML = `
-        <div class="flex items-center gap-3 p-3">
-            <img class="w-8 h-8 rounded-full object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200"/>
-            <span class="font-bold text-xs text-zinc-800">travel_kimtaewoo</span>
-        </div>
-        <img class="w-full aspect-square object-cover" src="${post.images[0]}"/>
-        <div class="p-4 space-y-2">
-            <div class="flex gap-4 mb-2"><span class="material-symbols-outlined">favorite</span><span class="material-symbols-outlined">chat_bubble</span></div>
-            <p class="text-xs font-bold text-zinc-800">좋아요 ${post.likes.toLocaleString()}개</p>
-            <p class="text-xs text-zinc-700">${post.content}</p>
-            <p class="text-xs text-blue-500 italic">${post.tags}</p>
-        </div>
-      `;
-      document.getElementById('page-post-detail').classList.remove('hide');
     }
 
     function toggleSettings() {
@@ -234,118 +168,16 @@
         document.getElementById('sub-title').innerText = title;
         const content = document.getElementById('sub-content');
         
-        if(title === '좋아요한 게시물') {
-            content.innerHTML = `<div class="grid grid-cols-3 gap-1">${Array(15).fill(0).map((_, i) => `<img class="aspect-square object-cover bg-zinc-100 rounded" src="https://picsum.photos/id/${i+20}/200/200"/>`).join('')}</div>`;
-        } else if(title === '정책 안내') {
-            content.innerHTML = `
-                <div class="space-y-8 fade-in">
-                    <section class="space-y-3">
-                        <div class="flex items-center gap-2 text-rose-500 mb-1">
-                            <span class="material-symbols-outlined">payments</span>
-                            <h2 class="font-bold text-base">수수료 정책</h2>
-                        </div>
-                        <div class="bg-rose-50 p-5 rounded-2xl border border-rose-100">
-                            <p class="text-sm text-zinc-700 leading-relaxed">
-                                본 플랫폼 내에서 발생하는 모든 거래 금액에 대해 <strong class="text-rose-600 underline">거래금액의 1.7%</strong>가 서비스 운영 수수료로 부과됩니다. 
-                                <br><br><span class="text-[11px] text-rose-400 font-medium">* 프로모션 기간 동안 변동될 수 있습니다.</span>
-                            </p>
-                        </div>
-                    </section>
-                    
-                    <section class="space-y-4">
-                        <div class="flex items-center gap-2 text-zinc-800 mb-1">
-                            <span class="material-symbols-outlined">gavel</span>
-                            <h2 class="font-bold text-base">법적 책임 관련</h2>
-                        </div>
-                        <div class="space-y-4 px-1">
-                            <div class="flex gap-3">
-                                <span class="bg-zinc-800 text-white w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold">1</span>
-                                <p class="text-xs text-zinc-500 leading-relaxed">이용자 간의 거래 과정에서 발생하는 모든 분쟁에 대한 책임은 당사자에게 있으며, 플랫폼은 중개 시스템의 안정성만을 보장합니다.</p>
-                            </div>
-                            <div class="flex gap-3">
-                                <span class="bg-zinc-800 text-white w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[10px] font-bold">2</span>
-                                <p class="text-xs text-zinc-500 leading-relaxed">타인의 저작권을 침해하거나 허위 정보를 유포하여 발생하는 법적 책임은 해당 게시물을 작성한 이용자 본인에게 귀속됩니다.</p>
-                            </div>
-                        </div>
-                    </section>
-                    <div class="pt-10 text-center"><p class="text-[10px] text-zinc-300 font-medium">최종 업데이트: 2024년 05월 20일</p></div>
-                </div>
-            `;
-        } else if(title === '개인정보 보호') {
-            content.innerHTML = `
-                <div class="space-y-6">
-                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
-                        <div><p class="font-bold text-zinc-800">비공개 계정</p><p class="text-[11px] text-zinc-400">승인된 팔로워만 내 게시물 조회 가능</p></div>
-                        <div class="w-12 h-6 bg-rose-500 rounded-full relative shadow-inner"><div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
-                    </div>
-                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
-                        <div><p class="font-bold text-zinc-800">활동 상태 표시</p><p class="text-[11px] text-zinc-400">현재 활동 중인지 다른 사람이 확인 가능</p></div>
-                        <div class="w-12 h-6 bg-zinc-300 rounded-full relative"><div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
-                    </div>
-                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
-                        <div><p class="font-bold text-zinc-800">메시지 수신 허용</p><p class="text-[11px] text-zinc-400">내가 팔로우하는 사람에게만 메시지 수신</p></div>
-                        <div class="w-12 h-6 bg-rose-500 rounded-full relative shadow-inner"><div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
-                    </div>
-                </div>
-            `;
-        } else if(title === '알림 설정') {
-            content.innerHTML = `
-                <div class="space-y-6">
-                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
-                        <div><p class="font-bold text-zinc-800">푸시 알림</p><p class="text-[11px] text-zinc-400">새로운 소식을 푸시로 즉시 받기</p></div>
-                        <div class="w-12 h-6 bg-rose-500 rounded-full relative shadow-inner"><div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
-                    </div>
-                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
-                        <div><p class="font-bold text-zinc-800">이메일 알림</p><p class="text-[11px] text-zinc-400">중요 활동을 메일로 요약 받기</p></div>
-                        <div class="w-12 h-6 bg-zinc-300 rounded-full relative"><div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
-                    </div>
-                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
-                        <div><p class="font-bold text-zinc-800">방해 금지 모드</p><p class="text-[11px] text-zinc-400">밤 10시 이후 알림 끄기</p></div>
-                        <div class="w-12 h-6 bg-zinc-300 rounded-full relative"><div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
-                    </div>
-                </div>
-            `;
-        } else if(title === '팔로워' || title === '팔로잉') {
-            const list = title === '팔로워' ? 
-                ['여행자_서울', '클라이머', '푸드파이터', '제주러버', '산악인'] : 
-                ['공식계정', '카메라리뷰', '세계여행가', '캠핑의달인'];
-            content.innerHTML = `
-                <div class="space-y-4">
-                    ${list.map((name, i) => `
-                        <div class="flex items-center justify-between p-2">
-                            <div class="flex items-center gap-3">
-                                <img class="w-10 h-10 rounded-full bg-zinc-100 object-cover" src="https://picsum.photos/id/${i+100}/100/100"/>
-                                <div><p class="text-xs font-bold text-zinc-800">${name}</p><p class="text-[10px] text-zinc-400">추천 여행지 공유 중</p></div>
-                            </div>
-                            <button class="px-4 py-1.5 bg-zinc-100 rounded-lg text-[11px] font-bold text-zinc-600">${title === '팔로워' ? '삭제' : '팔로잉'}</button>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        } else if(title === '모든 게시물') {
-            content.innerHTML = `<div class="grid grid-cols-3 gap-0.5">${Array(9).fill(0).map((_, i) => `<img class="aspect-square object-cover bg-zinc-100" src="https://picsum.photos/id/${i+50}/200/200"/>`).join('')}</div>`;
+        if(title === '정책 안내') {
+            content.innerHTML = `<p class="text-sm">수수료 정책 및 법적 책임 관련 안내 내용입니다.</p>`;
         } else {
-            content.innerHTML = `<div class="flex flex-col items-center justify-center py-20 gap-4 text-zinc-200"><span class="material-symbols-outlined text-6xl">hourglass_empty</span><p class="text-zinc-400 text-xs">콘텐츠를 준비 중입니다.</p></div>`;
+            content.innerHTML = `<p class="text-zinc-400 text-xs">준비 중인 페이지입니다.</p>`;
         }
-        
         document.getElementById('layer-sub-detail').classList.remove('hide');
     }
 
     function openEditProfile() {
         openSubLayer('프로필 편집');
-        const content = document.getElementById('sub-content');
-        content.innerHTML = `
-            <div class="space-y-6">
-                <div class="flex flex-col items-center gap-3">
-                    <img class="w-20 h-20 rounded-full object-cover border border-zinc-100" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200"/>
-                    <button class="text-xs font-bold text-[#b6004f]">프로필 사진 변경</button>
-                </div>
-                <div class="space-y-4">
-                    <div class="space-y-1"><label class="text-[10px] font-bold text-zinc-400 ml-1">이름</label><input type="text" value="김태우" class="w-full bg-zinc-50 border-none rounded-xl px-4 py-3 text-sm"/></div>
-                </div>
-                <button onclick="closeLayer('layer-sub-detail')" class="w-full py-3 bg-[#b6004f] text-white rounded-xl font-bold text-sm">저장하기</button>
-            </div>
-        `;
     }
 
     window.onload = initGrid;
