@@ -20,24 +20,50 @@
       <h1 class="font-bold text-primary tracking-tight">새 게시물 작성</h1>
     </header>
     <main class="flex-1 p-5 overflow-y-auto hide-scrollbar space-y-5 pb-24">
-      <div class="aspect-video w-full rounded-[1.5rem] bg-[#ffecf2] border-2 border-dashed border-[#b6004f]/20 flex flex-col items-center justify-center text-[#b6004f]/40 relative overflow-hidden">
-        <span class="material-symbols-outlined text-3xl mb-1 relative z-10">add_a_photo</span>
-        <p class="text-[10px] font-bold uppercase tracking-wider relative z-10">미디어 추가</p>
-      </div>
+      <!-- 미디어 추가 영역: 모바일 시스템 UI 유도 -->
+      <label for="media-upload" class="cursor-pointer aspect-video w-full rounded-[1.5rem] bg-[#ffecf2] border-2 border-dashed border-[#b6004f]/20 flex flex-col items-center justify-center text-[#b6004f]/40 relative overflow-hidden active:scale-[0.98] transition-transform">
+        <!-- accept 속성으로 미디어 타입을 제한하여 모바일에서 갤러리/카메라 메뉴가 뜨도록 설정 -->
+        <input type="file" id="media-upload" class="hidden" accept="image/*,video/*" onchange="handleFileSelect(event)"/>
+        
+        <div id="preview-container" class="absolute inset-0 flex items-center justify-center bg-black hidden">
+            <img id="image-preview" class="w-full h-full object-cover" src="" alt="Preview"/>
+            <button type="button" onclick="resetMedia(event)" class="absolute top-2 right-2 bg-black/50 text-white p-1 rounded-full backdrop-blur-md">
+                <span class="material-symbols-outlined text-sm">close</span>
+            </button>
+        </div>
+        
+        <div id="upload-prompt" class="flex flex-col items-center">
+            <span class="material-symbols-outlined text-3xl mb-1 relative z-10">add_a_photo</span>
+            <p class="text-[10px] font-bold uppercase tracking-wider relative z-10">사진 또는 동영상 추가</p>
+        </div>
+      </label>
+
       <div class="bg-white rounded-2xl p-4 shadow-sm border border-rose-50">
         <textarea class="w-full border-none focus:ring-0 text-sm min-h-[120px] p-0 placeholder:text-slate-400" placeholder="내용을 작성하세요"></textarea>
       </div>
+
       <div class="space-y-3">
         <div class="bg-white p-4 rounded-xl flex items-center justify-between shadow-sm border border-rose-50">
           <div class="flex items-center gap-3"><span class="material-symbols-outlined text-[#b6004f]">category</span><span class="text-xs font-bold text-zinc-800">카테고리 선택</span></div>
-          <select class="border-none bg-transparent text-[11px] font-bold text-[#b6004f] focus:ring-0"><option>패션/뷰티</option><option>라이프스타일</option><option>IT/테크</option><option>음식/여행</option></select>
+          <select class="border-none bg-transparent text-[11px] font-bold text-[#b6004f] focus:ring-0">
+            <option>패션/뷰티</option>
+            <option>라이프스타일</option>
+            <option>IT/테크</option>
+            <option>음식/맛집</option>
+            <option>여행/아웃도어</option>
+            <option>운동/헬스</option>
+            <option>반려동물</option>
+            <option>인테리어</option>
+            <option>예술/디자인</option>
+            <option>경제/금융</option>
+          </select>
         </div>
         <div class="bg-white p-4 rounded-xl flex items-center gap-3 shadow-sm border border-rose-50">
           <span class="material-symbols-outlined text-[#b6004f]">tag</span>
           <input type="text" class="flex-1 border-none focus:ring-0 text-xs p-0 font-medium" placeholder="태그 작성 (#데일리룩 #카페)"/>
         </div>
       </div>
-      <button class="w-full py-4 bg-[#b6004f] text-white font-bold rounded-2xl shadow-lg mt-4">게시하기</button>
+      <button class="w-full py-4 bg-[#b6004f] text-white font-bold rounded-2xl shadow-lg mt-4 active:opacity-80 transition-opacity">게시하기</button>
     </main>
     <nav class="absolute bottom-0 left-0 right-0 h-20 flex justify-around items-center px-6 pb-2 bg-white/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(182,0,79,0.1)] z-50">
       <a href="index.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400"><span class="material-symbols-outlined text-[24px]">home</span><span class="text-[9px] font-bold">홈</span></a>
@@ -46,5 +72,38 @@
       <a href="profile.html" class="nav-item flex flex-col items-center gap-1 text-zinc-400"><span class="material-symbols-outlined text-[24px]">person</span><span class="text-[9px] font-bold">프로필</span></a>
     </nav>
   </div>
+
+  <script>
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      const previewContainer = document.getElementById('preview-container');
+      const imagePreview = document.getElementById('image-preview');
+      const uploadPrompt = document.getElementById('upload-prompt');
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          if (file.type.startsWith('image/')) {
+              imagePreview.src = e.target.result;
+              previewContainer.classList.remove('hidden');
+              uploadPrompt.classList.add('hidden');
+          } else if (file.type.startsWith('video/')) {
+              // 동영상의 경우 간단하게 텍스트로 표시하거나 썸네일 처리 로직을 추가할 수 있습니다.
+              // 여기서는 기본 디자인을 유지하며 이미지 위주 프리뷰를 제공합니다.
+              alert('동영상이 선택되었습니다: ' + file.name);
+          }
+        }
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function resetMedia(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      document.getElementById('media-upload').value = '';
+      document.getElementById('preview-container').classList.add('hidden');
+      document.getElementById('upload-prompt').classList.remove('hidden');
+    }
+  </script>
 </body>
 </html>
