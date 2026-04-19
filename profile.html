@@ -37,9 +37,9 @@
               <img class="w-full h-full rounded-full object-cover" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop"/>
             </div>
             <div class="flex flex-1 justify-around px-2">
-              <div class="flex flex-col items-center"><span class="font-extrabold text-zinc-800 text-xl">4</span><span class="text-[12px] font-medium text-zinc-400">게시물</span></div>
-              <div class="flex flex-col items-center"><span class="font-extrabold text-zinc-800 text-xl">512</span><span class="text-[12px] font-medium text-zinc-400">팔로워</span></div>
-              <div class="flex flex-col items-center"><span class="font-extrabold text-zinc-800 text-xl">385</span><span class="text-[12px] font-medium text-zinc-400">팔로잉</span></div>
+              <div class="flex flex-col items-center cursor-default"><span class="font-extrabold text-zinc-800 text-xl">4</span><span class="text-[12px] font-medium text-zinc-400">게시물</span></div>
+              <div onclick="openSubLayer('팔로워')" class="flex flex-col items-center cursor-pointer active:opacity-60 transition-opacity"><span class="font-extrabold text-zinc-800 text-xl">512</span><span class="text-[12px] font-medium text-zinc-400">팔로워</span></div>
+              <div onclick="openSubLayer('팔로잉')" class="flex flex-col items-center cursor-pointer active:opacity-60 transition-opacity"><span class="font-extrabold text-zinc-800 text-xl">385</span><span class="text-[12px] font-medium text-zinc-400">팔로잉</span></div>
             </div>
           </div>
           <div class="mb-5">
@@ -60,7 +60,7 @@
       </nav>
     </div>
 
-    <!-- [레이어] 설정 메뉴 (중복된 정책 안내 항목 제거됨) -->
+    <!-- [레이어] 설정 메뉴 -->
     <div id="layer-settings" class="absolute inset-0 bg-white z-[70] hide flex flex-col slide-in-right">
         <header class="shrink-0 px-5 py-4 border-b border-rose-100 flex items-center gap-4">
             <button onclick="closeLayer('layer-settings')" class="text-zinc-800"><span class="material-symbols-outlined">arrow_back</span></button>
@@ -276,8 +276,50 @@
                 <div class="space-y-6">
                     <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
                         <div><p class="font-bold text-zinc-800">비공개 계정</p><p class="text-[11px] text-zinc-400">승인된 팔로워만 내 게시물 조회 가능</p></div>
-                        <div class="w-12 h-6 bg-zinc-300 rounded-full relative"><div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
+                        <div class="w-12 h-6 bg-rose-500 rounded-full relative shadow-inner"><div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
                     </div>
+                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
+                        <div><p class="font-bold text-zinc-800">활동 상태 표시</p><p class="text-[11px] text-zinc-400">현재 활동 중인지 다른 사람이 확인 가능</p></div>
+                        <div class="w-12 h-6 bg-zinc-300 rounded-full relative"><div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
+                    </div>
+                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
+                        <div><p class="font-bold text-zinc-800">메시지 수신 허용</p><p class="text-[11px] text-zinc-400">내가 팔로우하는 사람에게만 메시지 수신</p></div>
+                        <div class="w-12 h-6 bg-rose-500 rounded-full relative shadow-inner"><div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
+                    </div>
+                </div>
+            `;
+        } else if(title === '알림 설정') {
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
+                        <div><p class="font-bold text-zinc-800">푸시 알림</p><p class="text-[11px] text-zinc-400">새로운 소식을 푸시로 즉시 받기</p></div>
+                        <div class="w-12 h-6 bg-rose-500 rounded-full relative shadow-inner"><div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
+                    </div>
+                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
+                        <div><p class="font-bold text-zinc-800">이메일 알림</p><p class="text-[11px] text-zinc-400">중요 활동을 메일로 요약 받기</p></div>
+                        <div class="w-12 h-6 bg-zinc-300 rounded-full relative"><div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
+                    </div>
+                    <div class="flex justify-between items-center p-4 bg-zinc-50 rounded-2xl">
+                        <div><p class="font-bold text-zinc-800">방해 금지 모드</p><p class="text-[11px] text-zinc-400">밤 10시 이후 알림 끄기</p></div>
+                        <div class="w-12 h-6 bg-zinc-300 rounded-full relative"><div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div></div>
+                    </div>
+                </div>
+            `;
+        } else if(title === '팔로워' || title === '팔로잉') {
+            const list = title === '팔로워' ? 
+                ['여행자_서울', '클라이머', '푸드파이터', '제주러버', '산악인'] : 
+                ['공식계정', '카메라리뷰', '세계여행가', '캠핑의달인'];
+            content.innerHTML = `
+                <div class="space-y-4">
+                    ${list.map((name, i) => `
+                        <div class="flex items-center justify-between p-2">
+                            <div class="flex items-center gap-3">
+                                <img class="w-10 h-10 rounded-full bg-zinc-100 object-cover" src="https://picsum.photos/id/${i+100}/100/100"/>
+                                <div><p class="text-xs font-bold text-zinc-800">${name}</p><p class="text-[10px] text-zinc-400">추천 여행지 공유 중</p></div>
+                            </div>
+                            <button class="px-4 py-1.5 bg-zinc-100 rounded-lg text-[11px] font-bold text-zinc-600">${title === '팔로워' ? '삭제' : '팔로잉'}</button>
+                        </div>
+                    `).join('')}
                 </div>
             `;
         } else if(title === '모든 게시물') {
