@@ -147,7 +147,7 @@
       </div>
     </section>
 
-    <!-- Navbar (Buttons updated with requested links and names) -->
+    <!-- Navbar -->
     <nav class="absolute bottom-0 left-0 right-0 h-20 flex justify-around items-center px-6 pb-2 bg-white/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(182,0,79,0.1)] z-50">
       <button onclick="showHome()" id="nav-home" class="nav-item active flex flex-col items-center gap-1 text-primary">
         <span class="material-symbols-outlined text-[24px]">home</span><span class="text-[9px] font-bold">홈</span>
@@ -208,13 +208,41 @@
         persona: { age: "31세", personality: "열정적", interests: ["헬스", "식단"], goal: "지속가능한 건강 전달" }, 
         portfolio: ["https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=400", "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=400", "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=400"] 
       },
+      // 기업 프로필 5개
       { 
         id: 6, type: 'company', name: "아우라 뷰티", category: "코스메틱 브랜드", handle: "@aura_skin_lab", 
         img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&h=400&fit=crop", 
         followers: "125K", response: "10분 내", reviews: getRandomReviews(), rating: "4.9", 
         reviewSummary: "명확한 가이드라인을 제공합니다.", 
-        persona: { age: "브랜드", personality: "세련됨", interests: ["비건 뷰티"], goal: "글로벌 뷰티 리딩" }, 
-        portfolio: ["https://images.unsplash.com/photo-1570172619380-41617b84758e?q=80&w=400", "https://images.unsplash.com/photo-1594122230689-45899d9e6f69?q=80&w=400", "https://images.unsplash.com/photo-1556227834-09f1de7a7582?q=80&w=400"] 
+        adInfo: { price: "200만원~", period: "15일 내외", channel: "인스타그램 릴스, 스토리", target: "2030 여성" }
+      },
+      { 
+        id: 7, type: 'company', name: "베러무브", category: "액티브웨어", handle: "@bettermove_kr", 
+        img: "https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?q=80&w=400&h=400&fit=crop", 
+        followers: "42K", response: "30분 내", reviews: getRandomReviews(), rating: "4.7", 
+        reviewSummary: "제품 협찬 및 고정비 지급 가능합니다.", 
+        adInfo: { price: "50만원~150만원", period: "협의 가능", channel: "유튜브 쇼츠, 블로그", target: "운동을 즐기는 직장인" }
+      },
+      { 
+        id: 8, type: 'company', name: "오브제 홈", category: "리빙 브랜드", handle: "@objet_home", 
+        img: "https://images.unsplash.com/photo-1513519247388-193ad51f50ab?q=80&w=400&h=400&fit=crop", 
+        followers: "89K", response: "1시간 내", reviews: getRandomReviews(), rating: "4.8", 
+        reviewSummary: "감성적인 연출력을 선호합니다.", 
+        adInfo: { price: "100만원~", period: "월간 계약 가능", channel: "인스타그램 피드", target: "인테리어 관심층" }
+      },
+      { 
+        id: 9, type: 'company', name: "고메 테이블", category: "식품/F&B", handle: "@gourmet_table", 
+        img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=400&h=400&fit=crop", 
+        followers: "15K", response: "5분 내", reviews: getRandomReviews(), rating: "5.0", 
+        reviewSummary: "빠른 피드백과 명확한 방향성.", 
+        adInfo: { price: "30만원 + 제품제공", period: "즉시 진행", channel: "틱톡, 인스타그램", target: "1인가구 및 자취생" }
+      },
+      { 
+        id: 10, type: 'company', name: "루트 테크", category: "IT 기기", handle: "@root_tech_office", 
+        img: "https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=400&h=400&fit=crop", 
+        followers: "210K", response: "2시간 내", reviews: getRandomReviews(), rating: "4.6", 
+        reviewSummary: "테크적인 분석 위주의 리뷰 환영.", 
+        adInfo: { price: "500만원~", period: "장기 파트너십 선호", channel: "유튜브 롱폼", target: "IT/기기 얼리어답터" }
       }
     ];
 
@@ -280,6 +308,8 @@
       if (!p) return;
       const detailContent = document.getElementById('detail-content');
       
+      const isCompany = p.type === 'company';
+      
       detailContent.innerHTML = `
         <div class="pb-10">
           <div class="px-6 py-8">
@@ -308,6 +338,29 @@
                  <button onclick="openReviewModal()" class="mt-3 text-primary text-[10px] font-bold border-b border-primary">전체 리뷰 보기</button>
               </div>
               
+              ${isCompany ? `
+              <div class="bg-white p-5 rounded-[1.5rem] border border-rose-50 shadow-sm">
+                 <h3 class="text-[10px] font-black text-primary uppercase mb-3 underline decoration-rose-100">광고 집행 정보</h3>
+                 <div class="space-y-3">
+                   <div class="flex justify-between items-center border-b border-rose-50 pb-2">
+                     <span class="text-xs font-bold text-on-surface-variant">예상 광고 단가</span>
+                     <span class="text-xs font-black text-primary">${p.adInfo.price}</span>
+                   </div>
+                   <div class="flex justify-between items-center border-b border-rose-50 pb-2">
+                     <span class="text-xs font-bold text-on-surface-variant">캠페인 기간</span>
+                     <span class="text-xs font-bold text-on-surface">${p.adInfo.period}</span>
+                   </div>
+                   <div class="flex justify-between items-center border-b border-rose-50 pb-2">
+                     <span class="text-xs font-bold text-on-surface-variant">선호 채널</span>
+                     <span class="text-xs font-bold text-on-surface">${p.adInfo.channel}</span>
+                   </div>
+                   <div class="flex justify-between items-center">
+                     <span class="text-xs font-bold text-on-surface-variant">타겟 오디언스</span>
+                     <span class="text-xs font-bold text-on-surface">${p.adInfo.target}</span>
+                   </div>
+                 </div>
+              </div>
+              ` : `
               <div class="bg-white p-5 rounded-[1.5rem] border border-rose-50 shadow-sm">
                  <h3 class="text-[10px] font-black text-primary uppercase mb-3 underline decoration-rose-100">크리에이터 정보</h3>
                  <div class="space-y-2">
@@ -317,15 +370,26 @@
                    <p class="text-xs text-on-surface"><span class="font-bold text-on-surface-variant">활동 목표:</span> ${p.persona.goal}</p>
                  </div>
               </div>
+              `}
             </div>
           </div>
 
+          ${!isCompany ? `
           <div class="px-6 pb-4">
              <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest px-1">Feed Highlights</h3>
              <div class="insta-grid rounded-xl overflow-hidden border border-rose-50 shadow-sm">
                 ${p.portfolio.map(url => `<div><img src="${url}" loading="lazy"/></div>`).join('')}
              </div>
           </div>
+          ` : `
+          <div class="px-6 pb-4">
+             <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest px-1">Brand Campaign Refs</h3>
+             <div class="bg-rose-50/30 border border-rose-100 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 text-zinc-400">
+                <span class="material-symbols-outlined text-3xl">collections</span>
+                <p class="text-[10px] font-bold">진행된 캠페인 레퍼런스 준비 중</p>
+             </div>
+          </div>
+          `}
 
           <div class="px-6 mt-6">
             <button onclick="openChat()" class="w-full bg-primary text-white py-4 rounded-2xl text-[13px] font-bold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
