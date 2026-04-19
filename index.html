@@ -50,6 +50,9 @@
     
     #attachment-menu { display: none; }
     #attachment-menu.active { display: block; }
+
+    /* Search bar visibility adjustment */
+    #search-bar-container.active { display: flex !important; }
   </style>
 </head>
 <body class="py-0 sm:py-8">
@@ -57,17 +60,26 @@
     
     <!-- Home Page -->
     <section id="page-home" class="page active">
-      <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex justify-between items-center border-b border-rose-100 z-10">
-        <div class="flex items-center gap-2">
-          <div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm font-black text-[10px]">E</div>
-          <h1 class="text-lg font-black tracking-tighter text-zinc-900">Editorial</h1>
-        </div>
-        <div class="flex items-center gap-1">
-          <div class="flex bg-rose-50 p-1 rounded-full mr-1">
-            <button onclick="toggleFeedMode('personal')" id="btn-personal" class="mode-btn active px-2.5 py-1 rounded-full text-[9px] font-bold transition-all">개인</button>
-            <button onclick="toggleFeedMode('company')" id="btn-company" class="mode-btn px-2.5 py-1 rounded-full text-[9px] font-bold text-on-surface-variant transition-all">기업</button>
+      <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 flex flex-col border-b border-rose-100 z-10">
+        <div class="flex justify-between items-center w-full">
+          <div class="flex items-center gap-2">
+            <div class="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-sm font-black text-[10px]">E</div>
+            <h1 class="text-lg font-black tracking-tighter text-zinc-900">Editorial</h1>
           </div>
-          <button class="p-2 text-primary"><span class="material-symbols-outlined">search</span></button>
+          <div class="flex items-center gap-1">
+            <div class="flex bg-rose-50 p-1 rounded-full mr-1">
+              <button onclick="toggleFeedMode('personal')" id="btn-personal" class="mode-btn active px-2.5 py-1 rounded-full text-[9px] font-bold transition-all">개인</button>
+              <button onclick="toggleFeedMode('company')" id="btn-company" class="mode-btn px-2.5 py-1 rounded-full text-[9px] font-bold text-on-surface-variant transition-all">기업</button>
+            </div>
+            <button onclick="toggleSearchBar()" class="p-2 text-primary hover:bg-rose-50 rounded-full transition-colors"><span class="material-symbols-outlined">search</span></button>
+          </div>
+        </div>
+        <!-- Search Input Bar -->
+        <div id="search-bar-container" class="hidden mt-3 w-full animate-slide-up flex-col">
+          <div class="relative w-full">
+            <input id="search-input" type="text" oninput="handleSearch(this.value)" placeholder="이름 또는 카테고리 검색..." class="w-full bg-rose-50 border-none rounded-xl px-4 py-2.5 text-xs text-on-surface focus:ring-2 focus:ring-primary/20 placeholder-rose-300 font-medium"/>
+            <button onclick="toggleSearchBar()" class="absolute right-3 top-1/2 -translate-y-1/2 text-rose-300 hover:text-primary"><span class="material-symbols-outlined text-sm">close</span></button>
+          </div>
         </div>
       </header>
       <main id="feed-container" class="flex-1 overflow-y-auto p-4 space-y-6 hide-scrollbar pb-24"></main>
@@ -171,7 +183,7 @@
       { 
         id: 1, type: 'personal', name: "김지수", category: "뷰티 모델", handle: "@jisoo_style", 
         img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&h=600&fit=crop", 
-        followers: "12.4K", engagement: 82.5, reviews: getRandomReviews(), rating: "4.9", 
+        followers: "1,240", engagement: 82.5, reviews: getRandomReviews(), rating: "4.9", 
         reviewSummary: "매우 전문적이고 결과물이 깔끔해요.", 
         persona: { age: "24세", personality: "에너제틱함", interests: ["클린 뷰티", "건축"], goal: "브랜드 이미지 고급화" }, 
         portfolio: ["https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=400", "https://images.unsplash.com/photo-1529139513402-748473019270?q=80&w=400", "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=400"] 
@@ -187,7 +199,7 @@
       { 
         id: 3, type: 'personal', name: "이준호", category: "여행 작가", handle: "@junho_snap", 
         img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&h=600&fit=crop", 
-        followers: "5.2K", engagement: 31.8, reviews: getRandomReviews(), rating: "4.7", 
+        followers: "428", engagement: 31.8, reviews: getRandomReviews(), rating: "4.7", 
         reviewSummary: "사진의 분위기가 독보적입니다.", 
         persona: { age: "29세", personality: "차분함", interests: ["풍경", "카페"], goal: "브랜드 스토리텔링 지원" }, 
         portfolio: ["https://images.unsplash.com/photo-1493130952181-47e36589f64d?q=80&w=400", "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=400", "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=400"] 
@@ -195,7 +207,7 @@
       { 
         id: 4, type: 'personal', name: "한서연", category: "라이프스타일", handle: "@seoyeon_daily", 
         img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&h=600&fit=crop", 
-        followers: "24.1K", engagement: 92.3, reviews: getRandomReviews(), rating: "4.8", 
+        followers: "921", engagement: 92.3, reviews: getRandomReviews(), rating: "4.8", 
         reviewSummary: "소통이 빠르고 피드백이 정확해요.", 
         persona: { age: "22세", personality: "친근함", interests: ["다꾸", "인테리어"], goal: "편안한 일상의 공유" }, 
         portfolio: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=400", "https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=400", "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=400"] 
@@ -203,12 +215,11 @@
       { 
         id: 5, type: 'personal', name: "정민우", category: "운동 전문가", handle: "@minu_health", 
         img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&h=600&fit=crop", 
-        followers: "9.8K", engagement: 58.7, reviews: getRandomReviews(), rating: "4.5", 
+        followers: "154", engagement: 58.7, reviews: getRandomReviews(), rating: "4.5", 
         reviewSummary: "진정성 있는 콘텐츠를 만듭니다.", 
         persona: { age: "31세", personality: "열정적", interests: ["헬스", "식단"], goal: "지속가능한 건강 전달" }, 
         portfolio: ["https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=400", "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=400", "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=400"] 
       },
-      // 기업 프로필 5개
       { 
         id: 6, type: 'company', name: "아우라 뷰티", category: "코스메틱 브랜드", handle: "@aura_skin_lab", 
         img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&h=400&fit=crop", 
@@ -246,9 +257,31 @@
       }
     ];
 
+    let currentMode = 'personal';
     let currentDetailProfileId = null;
 
+    function toggleSearchBar() {
+      const container = document.getElementById('search-bar-container');
+      const input = document.getElementById('search-input');
+      
+      if (container.classList.contains('active')) {
+        container.classList.remove('active');
+        container.classList.add('hidden');
+        input.value = '';
+        renderFeed(currentMode);
+      } else {
+        container.classList.remove('hidden');
+        container.classList.add('active');
+        input.focus();
+      }
+    }
+
+    function handleSearch(query) {
+      renderFeed(currentMode, query.toLowerCase());
+    }
+
     function toggleFeedMode(mode) {
+      currentMode = mode;
       document.querySelectorAll('.mode-btn').forEach(b => {
         b.classList.remove('active', 'bg-primary', 'text-white');
         b.classList.add('text-on-surface-variant');
@@ -256,12 +289,24 @@
       const activeBtn = document.getElementById('btn-' + mode);
       activeBtn.classList.add('active', 'bg-primary', 'text-white');
       activeBtn.classList.remove('text-on-surface-variant');
-      renderFeed(mode);
+      
+      const searchInput = document.getElementById('search-input');
+      renderFeed(mode, searchInput.value.toLowerCase());
     }
 
-    function renderFeed(filter) {
+    function renderFeed(filter, query = '') {
       const container = document.getElementById('feed-container');
-      const filtered = allProfiles.filter(p => p.type === filter);
+      const filtered = allProfiles.filter(p => {
+        const matchesMode = p.type === filter;
+        const matchesQuery = p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query);
+        return matchesMode && matchesQuery;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="py-20 text-center text-rose-300 font-bold text-sm">검색 결과가 없습니다.</div>`;
+        return;
+      }
+
       container.innerHTML = filtered.map(p => {
         const activityScore = p.type === 'personal' ? `${p.engagement}%` : p.response;
         const scoreLabel = p.type === 'personal' ? '활동지수' : '응답속도';
@@ -307,7 +352,6 @@
       const p = allProfiles.find(item => item.id === id);
       if (!p) return;
       const detailContent = document.getElementById('detail-content');
-      
       const isCompany = p.type === 'company';
       
       detailContent.innerHTML = `
@@ -492,6 +536,7 @@
         }
     }
 
+    // Initial render
     renderFeed('personal');
   </script>
 </body>
