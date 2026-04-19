@@ -47,11 +47,8 @@
 
     #chat-menu-dropdown { display: none; }
     #chat-menu-dropdown.active { display: block; }
-    
     #attachment-menu { display: none; }
     #attachment-menu.active { display: block; }
-
-    /* Search bar visibility adjustment */
     #search-bar-container.active { display: flex !important; }
   </style>
 </head>
@@ -74,7 +71,7 @@
             <button onclick="toggleSearchBar()" class="p-2 text-primary hover:bg-rose-50 rounded-full transition-colors"><span class="material-symbols-outlined">search</span></button>
           </div>
         </div>
-        <!-- Search Input Bar -->
+        <!-- Search Bar -->
         <div id="search-bar-container" class="hidden mt-3 w-full animate-slide-up flex-col">
           <div class="relative w-full">
             <input id="search-input" type="text" oninput="handleSearch(this.value)" placeholder="이름 또는 카테고리 검색..." class="w-full bg-rose-50 border-none rounded-xl px-4 py-2.5 text-xs text-on-surface focus:ring-2 focus:ring-primary/20 placeholder-rose-300 font-medium"/>
@@ -100,59 +97,34 @@
         <header class="p-6 border-b border-rose-50 flex justify-between items-center">
           <div>
             <h2 class="text-lg font-black text-on-surface">리뷰 상세</h2>
-            <p id="review-total-count" class="text-xs text-on-surface-variant font-bold">총 리뷰</p>
+            <p id="review-total-count" class="text-xs text-on-surface-variant font-bold"></p>
           </div>
           <button onclick="closeReviewModal()" class="w-10 h-10 bg-rose-50 rounded-full flex items-center justify-center text-primary">
             <span class="material-symbols-outlined">close</span>
           </button>
         </header>
-        <div id="review-list" class="flex-1 overflow-y-auto px-6 space-y-4 py-6 hide-scrollbar text-center text-zinc-400">
-            준비 중입니다...
-        </div>
+        <div id="review-list" class="flex-1 overflow-y-auto px-6 space-y-4 py-6 hide-scrollbar text-center text-zinc-400">리뷰 데이터를 불러오는 중입니다...</div>
       </div>
     </section>
 
-    <!-- Chat Page Overlay -->
+    <!-- Chat Overlay -->
     <section id="chat-page" class="page bg-[#fff4f6] absolute inset-0 z-[80]">
       <header class="shrink-0 bg-white/80 backdrop-blur-xl px-5 py-4 border-b border-rose-100 flex items-center justify-between relative">
         <div class="flex items-center">
           <button onclick="closeChat()" class="text-primary mr-4"><span class="material-symbols-outlined">arrow_back_ios</span></button>
           <div class="flex items-center gap-3">
-              <img id="chat-target-img" class="w-8 h-8 rounded-full object-cover" src=""/>
-              <h1 id="chat-target-name" class="font-bold text-zinc-800 tracking-tight">대상 이름</h1>
+              <img id="chat-target-img" class="w-8 h-8 rounded-full object-cover shadow-sm" src=""/>
+              <h1 id="chat-target-name" class="font-bold text-zinc-800 tracking-tight"></h1>
           </div>
         </div>
-        <div class="relative">
-          <button onclick="toggleChatMenu()" class="p-2 text-primary"><span class="material-symbols-outlined">more_vert</span></button>
-          <div id="chat-menu-dropdown" class="absolute right-0 top-12 w-40 bg-white rounded-2xl shadow-xl border border-rose-50 overflow-hidden z-[100]">
-              <button class="w-full text-left px-4 py-3 text-xs font-bold text-on-surface hover:bg-rose-50 flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">search</span> 대화 검색
-              </button>
-              <button class="w-full text-left px-4 py-3 text-xs font-bold text-on-surface hover:bg-rose-50 flex items-center gap-2">
-                <span class="material-symbols-outlined text-sm">grid_view</span> 미디어 모음
-              </button>
-          </div>
-        </div>
+        <button onclick="toggleChatMenu()" class="p-2 text-primary"><span class="material-symbols-outlined">more_vert</span></button>
       </header>
-
       <main id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 pb-24 hide-scrollbar"></main>
-
       <div class="absolute bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-md border-t border-rose-100">
-        <div id="attachment-menu" class="absolute left-4 bottom-20 w-32 bg-white rounded-2xl shadow-xl border border-rose-50 overflow-hidden z-[100]">
-          <label class="w-full text-left px-4 py-3 text-[11px] font-bold text-on-surface hover:bg-rose-50 flex items-center gap-2 cursor-pointer">
-            <span class="material-symbols-outlined text-sm">image</span> 사진 보내기
-            <input type="file" accept="image/*" class="hidden" onchange="handleFileUpload('image')">
-          </label>
-          <label class="w-full text-left px-4 py-3 text-[11px] font-bold text-on-surface hover:bg-rose-50 flex items-center gap-2 cursor-pointer">
-            <span class="material-symbols-outlined text-sm">description</span> 파일 보내기
-            <input type="file" class="hidden" onchange="handleFileUpload('file')">
-          </label>
-        </div>
-        
         <form onsubmit="sendMessage(event)" class="flex items-center gap-2">
-            <button type="button" onclick="toggleAttachmentMenu()" class="text-primary p-1"><span class="material-symbols-outlined">add_circle</span></button>
+            <button type="button" class="text-primary p-1"><span class="material-symbols-outlined">add_circle</span></button>
             <div class="flex-1 flex items-center gap-2 bg-rose-50 rounded-full px-4 py-2 border border-rose-100">
-                <input id="chat-input" type="text" placeholder="메시지를 입력하세요..." class="flex-1 bg-transparent border-none focus:ring-0 text-xs text-on-surface placeholder-rose-300 font-medium"/>
+                <input id="chat-input" type="text" placeholder="메시지 입력..." class="flex-1 bg-transparent border-none focus:ring-0 text-xs"/>
                 <button type="submit" class="text-primary"><span class="material-symbols-outlined">send</span></button>
             </div>
         </form>
@@ -160,381 +132,261 @@
     </section>
 
     <!-- Navbar -->
-    <nav class="absolute bottom-0 left-0 right-0 h-20 flex justify-around items-center px-6 pb-2 bg-white/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(182,0,79,0.1)] z-50">
-      <button onclick="showHome()" id="nav-home" class="nav-item active flex flex-col items-center gap-1 text-primary">
-        <span class="material-symbols-outlined text-[24px]">home</span><span class="text-[9px] font-bold">홈</span>
+    <nav class="absolute bottom-0 left-0 right-0 h-20 flex justify-around items-center px-6 pb-2 bg-white/90 backdrop-blur-xl rounded-t-[2.5rem] shadow-lg z-50">
+      <button onclick="showHome()" class="nav-item active flex flex-col items-center gap-1 text-primary">
+        <span class="material-symbols-outlined">home</span><span class="text-[9px] font-bold">홈</span>
       </button>
-      <button onclick="location.href='create.html'" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
-        <span class="material-symbols-outlined text-[24px]">add_circle</span><span class="text-[9px] font-bold">추가</span>
+      <button class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+        <span class="material-symbols-outlined">add_circle</span><span class="text-[9px] font-bold">추가</span>
       </button>
-      <button onclick="location.href='message.html'" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
-        <span class="material-symbols-outlined text-[24px]">forum</span><span class="text-[9px] font-bold">메시지</span>
+      <button class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+        <span class="material-symbols-outlined">forum</span><span class="text-[9px] font-bold">메시지</span>
       </button>
-      <button onclick="location.href='profile.html'" class="nav-item flex flex-col items-center gap-1 text-zinc-400">
-        <span class="material-symbols-outlined text-[24px]">account_circle</span><span class="text-[9px] font-bold">프로필</span>
+      <button class="nav-item flex flex-col items-center gap-1 text-zinc-400">
+        <span class="material-symbols-outlined">account_circle</span><span class="text-[9px] font-bold">프로필</span>
       </button>
     </nav>
   </div>
 
   <script>
-    const getRandomReviews = () => Math.floor(Math.random() * 40) + 5;
+    // --- Randomized Content Pools ---
+    const lastNames = ["김", "이", "박", "최", "정", "강", "조", "윤", "장", "임"];
+    const firstNames = ["지수", "소희", "준호", "서연", "민우", "도윤", "하은", "준서", "예린", "민준"];
+    const personalCats = ["뷰티 모델", "패션 디렉터", "여행 작가", "라이프스타일", "운동 전문가", "IT 리뷰어", "푸드 커넥터"];
     
-    const allProfiles = [
-      { 
-        id: 1, type: 'personal', name: "김지수", category: "뷰티 모델", handle: "@jisoo_style", 
-        img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&h=600&fit=crop", 
-        followers: "1,240", engagement: 82.5, reviews: getRandomReviews(), rating: "4.9", 
-        reviewSummary: "매우 전문적이고 결과물이 깔끔해요.", 
-        persona: { age: "24세", personality: "에너제틱함", interests: ["클린 뷰티", "건축"], goal: "브랜드 이미지 고급화" }, 
-        portfolio: ["https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=400", "https://images.unsplash.com/photo-1529139513402-748473019270?q=80&w=400", "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=400"] 
-      },
-      { 
-        id: 2, type: 'personal', name: "박소희", category: "패션 디렉터", handle: "@sohee_beauty", 
-        img: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=400&h=600&fit=crop", 
-        followers: "852", engagement: 45.2, reviews: getRandomReviews(), rating: "5.0", 
-        reviewSummary: "감각적인 스타일링이 인상적입니다.", 
-        persona: { age: "27세", personality: "꼼꼼함", interests: ["스트릿 패션", "브이로그"], goal: "새로운 패션 담론 제시" }, 
-        portfolio: ["https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=400", "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?q=80&w=400", "https://images.unsplash.com/photo-1526045478516-99145907023c?q=80&w=400"] 
-      },
-      { 
-        id: 3, type: 'personal', name: "이준호", category: "여행 작가", handle: "@junho_snap", 
-        img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=400&h=600&fit=crop", 
-        followers: "428", engagement: 31.8, reviews: getRandomReviews(), rating: "4.7", 
-        reviewSummary: "사진의 분위기가 독보적입니다.", 
-        persona: { age: "29세", personality: "차분함", interests: ["풍경", "카페"], goal: "브랜드 스토리텔링 지원" }, 
-        portfolio: ["https://images.unsplash.com/photo-1493130952181-47e36589f64d?q=80&w=400", "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=400", "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=400"] 
-      },
-      { 
-        id: 4, type: 'personal', name: "한서연", category: "라이프스타일", handle: "@seoyeon_daily", 
-        img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&h=600&fit=crop", 
-        followers: "921", engagement: 92.3, reviews: getRandomReviews(), rating: "4.8", 
-        reviewSummary: "소통이 빠르고 피드백이 정확해요.", 
-        persona: { age: "22세", personality: "친근함", interests: ["다꾸", "인테리어"], goal: "편안한 일상의 공유" }, 
-        portfolio: ["https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=400", "https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=400", "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=400"] 
-      },
-      { 
-        id: 5, type: 'personal', name: "정민우", category: "운동 전문가", handle: "@minu_health", 
-        img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&h=600&fit=crop", 
-        followers: "154", engagement: 58.7, reviews: getRandomReviews(), rating: "4.5", 
-        reviewSummary: "진정성 있는 콘텐츠를 만듭니다.", 
-        persona: { age: "31세", personality: "열정적", interests: ["헬스", "식단"], goal: "지속가능한 건강 전달" }, 
-        portfolio: ["https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=400", "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=400", "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=400"] 
-      },
-      { 
-        id: 6, type: 'company', name: "아우라 뷰티", category: "코스메틱 브랜드", handle: "@aura_skin_lab", 
-        img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&h=400&fit=crop", 
-        followers: "125K", response: "10분 내", reviews: getRandomReviews(), rating: "4.9", 
-        reviewSummary: "명확한 가이드라인을 제공합니다.", 
-        adInfo: { price: "200만원~", period: "15일 내외", channel: "인스타그램 릴스, 스토리", target: "2030 여성" }
-      },
-      { 
-        id: 7, type: 'company', name: "베러무브", category: "액티브웨어", handle: "@bettermove_kr", 
-        img: "https://images.unsplash.com/photo-1518458028785-8fbcd101ebb9?q=80&w=400&h=400&fit=crop", 
-        followers: "42K", response: "30분 내", reviews: getRandomReviews(), rating: "4.7", 
-        reviewSummary: "제품 협찬 및 고정비 지급 가능합니다.", 
-        adInfo: { price: "50만원~150만원", period: "협의 가능", channel: "유튜브 쇼츠, 블로그", target: "운동을 즐기는 직장인" }
-      },
-      { 
-        id: 8, type: 'company', name: "오브제 홈", category: "리빙 브랜드", handle: "@objet_home", 
-        img: "https://images.unsplash.com/photo-1513519247388-193ad51f50ab?q=80&w=400&h=400&fit=crop", 
-        followers: "89K", response: "1시간 내", reviews: getRandomReviews(), rating: "4.8", 
-        reviewSummary: "감성적인 연출력을 선호합니다.", 
-        adInfo: { price: "100만원~", period: "월간 계약 가능", channel: "인스타그램 피드", target: "인테리어 관심층" }
-      },
-      { 
-        id: 9, type: 'company', name: "고메 테이블", category: "식품/F&B", handle: "@gourmet_table", 
-        img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=400&h=400&fit=crop", 
-        followers: "15K", response: "5분 내", reviews: getRandomReviews(), rating: "5.0", 
-        reviewSummary: "빠른 피드백과 명확한 방향성.", 
-        adInfo: { price: "30만원 + 제품제공", period: "즉시 진행", channel: "틱톡, 인스타그램", target: "1인가구 및 자취생" }
-      },
-      { 
-        id: 10, type: 'company', name: "루트 테크", category: "IT 기기", handle: "@root_tech_office", 
-        img: "https://images.unsplash.com/photo-1498049794561-7780e7231661?q=80&w=400&h=400&fit=crop", 
-        followers: "210K", response: "2시간 내", reviews: getRandomReviews(), rating: "4.6", 
-        reviewSummary: "테크적인 분석 위주의 리뷰 환영.", 
-        adInfo: { price: "500만원~", period: "장기 파트너십 선호", channel: "유튜브 롱폼", target: "IT/기기 얼리어답터" }
-      }
+    const companyNames = ["블루칩", "모먼트", "데일리", "오브제", "시너지", "프라임", "어반", "센스", "벨벳", "뉴턴"];
+    const companySuffix = ["스튜디오", "랩", "컴퍼니", "코리아", "브랜드", "하우스"];
+    const companyCats = ["코스메틱", "액티브웨어", "리빙 브랜드", "F&B", "테크 가전", "패션 잡화", "에코 라이프"];
+
+    const reviewSummaries = [
+        "매우 전문적이고 결과물이 깔끔해요.",
+        "감각적인 스타일링이 인상적입니다.",
+        "사진의 분위기가 독보적입니다.",
+        "소통이 빠르고 피드백이 정확해요.",
+        "진정성 있는 콘텐츠를 만듭니다.",
+        "브랜드 가이드가 명확해서 작업하기 편했습니다."
     ];
 
+    const targets = ["2030 여성", "MZ세대 전체", "1인 가구", "직장인 운동족", "테크 얼리어답터", "반려동물 가족"];
+    const channels = ["인스타그램 릴스", "유튜브 쇼츠", "블로그 리뷰", "틱톡 댄스", "인스타 피드 3장"];
+
+    function generateProfiles(count, type) {
+      const list = [];
+      for(let i=1; i<=count; i++) {
+        const id = type === 'personal' ? i : i + 100;
+        
+        // Name Logic
+        const name = type === 'personal' 
+            ? lastNames[Math.floor(Math.random()*lastNames.length)] + firstNames[Math.floor(Math.random()*firstNames.length)]
+            : companyNames[Math.floor(Math.random()*companyNames.length)] + " " + companySuffix[Math.floor(Math.random()*companySuffix.length)];
+        
+        // Category Logic
+        const cat = type === 'personal' 
+            ? personalCats[Math.floor(Math.random()*personalCats.length)]
+            : companyCats[Math.floor(Math.random()*companyCats.length)];
+
+        // Followers Logic
+        let followersVal;
+        if (type === 'personal') {
+            // 개인: 단 한 명만 1000명 이상, 나머지는 100~999
+            if (i === 1) followersVal = (1000 + Math.floor(Math.random()*500)).toLocaleString();
+            else followersVal = (100 + Math.floor(Math.random()*850)).toLocaleString();
+        } else {
+            // 기업: 10K~300K 사이 무작위
+            followersVal = (Math.floor(Math.random()*290) + 10) + "K";
+        }
+
+        list.push({
+          id, type, name, category: cat,
+          handle: "@" + (type === 'personal' ? "user" : "brand") + "_" + (Math.random().toString(36).substring(7)),
+          img: `https://picsum.photos/seed/editorial_${id}/400/600`,
+          followers: followersVal,
+          engagement: (Math.random()*12 + 1).toFixed(1),
+          response: Math.floor(Math.random()*40 + 5) + "분 내",
+          reviews: Math.floor(Math.random()*60 + 5),
+          rating: (Math.random()*0.8 + 4.2).toFixed(1),
+          reviewSummary: reviewSummaries[Math.floor(Math.random()*reviewSummaries.length)],
+          persona: type === 'personal' ? { 
+            age: (Math.floor(Math.random()*15)+20)+"세", 
+            personality: ["창의적인", "성실한", "대담한", "차분한"][Math.floor(Math.random()*4)], 
+            interests: ["트렌드", "카페투어", "건강", "패션"], 
+            goal: "팔로워와의 진정성 있는 소통" 
+          } : null,
+          adInfo: type === 'company' ? { 
+            price: (Math.floor(Math.random()*150)+50) + "만원~", 
+            period: (Math.floor(Math.random()*14)+7) + "일 이내", 
+            channel: channels[Math.floor(Math.random()*channels.length)], 
+            target: targets[Math.floor(Math.random()*targets.length)] 
+          } : null,
+          portfolio: [`https://picsum.photos/seed/p_${id}1/400`, `https://picsum.photos/seed/p_${id}2/400`, `https://picsum.photos/seed/p_${id}3/400`]
+        });
+      }
+      return list;
+    }
+
+    const personalProfiles = generateProfiles(15, 'personal');
+    const companyProfiles = generateProfiles(15, 'company');
+    const allProfiles = [...personalProfiles, ...companyProfiles];
+
+    // --- Core UI Logic ---
     let currentMode = 'personal';
-    let currentDetailProfileId = null;
+    let currentDetailId = null;
 
     function toggleSearchBar() {
       const container = document.getElementById('search-bar-container');
-      const input = document.getElementById('search-input');
-      
-      if (container.classList.contains('active')) {
-        container.classList.remove('active');
-        container.classList.add('hidden');
-        input.value = '';
-        renderFeed(currentMode);
-      } else {
-        container.classList.remove('hidden');
-        container.classList.add('active');
-        input.focus();
-      }
+      container.classList.toggle('active');
+      if (container.classList.contains('active')) document.getElementById('search-input').focus();
+      else { document.getElementById('search-input').value = ''; renderFeed(currentMode); }
     }
 
-    function handleSearch(query) {
-      renderFeed(currentMode, query.toLowerCase());
-    }
+    function handleSearch(q) { renderFeed(currentMode, q.toLowerCase()); }
 
     function toggleFeedMode(mode) {
       currentMode = mode;
-      document.querySelectorAll('.mode-btn').forEach(b => {
-        b.classList.remove('active', 'bg-primary', 'text-white');
-        b.classList.add('text-on-surface-variant');
-      });
-      const activeBtn = document.getElementById('btn-' + mode);
-      activeBtn.classList.add('active', 'bg-primary', 'text-white');
-      activeBtn.classList.remove('text-on-surface-variant');
-      
-      const searchInput = document.getElementById('search-input');
-      renderFeed(mode, searchInput.value.toLowerCase());
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.id === 'btn-'+mode));
+      renderFeed(mode);
     }
 
     function renderFeed(filter, query = '') {
       const container = document.getElementById('feed-container');
-      const filtered = allProfiles.filter(p => {
-        const matchesMode = p.type === filter;
-        const matchesQuery = p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query);
-        return matchesMode && matchesQuery;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="py-20 text-center text-rose-300 font-bold text-sm">검색 결과가 없습니다.</div>`;
+      const filtered = allProfiles.filter(p => p.type === filter && (p.name.includes(query) || p.category.includes(query)));
+      
+      if(filtered.length === 0) {
+        container.innerHTML = `<div class="py-20 text-center text-rose-300 font-bold">결과를 찾을 수 없습니다.</div>`;
         return;
       }
 
-      container.innerHTML = filtered.map(p => {
-        const activityScore = p.type === 'personal' ? `${p.engagement}%` : p.response;
-        const scoreLabel = p.type === 'personal' ? '활동지수' : '응답속도';
-
-        return `
-        <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-rose-50">
-          <img class="w-full h-80 object-cover" src="${p.img}"/>
+      container.innerHTML = filtered.map(p => `
+        <article class="bg-white rounded-[2rem] overflow-hidden shadow-sm border border-rose-50 hover:border-rose-200 transition-colors">
+          <img class="w-full h-80 object-cover" src="${p.img}" loading="lazy"/>
           <div class="p-6">
             <div class="flex justify-between items-start mb-4">
-              <div>
+              <div class="flex-1">
                 <div class="flex items-center gap-2 mb-1">
-                  <h2 class="text-xl font-extrabold text-on-surface">${p.name}</h2>
-                  <span class="bg-rose-100 text-primary text-[10px] px-2 py-0.5 rounded-full font-bold">${p.category}</span>
+                  <h2 class="text-xl font-bold text-on-surface truncate">${p.name}</h2>
+                  <span class="shrink-0 bg-rose-100 text-primary text-[9px] px-2 py-0.5 rounded-full font-bold">${p.category}</span>
                 </div>
                 <p class="text-xs text-on-surface-variant font-medium">${p.handle}</p>
               </div>
-              <div class="flex items-center gap-1 bg-rose-50 px-2 py-1 rounded-lg">
-                <span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1">star</span>
-                <span class="text-xs font-bold text-primary">${p.rating}</span>
-                <span class="text-[10px] text-on-surface-variant">(${p.reviews})</span>
+              <div class="flex items-center gap-1 bg-rose-50 px-2 py-1 rounded-lg text-primary font-bold text-xs">
+                <span class="material-symbols-outlined text-sm">star</span>${p.rating}
               </div>
             </div>
             
-            <div class="grid grid-cols-2 gap-3 mb-5">
-              <div class="bg-rose-50/50 p-3 rounded-2xl text-center border border-rose-100/50">
+            <div class="grid grid-cols-2 gap-3 mb-5 text-center">
+              <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100/50">
                 <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">팔로워</p>
                 <p class="text-sm font-black text-on-surface">${p.followers}</p>
               </div>
-              <div class="bg-rose-50/50 p-3 rounded-2xl text-center border border-rose-100/50">
-                <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">${scoreLabel}</p>
-                <p class="text-sm font-black text-primary">${activityScore}</p>
+              <div class="bg-rose-50/50 p-3 rounded-2xl border border-rose-100/50">
+                <p class="text-[9px] font-bold text-on-surface-variant uppercase mb-1">${p.type === 'personal' ? '활동지수' : '응답속도'}</p>
+                <p class="text-sm font-black text-primary">${p.type === 'personal' ? p.engagement + '%' : p.response}</p>
               </div>
             </div>
-
-            <button onclick="openPersonaDetail(${p.id})" class="w-full py-3.5 bg-primary text-white text-sm font-bold rounded-xl active:scale-95 transition-transform shadow-md">상세 프로필 보기</button>
+            <button onclick="openDetail(${p.id})" class="w-full py-4 bg-primary text-white text-sm font-bold rounded-2xl active:scale-95 transition-transform shadow-md">상세 프로필 보기</button>
           </div>
         </article>
-      `}).join('');
+      `).join('');
     }
 
-    function openPersonaDetail(id) {
-      currentDetailProfileId = id;
-      const p = allProfiles.find(item => item.id === id);
-      if (!p) return;
-      const detailContent = document.getElementById('detail-content');
-      const isCompany = p.type === 'company';
+    function openDetail(id) {
+      currentDetailId = id;
+      const p = allProfiles.find(x => x.id === id);
+      const isCo = p.type === 'company';
       
-      detailContent.innerHTML = `
-        <div class="pb-10">
-          <div class="px-6 py-8">
-            <div class="flex items-center gap-5 mb-8">
-              <img class="w-20 h-20 rounded-2xl object-cover shadow-md border border-rose-100" src="${p.img}"/>
-              <div>
-                <div class="flex flex-wrap items-center gap-2 mb-1">
-                  <h2 class="text-2xl font-black text-on-surface">${p.name}</h2>
-                  <span class="bg-rose-50 text-primary text-[9px] px-2 py-0.5 rounded-md font-bold border border-rose-100">${p.category}</span>
-                </div>
-                <p class="text-sm font-bold text-primary mb-1">${p.handle}</p>
-                <div class="flex items-center gap-1">
-                  <span class="material-symbols-outlined text-xs text-primary" style="font-variation-settings: 'FILL' 1">star</span>
-                  <span class="text-xs font-bold text-on-surface">${p.rating}</span>
-                  <span class="text-[10px] text-zinc-400 font-medium">(${p.reviews}개의 리뷰)</span>
-                </div>
+      document.getElementById('detail-content').innerHTML = `
+        <div class="px-6 py-8">
+          <div class="flex items-center gap-5 mb-8">
+            <img class="w-20 h-20 rounded-2xl object-cover border border-rose-100 shadow-sm" src="${p.img}"/>
+            <div>
+              <h2 class="text-2xl font-black text-on-surface">${p.name}</h2>
+              <p class="text-sm font-bold text-primary mb-1">${p.handle}</p>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-on-surface">${p.rating}점</span>
+                <span class="text-[10px] text-zinc-400 font-medium">(${p.reviews}개의 리뷰)</span>
               </div>
             </div>
+          </div>
 
-            <div class="space-y-6">
-              <div class="bg-surface-container-low p-5 rounded-[1.5rem] border border-rose-100">
-                 <h3 class="text-[10px] font-black text-primary uppercase mb-2 flex items-center gap-1">
-                   <span class="material-symbols-outlined text-sm">chat_bubble</span> 리뷰 요약
-                 </h3>
-                 <p class="text-xs text-on-surface italic font-medium leading-relaxed">"${p.reviewSummary}"</p>
-                 <button onclick="openReviewModal()" class="mt-3 text-primary text-[10px] font-bold border-b border-primary">전체 리뷰 보기</button>
+          <div class="bg-surface-container-low p-5 rounded-[1.5rem] border border-rose-100 mb-6">
+             <h3 class="text-[10px] font-black text-primary uppercase mb-2 flex items-center gap-1">
+               <span class="material-symbols-outlined text-sm">chat_bubble</span> 리뷰 요약
+             </h3>
+             <p class="text-xs text-on-surface font-medium italic leading-relaxed">"${p.reviewSummary}"</p>
+          </div>
+
+          <div class="bg-white p-5 rounded-2xl border border-rose-50 shadow-sm mb-6">
+            <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest">${isCo ? 'Campaign Details' : 'Creator Info'}</h3>
+            ${isCo ? `
+              <div class="space-y-3">
+                <div class="flex justify-between text-xs border-b border-rose-50 pb-2">
+                  <span class="font-bold text-zinc-500">예상 단가</span><span class="font-black text-primary">${p.adInfo.price}</span>
+                </div>
+                <div class="flex justify-between text-xs border-b border-rose-50 pb-2">
+                  <span class="font-bold text-zinc-500">타겟</span><span class="font-bold">${p.adInfo.target}</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="font-bold text-zinc-500">채널</span><span class="font-bold">${p.adInfo.channel}</span>
+                </div>
               </div>
-              
-              ${isCompany ? `
-              <div class="bg-white p-5 rounded-[1.5rem] border border-rose-50 shadow-sm">
-                 <h3 class="text-[10px] font-black text-primary uppercase mb-3 underline decoration-rose-100">광고 집행 정보</h3>
-                 <div class="space-y-3">
-                   <div class="flex justify-between items-center border-b border-rose-50 pb-2">
-                     <span class="text-xs font-bold text-on-surface-variant">예상 광고 단가</span>
-                     <span class="text-xs font-black text-primary">${p.adInfo.price}</span>
-                   </div>
-                   <div class="flex justify-between items-center border-b border-rose-50 pb-2">
-                     <span class="text-xs font-bold text-on-surface-variant">캠페인 기간</span>
-                     <span class="text-xs font-bold text-on-surface">${p.adInfo.period}</span>
-                   </div>
-                   <div class="flex justify-between items-center border-b border-rose-50 pb-2">
-                     <span class="text-xs font-bold text-on-surface-variant">선호 채널</span>
-                     <span class="text-xs font-bold text-on-surface">${p.adInfo.channel}</span>
-                   </div>
-                   <div class="flex justify-between items-center">
-                     <span class="text-xs font-bold text-on-surface-variant">타겟 오디언스</span>
-                     <span class="text-xs font-bold text-on-surface">${p.adInfo.target}</span>
-                   </div>
-                 </div>
+            ` : `
+              <div class="space-y-2 text-xs">
+                <p><span class="font-bold text-zinc-500 w-16 inline-block">나이</span> <span class="text-on-surface">${p.persona.age}</span></p>
+                <p><span class="font-bold text-zinc-500 w-16 inline-block">성격</span> <span class="text-on-surface">${p.persona.personality}</span></p>
+                <p><span class="font-bold text-zinc-500 w-16 inline-block">관심사</span> <span class="text-on-surface">${p.persona.interests.join(', ')}</span></p>
               </div>
-              ` : `
-              <div class="bg-white p-5 rounded-[1.5rem] border border-rose-50 shadow-sm">
-                 <h3 class="text-[10px] font-black text-primary uppercase mb-3 underline decoration-rose-100">크리에이터 정보</h3>
-                 <div class="space-y-2">
-                   <p class="text-xs text-on-surface"><span class="font-bold text-on-surface-variant">프로필:</span> ${p.persona.age} / ${p.category}</p>
-                   <p class="text-xs text-on-surface"><span class="font-bold text-on-surface-variant">성격:</span> ${p.persona.personality}</p>
-                   <p class="text-xs text-on-surface"><span class="font-bold text-on-surface-variant">관심사:</span> ${p.persona.interests.join(', ')}</p>
-                   <p class="text-xs text-on-surface"><span class="font-bold text-on-surface-variant">활동 목표:</span> ${p.persona.goal}</p>
-                 </div>
-              </div>
-              `}
+            `}
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest">Gallery</h3>
+            <div class="insta-grid rounded-xl overflow-hidden shadow-sm">
+              ${p.portfolio.map(u => `<div><img src="${u}" loading="lazy"/></div>`).join('')}
             </div>
           </div>
 
-          ${!isCompany ? `
-          <div class="px-6 pb-4">
-             <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest px-1">Feed Highlights</h3>
-             <div class="insta-grid rounded-xl overflow-hidden border border-rose-50 shadow-sm">
-                ${p.portfolio.map(url => `<div><img src="${url}" loading="lazy"/></div>`).join('')}
-             </div>
-          </div>
-          ` : `
-          <div class="px-6 pb-4">
-             <h3 class="text-[10px] font-black text-zinc-400 uppercase mb-4 tracking-widest px-1">Brand Campaign Refs</h3>
-             <div class="bg-rose-50/30 border border-rose-100 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 text-zinc-400">
-                <span class="material-symbols-outlined text-3xl">collections</span>
-                <p class="text-[10px] font-bold">진행된 캠페인 레퍼런스 준비 중</p>
-             </div>
-          </div>
-          `}
-
-          <div class="px-6 mt-6">
-            <button onclick="openChat()" class="w-full bg-primary text-white py-4 rounded-2xl text-[13px] font-bold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
-              <span class="material-symbols-outlined text-lg">send</span>
-              협업 메시지 보내기
-            </button>
-          </div>
+          <button onclick="openChat()" class="w-full bg-primary text-white py-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">send</span> 협업 제안하기
+          </button>
         </div>`;
       document.getElementById('page-detail').classList.add('active');
     }
 
-    function openReviewModal() {
-      const p = allProfiles.find(item => item.id === currentDetailProfileId);
-      if (!p) return;
-      document.getElementById('review-total-count').innerText = `총 ${p.reviews}개의 리뷰`;
-      document.getElementById('review-modal').classList.add('active');
-    }
-
-    function closeDetail() { document.getElementById('page-detail').classList.remove('active'); }
-    function closeReviewModal() { document.getElementById('review-modal').classList.remove('active'); }
-    function showHome() {
-        closeDetail();
-        closeChat();
-    }
-
-    function toggleChatMenu() { document.getElementById('chat-menu-dropdown').classList.toggle('active'); }
-    function toggleAttachmentMenu() { document.getElementById('attachment-menu').classList.toggle('active'); }
-    function closeChat() { document.getElementById('chat-page').classList.remove('active'); }
-    
     function openChat() {
-      const p = allProfiles.find(item => item.id === currentDetailProfileId);
-      if (!p) return;
+      const p = allProfiles.find(x => x.id === currentDetailId);
       document.getElementById('chat-target-img').src = p.img;
       document.getElementById('chat-target-name').innerText = p.name;
-      document.getElementById('chat-messages').innerHTML = `
-        <div class="flex justify-center">
-            <span class="bg-rose-100/50 text-rose-400 text-[10px] px-3 py-1 rounded-full font-bold">대화가 시작되었습니다</span>
-        </div>`;
+      document.getElementById('chat-messages').innerHTML = `<div class="text-center py-2"><span class="bg-rose-100/50 text-rose-400 text-[10px] px-3 py-1 rounded-full font-bold">비즈니스 채팅 시작</span></div>`;
       document.getElementById('chat-page').classList.add('active');
-      document.getElementById('chat-menu-dropdown').classList.remove('active');
-      document.getElementById('attachment-menu').classList.remove('active');
     }
 
     function sendMessage(e) {
-        e.preventDefault();
-        const input = document.getElementById('chat-input');
-        const text = input.value.trim();
-        if(!text) return;
-        appendMessage(text, 'me');
-        input.value = '';
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if(!text) return;
+      
+      const msg = document.createElement('div');
+      msg.className = "self-end max-w-[85%] bg-primary text-white p-3 rounded-2xl rounded-tr-none text-xs font-medium shadow-sm animate-slide-up";
+      msg.innerText = text;
+      
+      const time = document.createElement('span');
+      time.className = "text-[8px] text-zinc-400 self-end px-1 mt-1";
+      time.innerText = "방금 전";
+
+      const container = document.getElementById('chat-messages');
+      container.appendChild(msg);
+      container.appendChild(time);
+      input.value = '';
+      container.scrollTop = container.scrollHeight;
     }
 
-    function appendMessage(text, type, contentType = 'text') {
-        const container = document.getElementById('chat-messages');
-        const msg = document.createElement('div');
-        const isMe = type === 'me';
-        const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        
-        msg.className = `flex flex-col gap-1 max-w-[80%] ${isMe ? 'self-end items-end' : 'self-start items-start'}`;
-        
-        let innerHTML = "";
-        if (contentType === 'text') {
-            innerHTML = `
-                <div class="${isMe ? 'bg-primary text-white' : 'bg-white text-on-surface'} p-3 rounded-2xl ${isMe ? 'rounded-tr-none' : 'rounded-tl-none'} text-xs font-medium shadow-sm border ${isMe ? 'border-primary' : 'border-rose-100'}">
-                    ${text}
-                </div>`;
-        } else if (contentType === 'image') {
-            innerHTML = `
-                <div class="bg-primary/10 p-2 rounded-2xl ${isMe ? 'rounded-tr-none' : 'rounded-tl-none'} border border-primary/20">
-                    <div class="w-32 h-32 bg-rose-100 rounded-lg flex items-center justify-center">
-                        <span class="material-symbols-outlined text-primary text-3xl">image</span>
-                    </div>
-                    <p class="text-[10px] font-bold text-primary mt-1 text-center">이미지 전송됨</p>
-                </div>`;
-        } else if (contentType === 'file') {
-            innerHTML = `
-                <div class="bg-primary p-3 rounded-2xl ${isMe ? 'rounded-tr-none' : 'rounded-tl-none'} text-xs font-medium text-white shadow-sm flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm">description</span> 파일 전송 완료
-                </div>`;
-        }
-
-        msg.innerHTML = `
-            ${innerHTML}
-            <span class="text-[9px] text-zinc-400 font-bold px-1">${timeStr}</span>
-        `;
-        
-        container.appendChild(msg);
-        container.scrollTop = container.scrollHeight;
-        document.getElementById('attachment-menu').classList.remove('active');
-    }
-
-    function handleFileUpload(type) {
-        appendMessage('', 'me', type);
-    }
-
-    window.onclick = function(event) {
-        if (!event.target.closest('button') && !event.target.closest('input')) {
-            document.getElementById('chat-menu-dropdown').classList.remove('active');
-            document.getElementById('attachment-menu').classList.remove('active');
-        }
-    }
+    function closeDetail() { document.getElementById('page-detail').classList.remove('active'); }
+    function closeChat() { document.getElementById('chat-page').classList.remove('active'); }
+    function showHome() { closeDetail(); closeChat(); }
+    function toggleChatMenu() { /* More options dropdown */ }
+    function openReviewModal() { document.getElementById('review-modal').classList.add('active'); }
+    function closeReviewModal() { document.getElementById('review-modal').classList.remove('active'); }
 
     // Initial render
     renderFeed('personal');
