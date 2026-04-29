@@ -278,10 +278,10 @@
         let name, cat;
         if (type === 'personal' && i === 1) {
             name = "김지수";
-            cat = "패션 디렉터";
+            cat = "뷰티 모델"; // 요청에 따른 카테고리 고정
         } else if (type === 'company' && i === 1) {
             name = "벨벳 스튜디오";
-            cat = "코스메틱";
+            cat = "코스메틱"; // 요청에 따른 카테고리 고정
         } else {
             name = type === 'personal' 
                 ? lastNames[Math.floor(Math.random()*lastNames.length)] + firstNames[Math.floor(Math.random()*firstNames.length)]
@@ -290,6 +290,17 @@
                 ? personalCats[Math.floor(Math.random()*personalCats.length)]
                 : companyCats[Math.floor(Math.random()*companyCats.length)];
         }
+
+        // 이미지 경로 설정
+        let imgUrl;
+        if (cat === '코스메틱' || cat === '뷰티 모델') {
+            // 코스메틱이나 뷰티 모델인 경우 지정하신 사진들 중 하나를 랜덤하게 사용 (또는 순차적)
+            const photoIndex = (i % 4) + 1;
+            imgUrl = `cosmetic${photoIndex}.jpg`;
+        } else {
+            imgUrl = `https://picsum.photos/seed/nanopick_${id}/400/600`;
+        }
+
         let primaryMetric, secondaryMetric;
         if (type === 'personal') {
             primaryMetric = { label: "팔로워", value: (i === 1 ? "20.5K" : (100 + Math.floor(Math.random()*850)).toLocaleString()) };
@@ -298,10 +309,19 @@
             primaryMetric = { label: "진행 캠페인", value: (Math.floor(Math.random()*150) + 20) + "건" };
             secondaryMetric = { label: "평균 단가", value: (Math.floor(Math.random()*22)+3) + "만" };
         }
+
+        // 포트폴리오 이미지들도 조건에 맞게 변경
+        let portfolioUrls;
+        if (cat === '코스메틱' || cat === '뷰티 모델') {
+            portfolioUrls = [`cosmetic1.jpg`, `cosmetic2.jpg`, `cosmetic3.jpg` ];
+        } else {
+            portfolioUrls = [`https://picsum.photos/seed/p_${id}1/400`, `https://picsum.photos/seed/p_${id}2/400`, `https://picsum.photos/seed/p_${id}3/400` ];
+        }
+
         list.push({
           id, type, name, category: cat,
           handle: "@" + (type === 'personal' ? "user" : "brand") + "_" + (Math.random().toString(36).substring(7)),
-          img: `https://picsum.photos/seed/nanopick_${id}/400/600`,
+          img: imgUrl,
           primaryMetric, secondaryMetric,
           response: Math.floor(Math.random()*40 + 5) + "분 내",
           reviews: Math.floor(Math.random()*60 + 5),
@@ -309,7 +329,7 @@
           reviewSummary: reviewSummaries[Math.floor(Math.random()*reviewSummaries.length)],
           persona: type === 'personal' ? { interests: ["트렌드", "카페투어", "건강", "패션"], goal: "팔로워와의 진정성 있는 소통" } : null,
           adInfo: type === 'company' ? { period: (Math.floor(Math.random()*14)+7) + "일 이내", channel: channels[Math.floor(Math.random()*channels.length)], target: targets[Math.floor(Math.random()*targets.length)] } : null,
-          portfolio: [`https://picsum.photos/seed/p_${id}1/400`, `https://picsum.photos/seed/p_${id}2/400`, `https://picsum.photos/seed/p_${id}3/400`]
+          portfolio: portfolioUrls
         });
       }
       return list;
