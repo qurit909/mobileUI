@@ -18,6 +18,11 @@
     
     .slide-in-right { animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    
+    /* 이미지 인디케이터 스타일 추가 (사진 여러 장일 때 시각적 보조) */
+    .img-indicator { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; }
+    .indicator-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); }
+    .indicator-dot.active { background: white; }
   </style>
 </head>
 <body class="py-0 sm:py-8">
@@ -189,22 +194,68 @@
         profileImg: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop"
     };
 
+    // 데이터 업데이트: 깨진 이미지 수정 및 게시물 당 사진 3개 이상 추가
     let postsData = [
-      { id: 1, images: ["https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80"], likes: 1204, content: "여름의 끝자락에서 만난 드넓은 초원입니다.", tags: "#여행 #풍경", comments: [{id: 101, user: "nature_lover", text: "와 진짜 평화로워 보여요!", replies: []}, {id: 102, user: "hiker_pro", text: "여기 정확한 위치가 어디인가요?", replies: []}] },
-      { id: 2, images: ["https://images.unsplash.com/photo-1493246507139-91e8bef99c02?q=80"], likes: 852, content: "웅장한 산맥 아래 흐르는 고요한 호수.", tags: "#호수뷰 #캠핑", comments: [{id: 201, user: "camper_boy", text: "밤에 별 잘 보일 것 같아요!", replies: []}] },
-      { id: 3, images: ["https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80"], likes: 2430, content: "구름을 뚫고 솟아오른 설산.", tags: "#만년설 #알프스", comments: [{id: 301, user: "snow_queen", text: "사진 퀄리티 대박입니다...", replies: []}, {id: 302, user: "traveler_z", text: "인생 샷이네요", replies: []}] },
-      { id: 4, images: ["https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80"], likes: 1540, content: "도심 속 힐링 스팟을 찾았습니다.", tags: "#도심숲 #산책", comments: [{id: 401, user: "city_walker", text: "서울 근교인가요?", replies: []}] }
+      { 
+        id: 1, 
+        images: [
+          "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&auto=format&fit=crop&w=600",
+          "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&auto=format&fit=crop&w=600",
+          "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&auto=format&fit=crop&w=600"
+        ], 
+        likes: 1204, 
+        content: "여름의 끝자락에서 만난 드넓은 초원입니다.", 
+        tags: "#여행 #풍경", 
+        comments: [{id: 101, user: "nature_lover", text: "와 진짜 평화로워 보여요!", replies: []}, {id: 102, user: "hiker_pro", text: "여기 정확한 위치가 어디인가요?", replies: []}] 
+      },
+      { 
+        id: 2, 
+        images: [
+          "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&auto=format&fit=crop&w=600", // 깨진 사진 교체 (호수/산)
+          "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&auto=format&fit=crop&w=600",
+          "https://images.unsplash.com/photo-1439853949127-fa647821eba0?q=80&auto=format&fit=crop&w=600"
+        ], 
+        likes: 852, 
+        content: "웅장한 산맥 아래 흐르는 고요한 호수.", 
+        tags: "#호수뷰 #캠핑", 
+        comments: [{id: 201, user: "camper_boy", text: "밤에 별 잘 보일 것 같아요!", replies: []}] 
+      },
+      { 
+        id: 3, 
+        images: [
+          "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&auto=format&fit=crop&w=600", 
+          "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?q=80&auto=format&fit=crop&w=600",
+          "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?q=80&auto=format&fit=crop&w=600"
+        ], 
+        likes: 2430, 
+        content: "구름을 뚫고 솟아오른 설산.", 
+        tags: "#만년설 #알프스", 
+        comments: [{id: 301, user: "snow_queen", text: "사진 퀄리티 대박입니다...", replies: []}, {id: 302, user: "traveler_z", text: "인생 샷이네요", replies: []}] 
+      },
+      { 
+        id: 4, 
+        images: [
+          "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&auto=format&fit=crop&w=600", 
+          "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?q=80&auto=format&fit=crop&w=600",
+          "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&auto=format&fit=crop&w=600"
+        ], 
+        likes: 1540, 
+        content: "도심 속 힐링 스팟을 찾았습니다.", 
+        tags: "#도심숲 #산책", 
+        comments: [{id: 401, user: "city_walker", text: "서울 근교인가요?", replies: []}] 
+      }
     ];
 
     let currentPostId = null;
-    let replyTargetId = null; // 대댓글 대상 (comment.id)
-    let editTargetId = null;  // 수정 대상 ({id, isReply, parentId})
+    let replyTargetId = null; 
+    let editTargetId = null;  
 
     function initGrid() {
       const grid = document.getElementById('post-grid');
       grid.innerHTML = postsData.map((p, i) => `
-        <div onclick="openPost(${p.id})" class="aspect-square bg-zinc-100 overflow-hidden cursor-pointer active:opacity-80 transition-opacity">
+        <div onclick="openPost(${p.id})" class="aspect-square bg-zinc-100 overflow-hidden cursor-pointer active:opacity-80 transition-opacity relative">
           <img class="w-full h-full object-cover" src="${p.images[0]}" alt="Post Image"/>
+          ${p.images.length > 1 ? '<span class="absolute top-2 right-2 text-white material-symbols-outlined text-[18px]" style="filter: drop-shadow(0 0 2px rgba(0,0,0,0.5))">layers</span>' : ''}
         </div>
       `).join('');
       document.getElementById('post-count').innerText = postsData.length;
@@ -280,12 +331,24 @@
             `;
         }).join('');
 
+        // 사진이 여러 장일 경우 가로 스크롤 영역으로 렌더링
+        const imagesHtml = post.images.map(img => `
+            <div class="min-w-full h-full">
+                <img class="w-full aspect-square object-cover" src="${img}"/>
+            </div>
+        `).join('');
+
         detailContent.innerHTML = `
             <div class="flex items-center p-3 gap-3">
                 <img class="w-8 h-8 rounded-full" src="${userData.profileImg}"/>
                 <span class="font-bold text-sm text-zinc-800">${userData.username}</span>
             </div>
-            <img class="w-full aspect-square object-cover" src="${post.images[0]}"/>
+            <div class="relative w-full overflow-x-auto snap-x snap-mandatory flex no-scrollbar">
+                ${imagesHtml}
+                <div class="img-indicator">
+                    ${post.images.map((_, i) => `<div class="indicator-dot ${i===0?'active':''}"></div>`).join('')}
+                </div>
+            </div>
             <div class="p-4 pb-10">
                 <div class="flex gap-4 mb-2">
                     <span class="material-symbols-outlined text-rose-500" style="font-variation-settings: 'FILL' 1;">favorite</span>
@@ -302,6 +365,14 @@
                 </div>
             </div>
         `;
+
+        // 스크롤 시 인디케이터 업데이트 로직
+        const container = detailContent.querySelector('.snap-x');
+        const dots = detailContent.querySelectorAll('.indicator-dot');
+        container.addEventListener('scroll', () => {
+            const index = Math.round(container.scrollLeft / container.clientWidth);
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+        });
     }
 
     function startReply(commentId, username) {
@@ -354,7 +425,6 @@
         const post = postsData.find(p => p.id === currentPostId);
 
         if (editTargetId) {
-            // 수정 모드
             if (editTargetId.isReply) {
                 const parent = post.comments.find(c => c.id === editTargetId.parentId);
                 const reply = parent.replies.find(r => r.id === editTargetId.id);
@@ -365,7 +435,6 @@
             }
             showToast("댓글이 수정되었습니다.");
         } else if (replyTargetId) {
-            // 답글 모드
             const parent = post.comments.find(c => c.id === replyTargetId);
             parent.replies.push({
                 id: Date.now(),
@@ -373,7 +442,6 @@
                 text: text
             });
         } else {
-            // 새 댓글 모드
             post.comments.push({
                 id: Date.now(),
                 user: userData.username,
