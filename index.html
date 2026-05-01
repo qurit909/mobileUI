@@ -278,10 +278,10 @@
         let name, cat;
         if (type === 'personal' && i === 1) {
             name = "김지수";
-            cat = "뷰티 모델"; // 요청에 따른 카테고리 고정
+            cat = "뷰티 모델";
         } else if (type === 'company' && i === 1) {
             name = "벨벳 스튜디오";
-            cat = "코스메틱"; // 요청에 따른 카테고리 고정
+            cat = "코스메틱";
         } else {
             name = type === 'personal' 
                 ? lastNames[Math.floor(Math.random()*lastNames.length)] + firstNames[Math.floor(Math.random()*firstNames.length)]
@@ -291,10 +291,8 @@
                 : companyCats[Math.floor(Math.random()*companyCats.length)];
         }
 
-        // 이미지 경로 설정
         let imgUrl;
         if (cat === '코스메틱' || cat === '뷰티 모델') {
-            // 코스메틱이나 뷰티 모델인 경우 지정하신 사진들 중 하나를 랜덤하게 사용 (또는 순차적)
             const photoIndex = (i % 4) + 1;
             imgUrl = `cosmetic${photoIndex}.jpg`;
         } else {
@@ -304,13 +302,13 @@
         let primaryMetric, secondaryMetric;
         if (type === 'personal') {
             primaryMetric = { label: "팔로워", value: (i === 1 ? "20.5K" : (100 + Math.floor(Math.random()*850)).toLocaleString()) };
-            secondaryMetric = { label: "활동지수", value: (i === 1 ? "15.2%" : (Math.random()*12 + 1).toFixed(1) + "%") };
+            // 활동지수를 50% 이상으로 수정 (기본 50% + 0~45% 랜덤 추가)
+            secondaryMetric = { label: "활동지수", value: (i === 1 ? "85.2%" : (50 + Math.random()*45).toFixed(1) + "%") };
         } else {
             primaryMetric = { label: "진행 캠페인", value: (Math.floor(Math.random()*150) + 20) + "건" };
             secondaryMetric = { label: "평균 단가", value: (Math.floor(Math.random()*22)+3) + "만" };
         }
 
-        // 포트폴리오 이미지들도 조건에 맞게 변경
         let portfolioUrls;
         if (cat === '코스메틱' || cat === '뷰티 모델') {
             portfolioUrls = [`cosmetic1.jpg`, `cosmetic2.jpg`, `cosmetic3.jpg` ];
